@@ -9,7 +9,7 @@ class Ontouch
     private $rufnummerSc;
     private $urlCc;
     private $rufnummerCc;
-    private $auftraggsart;
+    private $auftragsart;
 
     /**
      * @return mixed
@@ -110,17 +110,17 @@ class Ontouch
     /**
      * @return mixed
      */
-    public function getAuftraggsart()
+    public function getAuftragsart()
     {
-        return $this->auftraggsart;
+        return $this->auftragsart;
     }
 
     /**
-     * @param mixed $auftraggsart
+     * @param mixed $auftragsart
      */
-    public function setAuftraggsart($auftraggsart)
+    public function setAuftragsart($auftragsart)
     {
-        $this->auftraggsart = $auftraggsart;
+        $this->auftragsart = $auftragsart;
     }
 
 
