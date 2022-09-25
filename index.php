@@ -57,18 +57,19 @@
         <form method="post" id="carrierForm">
             <div class="modal-content">
                 <div class="modal-header">
+                    <span id="message"></span>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title"><i class="fa fa-plus"></i> Edit User</h4>
                 </div>
                 <div class="modal-body">
                     <div class="form-group"
                     <label for="kundennummer" class="control-label">kundennummer</label>
-                    <input type="text" class="form-control" id="kundennummer" name="kundennummer" placeholder="kundennummer" required>
+                    <input type="text" class="form-control" id="kundennummer" name="kundennummer" placeholder="kundennummer" >
                     <span class="error" id="kundennummer_erro"> </span>
                 </div>
                 <div class="form-group">
                     <label for="name" class="control-label">name</label>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="name" required>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="name" >
                     <span class="error" id="name_erro"> </span>
                 </div>
                 <div class="form-group">
@@ -78,6 +79,7 @@
                 <div class="form-group">
                     <label for="rufnummerSc" class="control-label">rufnummerSc</label>
                     <input type="tel" class="form-control"  id="rufnummerSc" name="rufnummerSc">
+                    <span class="error" id="rufnummerSc_erro"> </span>
                 </div>
                 <div class="form-group">
                     <label for="urlCc" class="control-label">urlCc</label>
@@ -145,21 +147,35 @@
         $("#carrierModal").on('submit', '#carrierForm', function (event) {
             event.preventDefault();
             $('#kundennummer').on('input', function() {
+
                 checkckundennummer();
+
             });
+
             $('#name').on('input', function() {
                 checkcname();
-                $('#name_erro').css('border','red ');
             });
+
+            $('#rufnummerSc').on('input', function() {
+                checkRufnummerSc();
+            });
+
+
             $('#auftraggsart').on('input', function() {
                 checkauftragsart();
+                $('#auftraggsart_erro').css('color','red ');
             });
 
-            if (!checkckundennummer() && !checkcname() && !checkauftragsart() ) {
 
-                $("#message").html('<div class="alert alert-warning">Please fill all required field</div>');
-            } else if (!checkckundennummer() || !checkcname() || !checkauftragsart()) {
-                $("#message").html('<div class="alert alert-warning">Please fill all required field</div>');
+            if ( !checkckundennummer() && !checkcname() && !checkauftragsart() || !checkRufnummerSc() ) {
+
+                $("#message").html('<div class="alert alert-warning">die drei felter sind plicht felder</div>');
+            }
+
+            else if ( !checkckundennummer() || !checkcname() || !checkauftragsart() || checkRufnummerSc() )
+
+            {
+                $("#message").html('<div class="alert alert-warning">die drei felter sind plicht felder</div>');
 
             }
 
@@ -184,6 +200,7 @@
                     { //load json data from server and output message
                         output = '<div class="error">'+data.text+'</div>';
                         $('span').html('Hello world. Ce texte est affiché par jQuery.');
+                        console.log('hier ');
 
                             $('#name_erro').css('border','red 1px solid');
                         $("#carrierForm  input[required=true], #carrierForm input[required=true]").val('');
@@ -193,9 +210,9 @@
                         output = '<div class="success">'+data.text+'</div>';
                         //reset values in all input fields
 
-                        $('#carrierForm')[0].reset();
+                       /* $('#carrierForm')[0].reset();
                         $('#carrierModal').modal('hide');
-                         $('#save').attr('disabled', false)
+                         $('#save').attr('disabled', false)*/
                     }
 
                     // $('#carrierForm')[0].reset();
@@ -213,16 +230,28 @@
 
     function checkckundennummer() {
 
-        var kundennumer = $('#kundennummer').val();
+        var kundennummer = $('#kundennummer').val();
 
-        if ( kundennumer === '') {
-            $('#kundennummer_erro').html('kundennunner Field is required');
+        if ( kundennummer === '' ) {
+            $('#kundennummer_erro').html('kundennunner est obligatoire et doit pas etre vide ');
+            $('#kundennummer_erro').css('color', 'red ');
+            $('#kundennummer').css('border', 'red 1px solid ');
             return false;
+        }
+
+        else if ( !kundennummer.match(/^\d+$/) ) {
+            //it's all digits
+            $('#kundennummer_erro').html('kundennunner doit avoir des chiffres ');
+            $('#kundennummer_erro').css('color', 'red ');
+
         } else if ($('#kundennummer').val().length < 4) {
-            $('#kundennummer_erro').html('kundenummer length is too short');
+            $('#kundennummer_erro').html('le numero de client doit avoir plus de 4 caractere');
             return false;
-        } else {
+
+        }
+        else {
             $('#kundennummer_erro').html('');
+            $('#kundennummer').css('border', 'green 1px solid');
             return true;
         }
     }
@@ -232,16 +261,31 @@
 
         var name = $('#name').val();
 
-        if ( name === '') {
+        if (name === '') {
             $('#name_erro').html('name is Field is required');
+            $('#name_erro').css('color', 'red ');
+            $('#name').css('border', 'red 1px solid ');
             return false;
-        } else if ($('#name').val().length < 4) {
+        }
+
+        else if ($('#name').val().length < 4)
+        {
             $('#name_erro').html('nane soll große als  4');
             return false;
-        } else if (!name.match(/^[a-z]{8}$/i))
-            $('#name_erro').html('name muss die match entsprechen ');
-        else {
+        }
+
+        //else if (!name.match(/^[a-z]+$/i))
+        else if (!name.match(/\d/))
+
+            ///[a-z]+/g
+        {
+            $('#name_erro').html('il ne doit pas comporter de chiffre dans cette field ');
+            $('#name').css('border', 'red 1px solid ');
+        }
+        else
+        {
             $('#name_erro').html('');
+            $('#name').css('border','green 1px solid ');
             return true;
         }
     }
@@ -254,17 +298,61 @@
 
 
         if (auftraggsart === '') {
-            $('#auftraggsart_error').html('Auftragsart Field is required');
+            $('#auftraggsart_error').html('Auftragsart est obligatoire  et doit etre des nomm pas de chiffre');
+            $('#auftraggsart').css('border','red 1px solid ');
+            $('#auftraggsart_error').css('color','red ');
             return false;
-        } else if ($('#auftraggsart').val().length < 4) {
-            $('#auftraggsart_error').html('auftragsart length is too short');
+        } else if ($('#auftraggsart').val().length < 1)
+        {
+            $('#auftraggsart_error').html('auftragsart doit au mimunum 2 ou bien plus ');
+            $('#auftraggsart_error').css('color','red ');
             return false;
+        }
+        else if (!auftraggsart.match(/^[a-z]+$/i))
+            ///[a-z]+/g
+        {
+            $('#auftraggsart_erro').html('il ne doit pas comporter de chiffre dans cette field ');
+            $('#auftraggsart').css('border', 'red 1px solid ');
         }
         else {
             $('#auftraggsart_error').html('');
+            $('#auftraggsart').css('border', 'green 1px solid');
             return true;
         }
     }
+
+
+
+
+    function  checkRufnummerSc()
+    {
+
+        var rufnummerSc = $('#rufnummerSc').val();
+
+
+        if (!rufnummerSc === '' ) {
+            $('#rufnummerSc').html('nur telephone nummer');
+            $('#rufnummerSc').css('border','red 1px solid ');
+            $('#rufnummerSc_erro').css('color','red ');
+            return false;
+        }
+
+        else if (!rufnummerSc.match(/08(?:\s*(?:\d\s*){5,18})?$/))
+
+        {
+            $('#rufnummerSc_erro').html('JAIN BESOIN DES NUMMERO VALIDE');
+            $('#rufnummerSc').css('border', 'red 1px solid ');
+        }
+        else {
+            $('#rufnummerSc').html('');
+            $('#rufnummerSc').css('border', 'green 1px solid');
+            $('#rufnummerSc_erro').css('display', 'none');
+            return true;
+        }
+
+
+    }
+
 
 
 
