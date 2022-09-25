@@ -116,7 +116,7 @@
     {
         $.noConflict();
         $('#onTouchCarrier').DataTable( {
-            "lengthChange": false,
+            "lengthChange": true,
             "processing": true,
             "serverSide": true,
             'serverMethod': 'post',
@@ -149,6 +149,7 @@
             });
             $('#name').on('input', function() {
                 checkcname();
+                $('#name_erro').css('border','red ');
             });
             $('#auftraggsart').on('input', function() {
                 checkauftragsart();
@@ -179,15 +180,22 @@
                 //     });
                 // },
                 success: function (data) {
-                    if(data.type === 'error'){ //load json data from server and output message
+                    if(data.type === 'error')
+                    { //load json data from server and output message
                         output = '<div class="error">'+data.text+'</div>';
+                        $('span').html('Hello world. Ce texte est affiché par jQuery.');
 
-                        console.log('entrere nous');
+                            $('#name_erro').css('border','red 1px solid');
+                        $("#carrierForm  input[required=true], #carrierForm input[required=true]").val('');
+                        $("#contact_form #contact_body").slideUp(); //hide form after success
+                        $('#save').attr('disabled', 'disabled');
                     }else{
                         output = '<div class="success">'+data.text+'</div>';
                         //reset values in all input fields
-                        $("#contact_form  input[required=true], #contact_form textarea[required=true]").val('');
-                        $("#contact_form #contact_body").slideUp(); //hide form after success
+
+                        $('#carrierForm')[0].reset();
+                        $('#carrierModal').modal('hide');
+                         $('#save').attr('disabled', false)
                     }
 
                     // $('#carrierForm')[0].reset();
@@ -225,12 +233,14 @@
         var name = $('#name').val();
 
         if ( name === '') {
-            $('#name_erro').html('kundennunner Field is required');
+            $('#name_erro').html('name is Field is required');
             return false;
         } else if ($('#name').val().length < 4) {
-            $('#name_erro').html('kundenummer length is too short');
+            $('#name_erro').html('nane soll große als  4');
             return false;
-        } else {
+        } else if (!name.match(/^[a-z]{8}$/i))
+            $('#name_erro').html('name muss die match entsprechen ');
+        else {
             $('#name_erro').html('');
             return true;
         }
