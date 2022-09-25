@@ -139,21 +139,43 @@ if ( !empty($_POST['kundennummer']) )
     echo json_encode($output);
 
 
-
-
         //echo json_encode($output);
-
 
         $insertQuery = "INSERT INTO Blog.carrier(carrier.kundennummer, carrier.name, carrier.urlSc, carrier.rufnummerSc, carrier.urlCc, carrier.rufnummerCc, carrier.auftraggsart) 
 			VALUES ('".$kundenummer."', '".$name."', '".$urlSc."', '".$rufnummerSc."', '".$urlCc."','".$rufnummerCc."','".$auftraggsart."')";
         $statement = $conn->prepare($insertQuery);
         $statement->execute();
 
-
-
 }
+//var_dump($_POST);
 
 
+
+
+
+
+
+
+
+/*
+
+ function getOntouchCarrier()
+ {
+     $db = new Database();
+     $conn = $db->getConnection();
+     if ($_POST['id']) {
+
+         $sql = "SELECT * FROM Blog.carrier where carrier.id = '".$_POST['id']."'";
+
+         $stmt = $conn->prepare($sql);
+         $stmt->execute();
+         $result = $stmt->fetchColumn();
+         var_dump($result);
+
+     }
+
+
+}*/
 
 
 

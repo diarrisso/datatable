@@ -27,6 +27,7 @@
 </div>
 </div>
 </div>
+<span id="message"></span>
 <table id="onTouchCarrier" class="table table-bordered table-striped">
     <thead>
     <tr>
@@ -52,7 +53,7 @@
 
 </style>
 
-<div id="carrierModal" class="modal fade">
+<div id="carrierModal" class="modal fade"  tabindex="-1">
     <div class="modal-dialog">
         <form method="post" id="carrierForm">
             <div class="modal-content">
@@ -138,7 +139,13 @@
                 { data: "urlCc" },
                 { data: "rufnummerCc" },
                 { data: "auftraggsart" },
-                {defaultContent :'<button type="button" name="edit"    class="btn btn-primary" data-toggle="modal" data-target="#carrierModal" >Edite</button>'}
+                {
+                    'data': null,
+                    'render': function (data, type, row) {
+                        return '<button  type="button" name="edit" class="btn btn-primary edit" id="' + row.id +'" data-toggle="modal" data-target="#carrierModal">Edit</button>'
+                    }
+                },
+                //{defaultContent :'<button type="button" name="edit"    class="btn btn-primary edit" data-toggle="modal" data-target="#carrierModal" >Edite</button>'}
             ],
             "pageLength": 10
         });
@@ -146,8 +153,8 @@
 
         $("#carrierModal").on('submit', '#carrierForm', function (event) {
             event.preventDefault();
+            //$('#save').attr('disabled', 'disabled');
             $('#kundennummer').on('input', function() {
-
                 checkckundennummer();
 
             });
@@ -167,64 +174,64 @@
             });
 
 
-            if ( !checkckundennummer() && !checkcname() && !checkauftragsart() || !checkRufnummerSc() ) {
+            if ( !checkckundennummer() && !checkcname() && !checkauftragsart()  ) {
 
                 $("#message").html('<div class="alert alert-warning">die drei felter sind plicht felder</div>');
+
+
             }
 
-            else if ( !checkckundennummer() || !checkcname() || !checkauftragsart() || checkRufnummerSc() )
+            else if ( !checkckundennummer() || !checkcname() || !checkauftragsart()  )
 
             {
                 $("#message").html('<div class="alert alert-warning">die drei felter sind plicht felder</div>');
 
+
             }
-
-            $('#save').attr('disabled', 'disabled');
+            else {
             var formData = $(this).serialize();
-
-
             $.ajax({
                 url: "ajax_action.php",
                 method: "POST",
                 data: formData,
 
-                // beforeSend: function() {
-                //     $('#save').html('<i class="fa-solid fa-spinner fa-spin"></i>');
-                //     $('#save').attr("disabled", true);
-                //     $('#save').css({
-                //         "border-radius": "50%"
-                //     });
-                // },
+                beforeSend: function() {
+                   $('#save').html('<i class="fa-solid fa-spinner fa-spin"></i>');
+                  $('#save').css({
+                      "border-radius": "50%"
+                    });
+                 },
                 success: function (data) {
                     if(data.type === 'error')
                     { //load json data from server and output message
                         output = '<div class="error">'+data.text+'</div>';
-                        $('span').html('Hello world. Ce texte est affiché par jQuery.');
-                        console.log('hier ');
-
-                            $('#name_erro').css('border','red 1px solid');
+                        $('#name_erro').css('border','red 1px solid');
                         $("#carrierForm  input[required=true], #carrierForm input[required=true]").val('');
-                        $("#contact_form #contact_body").slideUp(); //hide form after success
-                        $('#save').attr('disabled', 'disabled');
+                        $("#carrierForm ").slideUp(); //hide form after success
                     }else{
                         output = '<div class="success">'+data.text+'</div>';
                         //reset values in all input fields
-
-                       /* $('#carrierForm')[0].reset();
                         $('#carrierModal').modal('hide');
-                         $('#save').attr('disabled', false)*/
+                         $('#save').attr('disabled', false);
+                        $("#message").html('<div class="success" > Ihre Daten wurd elfogreich gesende</div>');
+                        $('#carrierForm')[0].reset();
                     }
 
-                    // $('#carrierForm')[0].reset();
-                    // $('#carrierModal').modal('hide');
-                    // $('#save').attr('disabled', false);
-                    //dataRecords.ajax.reload();
                 }
+
             });
+            }
 
         });
 
-    } );
+
+
+
+
+
+
+
+    });
 
 
 
@@ -251,11 +258,10 @@
         }
         else {
             $('#kundennummer_erro').html('');
-            $('#kundennummer').css('border', 'green 1px solid');
+            //$('#kundennummer').css('border', 'green 1px solid');
             return true;
         }
     }
-
 
     function checkcname() {
 
@@ -285,7 +291,7 @@
         else
         {
             $('#name_erro').html('');
-            $('#name').css('border','green 1px solid ');
+            //$('#name').css('border','green 1px solid ');
             return true;
         }
     }
@@ -316,13 +322,10 @@
         }
         else {
             $('#auftraggsart_error').html('');
-            $('#auftraggsart').css('border', 'green 1px solid');
+            //$('#auftraggsart').css('border', 'green 1px solid');
             return true;
         }
     }
-
-
-
 
     function  checkRufnummerSc()
     {
@@ -354,9 +357,35 @@
     }
 
 
-
-
-
+    // update function
+    $("#onTouchCarrier").on('click', '.edit', function()
+    {
+        var id = $(this).attr("id");
+        var action = 'getOntouchCarrier';
+        $.ajax({
+            "url": "update_action.php",
+            method:"GET",
+            data:'id='+id ,
+            success:function(data){
+                var response = JSON.parse(data);
+                console.log(response.kundennummer);
+                $('#carrierModal').modal('show');
+                $('#kundennummer').val(response.kundennummer);
+                $('#name').val(response.name);
+                $('#urlSc').val(response.urlSc);
+                $('#rufnummerSc').val(response.rufnummerSc);
+                $('#urlCc').val(response.urlCc);
+                $('#rufnummerCc').val(response.rufnummerCc);
+                $('#auftraggsart').val(response.auftraggsart);
+                $('.modal-title').html("<i class='fa fa-plus'></i> Edit");
+                $('#action').val('updateOnTouchCarrier');
+                $('#save').val('Update');
+            },
+            error: function (request, status, error) {
+                alert(error.data);
+            }
+        })
+    });
 
 
 
