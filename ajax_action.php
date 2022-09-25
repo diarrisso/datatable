@@ -56,24 +56,8 @@ if ( !empty($_POST['kundennummer']) )
 {
 
 
-
-
-
     $response = array();
     $kundenummer  = $_POST['kundennummer'];
-
-//    if ( !filter_var($kundenummer , FILTER_VALIDATE_INT) )
-//    {
-//        $response = ['error'  => 'kundennummer muss en zahl sein '];
-//
-//        echo  json_encode($response);
-//        exit();
-//
-//    } else
-
-
-
-
 
         $name         =  htmlspecialchars(trim($_POST['name']));
         $urlSc         =  htmlspecialchars(trim($_POST['urlSc']));
@@ -82,7 +66,6 @@ if ( !empty($_POST['kundennummer']) )
         $urlCc         =  htmlspecialchars(trim($_POST['urlCc']));
         $rufnummerCc  = htmlspecialchars(trim($_POST['rufnummerCc']));
         $auftraggsart = htmlspecialchars(trim($_POST['auftraggsart']));
-
 
 
         //Sanitize input data using PHP filter_var().
@@ -94,15 +77,16 @@ if ( !empty($_POST['kundennummer']) )
         $urlCc        = filter_var($_POST["urlCc"], FILTER_SANITIZE_STRING);
         $auftraggsart        = filter_var($_POST["auftraggsart"], FILTER_SANITIZE_STRING);
 
-        var_dump($auftraggsart);;
-        error_log('>>>>>>>'.$auftraggsart);
+
+        //error_log('>>>>>>>'.$auftraggsart);
         $output = array();
 
         //additional php validation
 
-    if(!filter_var($kundenummer, FILTER_VALIDATE_INT)){ //email validation
+    if(!filter_var($kundenummer, FILTER_SANITIZE_NUMBER_INT)){ //email validation
         $output = json_encode(array('type'=>'error', 'text' => 'kundennnumer!'));
         die($output);
+
     }
 
 
@@ -115,38 +99,44 @@ if ( !empty($_POST['kundennummer']) )
 
 
 
-    if(!filter_var($urlSc, FILTER_SANITIZE_STRING)){ //
+    if(!filter_var($urlSc, FILTER_SANITIZE_STRING) && !empty($urlSc)){ //
         $output = json_encode(array('type'=>'error', 'text' => 'urlsc link mit string'));
         die($output);
+
     }
 
 
 
-    if(!filter_var($rufnummerSc, FILTER_SANITIZE_NUMBER_FLOAT)){ //check for valid numbers in phone number field
+    if(!filter_var($rufnummerSc, FILTER_SANITIZE_NUMBER_FLOAT) &&  !empty($rufnummerSc)){ //check for valid numbers in phone number field
         $output = json_encode(array('type'=>'error', 'text' => 'rufnummerSc'));
         die($output);
+
     }
 
 
 
-    if(!filter_var($urlCc, FILTER_SANITIZE_STRING)){ //
+    if(!filter_var($urlCc, FILTER_SANITIZE_STRING) && !empty($urlCc)){ //
         $output = json_encode(array('type'=>'error', 'text' => 'urlcc'));
         die($output);
     }
 
 
-    if(!filter_var($rufnummerCc, FILTER_SANITIZE_NUMBER_FLOAT)){ //check for valid numbers in phone number field
+    if(!filter_var($rufnummerCc, FILTER_SANITIZE_NUMBER_FLOAT) && !empty($rufnummerCc)){ //check for valid numbers in phone number field
         $output = json_encode(array('type'=>'error', 'text' => 'rufnummerCc BIITE'));
         die($output);
+
     }
 
 
 
 
-    if(is_numeric($auftraggsart) || strlen($auftraggsart) < 3 ){ //
+    if(is_numeric($auftraggsart) || strlen($auftraggsart) <= 1 ){ //
         $output = json_encode(array('type'=>'error', 'text' => '$auftraggsart'));
         die($output);
+
     }
+
+    echo json_encode($output);
 
 
 
@@ -158,10 +148,6 @@ if ( !empty($_POST['kundennummer']) )
 			VALUES ('".$kundenummer."', '".$name."', '".$urlSc."', '".$rufnummerSc."', '".$urlCc."','".$rufnummerCc."','".$auftraggsart."')";
         $statement = $conn->prepare($insertQuery);
         $statement->execute();
-
-
-
-
 
 
 
