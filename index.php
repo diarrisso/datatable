@@ -361,14 +361,19 @@
     $("#onTouchCarrier").on('click', '.edit', function()
     {
         var id = $(this).attr("id");
-        var action = 'getOntouchCarrier';
+        var action = 'getRecord';
         $.ajax({
-            "url": "update_action.php",
+           /* "url": "update_action.php",
             method:"GET",
-            data:'id='+id ,
-            success:function(data){
-                var response = JSON.parse(data);
-                console.log(response.kundennummer);
+            data:'id='+id ,*/
+            "url": "update_action.php",
+            method:"POST",
+            //data:'id='+id ,
+            data: {id: id, action: action},
+            dataType: "json",
+            success:function(response){
+                //var response = JSON.parse(data);
+                console.log(response.name);
                 $('#carrierModal').modal('show');
                 $('#kundennummer').val(response.kundennummer);
                 $('#name').val(response.name);
@@ -377,7 +382,7 @@
                 $('#urlCc').val(response.urlCc);
                 $('#rufnummerCc').val(response.rufnummerCc);
                 $('#auftraggsart').val(response.auftraggsart);
-                $('.modal-title').html("<i class='fa fa-plus'></i> Edit");
+                $('.modal-title').html("<i class='fa fa-plus'></i> Edit ontouchcarrier");
                 $('#action').val('updateOnTouchCarrier');
                 $('#save').val('Update');
             },

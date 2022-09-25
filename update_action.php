@@ -1,11 +1,11 @@
 <?php
 require_once __DIR__. "/config/Database.php";
 
-//var_dump($_GET['id']);die();
+//ar_dump($_POST['action']);die();
 
-    if ( !empty($_GET['id']))
+    if ( !empty($_POST['id']))
     {
-        $id = $_GET['id'];
+        $id = $_POST['id'];
         error_log('id >>>>>'. $id);
         //$emp->getEmployee();
         $db = new Database();
@@ -19,3 +19,21 @@ require_once __DIR__. "/config/Database.php";
 
 
     }
+
+;
+
+if (!empty($_POST['action']) && $_POST['action'] == 'updateOnTouchCarrier') {
+var_dump($_POST['action']);
+    if($_POST['id']) {
+        $updateQuery = "UPDATE Blog.carrier 
+			SET carrier.kundennummer = '".$_POST["kundennummer"]."', carrier.name = '".$_POST["name"]."', 
+			 carrier.urlSc = '".$_POST["urlSc"]."', carrier.rufnummerSc = '".$_POST["rufnummerSc"]."' , 
+			 carrier.urlCc = '".$_POST["urlScc"]."', carrier.rufnummerCc = '".$_POST["rufnummerCc"]."', carrier.auftraggsart = '".$_POST["auftraggsart"]."'
+			WHERE carrier.id ='".$_POST["id"]."'";
+        $isUpdated = $conn->prepare($updateQuery);
+        $isUpdated->execute();
+        echo json_encode(
+            $isUpdated
+        );
+    }
+}
