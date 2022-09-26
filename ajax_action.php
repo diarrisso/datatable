@@ -1,5 +1,6 @@
 <?php
-
+/*$scriptdomain = "http://localhost:8022/ajax_action.php";
+header("Access-Control-Allow-Origin: $scriptdomain");*/
 require_once __DIR__. "/config/Database.php";
 
 require_once __DIR__."/Model/Ontouch.php";
@@ -57,7 +58,7 @@ if ( !empty($_POST['kundennummer']) )
 
 
     $response = array();
-    $kundenummer  = $_POST['kundennummer'];
+        $kundenummer  = htmlspecialchars(trim($_POST['kundennummer']));
 
         $name         =  htmlspecialchars(trim($_POST['name']));
         $urlSc         =  htmlspecialchars(trim($_POST['urlSc']));
@@ -69,13 +70,13 @@ if ( !empty($_POST['kundennummer']) )
 
 
         //Sanitize input data using PHP filter_var().
-        $kundenummer =   filter_var($_POST["kundennummer"], FILTER_SANITIZE_NUMBER_INT);
+      /*  $kundenummer =   filter_var($_POST["kundennummer"], FILTER_VALIDATE_INT);
         $name      =     filter_var($_POST["name"], FILTER_SANITIZE_STRING);
         $urlSc     =     filter_var($_POST["urlSc"], FILTER_SANITIZE_STRING);
         $rufnummerSc   = filter_var($_POST["rufnummerSc"], FILTER_SANITIZE_NUMBER_INT);
         $rufnummerCc   = filter_var($_POST["rufnummerCc"], FILTER_SANITIZE_NUMBER_INT);
         $urlCc        = filter_var($_POST["urlCc"], FILTER_SANITIZE_STRING);
-        $auftraggsart        = filter_var($_POST["auftraggsart"], FILTER_SANITIZE_STRING);
+        $auftraggsart        = filter_var($_POST["auftraggsart"], FILTER_SANITIZE_STRING);*/
 
 
         //error_log('>>>>>>>'.$auftraggsart);
@@ -83,68 +84,76 @@ if ( !empty($_POST['kundennummer']) )
 
         //additional php validation
 
-    if(!filter_var($kundenummer, FILTER_SANITIZE_NUMBER_INT)){ //email validation
-        $output = json_encode(array('type'=>'error', 'text' => 'kundennnumer!'));
-        die($output);
+    if(!filter_var($kundenummer, FILTER_VALIDATE_INT)){ //email validation
+        $output = array('type'=>'kundennummer', 'text' => 'bitte kein string');
 
     }
 
 
-
-    if(is_numeric($name) || strlen($name) < 3 )
+    if(is_numeric($name) || strlen($name) < 3  && !empty($name) )
     {
-        $output = json_encode(array('type'=>'error', 'text' => 'Name muss ein string sein!'));
-        die($output);
-    }
-
-
-
-    if(!filter_var($urlSc, FILTER_SANITIZE_STRING) && !empty($urlSc)){ //
-        $output = json_encode(array('type'=>'error', 'text' => 'urlsc link mit string'));
-        die($output);
+        $output = array('type'=>'name', 'text' => 'Name muss ein string sein!');
 
     }
 
 
+    if(!is_string($urlSc ) && !empty($urlSc))
+    {
+        $output = array('type'=>'urlsc', 'text' => 'urlsc link mit string');
 
-    if(!filter_var($rufnummerSc, FILTER_SANITIZE_NUMBER_FLOAT) &&  !empty($rufnummerSc)){ //check for valid numbers in phone number field
-        $output = json_encode(array('type'=>'error', 'text' => 'rufnummerSc'));
-        die($output);
 
     }
 
+
+    if(!filter_var($rufnummerSc, FILTER_SANITIZE_NUMBER_INT) &&  !empty($rufnummerSc)){ //check for valid numbers in phone number field
+        $output = array('type'=>'rufnummer', 'text' => 'rufnummerSc');
+
+    }
 
 
     if(!filter_var($urlCc, FILTER_SANITIZE_STRING) && !empty($urlCc)){ //
-        $output = json_encode(array('type'=>'error', 'text' => 'urlcc'));
-        die($output);
-    }
-
-
-    if(!filter_var($rufnummerCc, FILTER_SANITIZE_NUMBER_FLOAT) && !empty($rufnummerCc)){ //check for valid numbers in phone number field
-        $output = json_encode(array('type'=>'error', 'text' => 'rufnummerCc BIITE'));
-        die($output);
+        $output = array('type'=>'urlcc', 'text' => 'urlcc');
 
     }
 
 
-
-
-    if(is_numeric($auftraggsart) || strlen($auftraggsart) <= 1 ){ //
-        $output = json_encode(array('type'=>'error', 'text' => '$auftraggsart'));
-        die($output);
+    if(!filter_var($rufnummerCc, FILTER_SANITIZE_NUMBER_INT) && !empty($rufnummerCc)){ //check for valid numbers in phone number field
+        $output = array(
+            'type'=>'auftragsart',
+            'text' => 'rufnummerCc BIITE'
+        );
 
     }
 
-    echo json_encode($output);
 
+    if(is_numeric($auftraggsart) && !empty($rufnummerCc)  ){ //
+        $output[] =  array(
+            'type'=>'error',
+            'text' => 'auftrage nest pas bon'
 
-        //echo json_encode($output);
+        );
+
+    }
+
+    if (!empty( $output ) )
+    {
+
+        echo json_encode($output);
+        exit();
+    }
+    else {
+
 
         $insertQuery = "INSERT INTO Blog.carrier(carrier.kundennummer, carrier.name, carrier.urlSc, carrier.rufnummerSc, carrier.urlCc, carrier.rufnummerCc, carrier.auftraggsart) 
 			VALUES ('".$kundenummer."', '".$name."', '".$urlSc."', '".$rufnummerSc."', '".$urlCc."','".$rufnummerCc."','".$auftraggsart."')";
         $statement = $conn->prepare($insertQuery);
         $statement->execute();
+    }
+
+
+
+    print_r(json_encode(array($output)));
+
 
 }
 //var_dump($_POST);

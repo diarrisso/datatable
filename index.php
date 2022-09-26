@@ -153,9 +153,9 @@
 
         $("#carrierModal").on('submit', '#carrierForm', function (event) {
             event.preventDefault();
-            //$('#save').attr('disabled', 'disabled');
-            $('#kundennummer').on('input', function() {
-                checkckundennummer();
+            $('#save').attr('disabled', 'disabled');
+           /* $('#kundennummer').on('input', function() {*/
+            /*    checkckundennummer();
 
             });
 
@@ -180,21 +180,21 @@
 
 
             }
-
-            else if ( !checkckundennummer() || !checkcname() || !checkauftragsart()  )
+*/
+           /* else if ( !checkckundennummer() || !checkcname() || !checkauftragsart()  )
 
             {
                 $("#message").html('<div class="alert alert-warning">die drei felter sind plicht felder</div>');
 
 
             }
-            else {
+            else {*/
             var formData = $(this).serialize();
             $.ajax({
                 url: "ajax_action.php",
                 method: "POST",
                 data: formData,
-
+                dataType:'json',
                 beforeSend: function() {
                    $('#save').html('<i class="fa-solid fa-spinner fa-spin"></i>');
                   $('#save').css({
@@ -202,25 +202,41 @@
                     });
                  },
                 success: function (data) {
-                    if(data.type === 'error')
+                    if (data){
+                    console.log(data);
+                    //var response = JSON.parse(data);
+                   /* if(response.type === 'kundennummer')
                     { //load json data from server and output message
+                        $('#kundennummer_erro').html(response.text);
+                    }
+                       else if (response.type === 'name')
+                    {
+                        $('#name_erro').html(response.text);
+*/
+                       /* $('#kundennummer_erro').html(response.text);
                         output = '<div class="error">'+data.text+'</div>';
                         $('#name_erro').css('border','red 1px solid');
                         $("#carrierForm  input[required=true], #carrierForm input[required=true]").val('');
-                        $("#carrierForm ").slideUp(); //hide form after success
-                    }else{
+                        //$("#carrierForm ").slideUp(); //hide form after success
+                        $('#save').attr('disabled', true);*/
+                    }
+                    else
+                    {
                         output = '<div class="success">'+data.text+'</div>';
                         //reset values in all input fields
                         $('#carrierModal').modal('hide');
-                         $('#save').attr('disabled', false);
+                        //$('#save').attr('disabled', false);
                         $("#message").html('<div class="success" > Ihre Daten wurd elfogreich gesende</div>');
                         $('#carrierForm')[0].reset();
                     }
 
+                },
+                error: function (request, status, error) {
+                    alert(request.responseText);
                 }
 
             });
-            }
+            //}
 
         });
 
