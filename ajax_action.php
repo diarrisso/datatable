@@ -55,11 +55,15 @@ $conn = $db->getConnection();
 
 
 
+
 if ( dataisvalid() !== true )
 {
     echo json_encode( array ('error' => dataisvalid() ) );
     exit();
 }
+
+
+
 
 
 if ( !empty($_POST['kundennummer']) && dataisvalid() )
@@ -79,6 +83,8 @@ if ( !empty($_POST['kundennummer']) && dataisvalid() )
     $statement = $conn->prepare($insertQuery);
     $statement->execute();
 }
+
+
 
 
 
@@ -105,15 +111,19 @@ function dataisvalid()
         }
 
 
+
+
         if(!is_string($_POST['urlSc'] ) && !empty( $_POST['urlSc'] ))
         {
             $output['urlSce'] = 'urlsc link mit string';
         }
 
 
+
         if( !filter_var($_POST['rufnummerSc'], FILTER_SANITIZE_NUMBER_INT) &&  empty( $_POST['rufnummerSc'])){ //check for valid numbers in phone number field
             $output['rufnummerSce'] = 'rufnummerSc nicht gut';
         }
+
 
 
         if( !filter_var($_POST['urlCc'], FILTER_SANITIZE_STRING) && empty( $_POST['urlCc'])){ //
@@ -126,9 +136,13 @@ function dataisvalid()
         }
 
 
+
         if(is_numeric($_POST['auftraggsart']) && empty($_POST['auftraggsart'])  ){ //
             $output['auftraggsarte'] = 'auftrage nest pas bon';
         }
+
+
+
 
         if ( empty( $output ) === false)
         {
