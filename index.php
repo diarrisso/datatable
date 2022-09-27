@@ -202,9 +202,16 @@
                     });
                  },
                 success: function (data) {
-                    if (data){
-                    console.log(data);
-                    //var response = JSON.parse(data);
+                    //var dateroor = JSON.parse(data)
+                    if (data.error)
+                    {
+                        console.log(data.error);
+                      /*  jQuery.each( data.error, function( i, val ) {
+                            $("#" + val).text("Mine is " + val + ".");
+                        });
+                            console.log('salut');
+                        $('#kundennummer_erro').html('<div class="alert alert-danger"> data.error </div>');*/
+
                    /* if(response.type === 'kundennummer')
                     { //load json data from server and output message
                         $('#kundennummer_erro').html(response.text);
@@ -225,6 +232,7 @@
                         output = '<div class="success">'+data.text+'</div>';
                         //reset values in all input fields
                         $('#carrierModal').modal('hide');
+                        $('#save').attr('disabled', true);
                         //$('#save').attr('disabled', false);
                         $("#message").html('<div class="success" > Ihre Daten wurd elfogreich gesende</div>');
                         $('#carrierForm')[0].reset();
