@@ -384,6 +384,12 @@
     // update function
     $("#onTouchCarrier").on('click', '.edit', function()
     {
+        var table = $('#onTouchCarrier').DataTable();
+        var rowData = table.row().data();
+            console.log(rowData);
+            //$('#kundennummer').val(rowData.kundennummer);
+
+
         var id = $(this).attr("id");
         var action = 'getRecord';
         $.ajax({
@@ -392,8 +398,8 @@
             data:'id='+id ,*/
             "url": "update_action.php",
             method:"POST",
-            //data:'id='+id ,
-            data: {id: id, action: action},
+             data: rowData,id:id}
+            //data: {id: id, action: action},
             dataType: "json",
             success:function(response){
                 //var response = JSON.parse(data);
