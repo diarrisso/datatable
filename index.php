@@ -121,6 +121,7 @@
         $('#onTouchCarrier').DataTable( {
             "lengthChange": true,
             "processing": true,
+            //selected: true,
             "serverSide": true,
             'serverMethod': 'post',
             ajax: {
@@ -382,12 +383,24 @@
 
 
     // update function
-    $("#onTouchCarrier").on('click', '.edit', function()
+    $("#onTouchCarrier ").on('click', '.edit', function(e)
     {
         var table = $('#onTouchCarrier').DataTable();
-        var rowData = table.row().data();
+        console.log(parent);
+        var row  = $(this).parents('tr')[0];
+        console.log(row);
+        var rowData = table.row(row).data();
+        /*$('#onTouchCarrier tbody').on( 'click', 'tr', function () {
+            console.log( table.row( this ).data() );
+        } );*/
             console.log(rowData);
-            //$('#kundennummer').val(rowData.kundennummer);
+        $('#kundennummer').val(rowData.kundennummer);
+        $('#name').val(rowData.name);
+        $('#urlSc').val(rowData.urlSc);
+        $('#rufnummerSc').val(rowData.rufnummerSc);
+        $('#urlCc').val(rowData.urlCc);
+        $('#rufnummerCc').val(rowData.rufnummerCc);
+        $('#auftraggsart').val(rowData.auftraggsart);
 
 
         var id = $(this).attr("id");
@@ -398,20 +411,20 @@
             data:'id='+id ,*/
             "url": "update_action.php",
             method:"POST",
-             data: rowData,id:id}
-            //data: {id: id, action: action},
+             //data:{rowData,id:id}
+            data: {id: id, action: action},
             dataType: "json",
             success:function(response){
                 //var response = JSON.parse(data);
-                console.log(response.name);
-                $('#carrierModal').modal('show');
+                //console.log(response.name);
+                /*$('#carrierModal').modal('show');
                 $('#kundennummer').val(response.kundennummer);
                 $('#name').val(response.name);
                 $('#urlSc').val(response.urlSc);
                 $('#rufnummerSc').val(response.rufnummerSc);
                 $('#urlCc').val(response.urlCc);
                 $('#rufnummerCc').val(response.rufnummerCc);
-                $('#auftraggsart').val(response.auftraggsart);
+                $('#auftraggsart').val(response.auftraggsart);*/
                 $('.modal-title').html("<i class='fa fa-plus'></i> Edit ontouchcarrier");
                 $('#action').val('updateOnTouchCarrier');
                 $('#save').val('Update');
@@ -420,6 +433,7 @@
                 alert(error.data);
             }
         })
+        e.preventDefault();
     });
 
 
