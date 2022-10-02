@@ -120,18 +120,18 @@ function dataisvalid()
 
 
 
-        if( !filter_var($_POST['rufnummerSc'], FILTER_SANITIZE_NUMBER_INT) &&  empty( $_POST['rufnummerSc'])){ //check for valid numbers in phone number field
+        if( !filter_var($_POST['rufnummerSc'], FILTER_SANITIZE_NUMBER_INT) &&  !empty( $_POST['rufnummerSc'])){ //check for valid numbers in phone number field
             $output['rufnummerSce'] = 'rufnummerSc nicht gut';
         }
 
 
 
-        if( !filter_var($_POST['urlCc'], FILTER_SANITIZE_STRING) && empty( $_POST['urlCc'])){ //
+        if( !filter_var($_POST['urlCc'], FILTER_SANITIZE_STRING) && !empty( $_POST['urlCc'])){ //
             $output['urlCce'] =  'urlcc';
         }
 
 
-        if( !filter_var($_POST['rufnummerCc'], FILTER_SANITIZE_NUMBER_INT) && empty( $_POST['rufnummerCc'])){ //check for valid numbers in phone number field
+        if( !filter_var($_POST['rufnummerCc'], FILTER_SANITIZE_NUMBER_INT) && !empty( $_POST['rufnummerCc'])){ //check for valid numbers in phone number field
             $output['rufnummerCce'] = 'rufnummerCc BIITE';
         }
 
@@ -158,4 +158,20 @@ function dataisvalid()
 }
 
 
+// update datatables
+if (!empty($_POST['action']) && $_POST['action'] == 'updateOnTouchCarrier') {
+    var_dump($_POST['action']);
+    if($_POST['id']) {
+        $updateQuery = "UPDATE Blog.carrier 
+			SET carrier.kundennummer = '".$_POST["kundennummer"]."', carrier.name = '".$_POST["name"]."', 
+			 carrier.urlSc = '".$_POST["urlSc"]."', carrier.rufnummerSc = '".$_POST["rufnummerSc"]."' , 
+			 carrier.urlCc = '".$_POST["urlScc"]."', carrier.rufnummerCc = '".$_POST["rufnummerCc"]."', carrier.auftraggsart = '".$_POST["auftraggsart"]."'
+			WHERE carrier.id ='".$_POST["id"]."'";
+        $isUpdated = $conn->prepare($updateQuery);
+        $isUpdated->execute();
+        echo json_encode(
+            $isUpdated
+        );
+    }
+}
 
