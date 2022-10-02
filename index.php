@@ -7,105 +7,95 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" ">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
-
-
-
     <title>Blog Cuisine</title>
 </head>
 
+    <div class="container">
+        <span id="message"></span>
+               <button type="button" name="add" class="btn btn-primary" id="add">
+                   Add Neue Eintrage
+               </button>
 
-<body>
-<div class="container">
 
+                <table id="onTouchCarrier" class="table table-bordered table-striped" style="width: 600px!important;">
+                        <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>kundennummer</th>
+                                <th>name</th>
+                                <th>urlsc</th>
+                                <th>rufnummersc</th>
+                                <th>urlcc</th>
+                                <th>rufnummercc</th>
+                                <th>auftragsart</th>
+                                <th></th>
 
-    <div class="panel-heading mt-4" style="float: right>
-            <div class="row">
+                            </tr>
+                        </thead>
+                </table>
+        </div>
 
-    <div class="col-md-2" ">
-    <!--                    <button type="button" name="add" id="addEmployee" class="btn btn-success btn-xs">Add Employee</button>-->
-    <button type="button" name="add" class="btn btn-primary" data-toggle="modal" data-target="#carrierModal" >Add Neue Eintrage</button>
-</div>
-</div>
-</div>
-<span id="message"></span>
-<table id="onTouchCarrier" class="table table-bordered table-striped">
-    <thead>
-    <tr>
-        <th>id</th>
-        <th>kundennummer</th>
-        <th>name</th>
-        <th>urlsc</th>
-        <th>rufnummersc</th>
-        <th>urlcc</th>
-        <th>rufnummercc</th>
-        <th>auftragsart</th>
-        <th></th>
-        <th></th>
-    </tr>
-    </thead>
-</table>
-</div>
-
+<!--</div>
 <style>
     show {
         display: block;
     }
 
 </style>
+-->
+        <div id="carrierModal" class="modal fade"  tabindex="-1">
+            <div class="modal-dialog">
+                <form method="post" id="carrierForm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span id="message"></span>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title"><i class="fa fa-plus"></i> Edit User</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group"
+                            <label for="kundennummer" class="control-label">kundennummer</label>
+                            <input type="text" class="form-control" id="kundennummer" name="kundennummer" placeholder="kundennummer" >
+                            <span class="error" id="kundennummer_erro"> </span>
+                        </div>
+                        <div class="form-group">
+                            <label for="name" class="control-label">name</label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="name" >
+                            <span class="error" id="name_erro"> </span>
+                        </div>
+                        <div class="form-group">
+                            <label for="urlSc" class="control-label">urlSc</label>
+                            <input type="url" class="form-control"  id="urlSc" name="urlSc" placeholder="urlSc" >
+                        </div>
+                        <div class="form-group">
+                            <label for="rufnummerSc" class="control-label">rufnummerSc</label>
+                            <input type="tel" class="form-control"  id="rufnummerSc" name="rufnummerSc">
+                            <span class="error" id="rufnummerSc_erro"> </span>
+                        </div>
+                        <div class="form-group">
+                            <label for="urlCc" class="control-label">urlCc</label>
+                            <input type="url" class="form-control" id="urlCc" name="urlCc" placeholder="urlCc">
+                        </div>
+                        <div class="form-group">
+                            <label for="$rufnummerCc" class="control-label">rufnummerCc</label>
+                            <input type="tel" class="form-control" id="rufnummerCc" name="rufnummerCc" placeholder="rufnummerCc">
+                        </div>
 
-<div id="carrierModal" class="modal fade"  tabindex="-1">
-    <div class="modal-dialog">
-        <form method="post" id="carrierForm">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <span id="message"></span>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"><i class="fa fa-plus"></i> Edit User</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group"
-                    <label for="kundennummer" class="control-label">kundennummer</label>
-                    <input type="text" class="form-control" id="kundennummer" name="kundennummer" placeholder="kundennummer" >
-                    <span class="error" id="kundennummer_erro"> </span>
-                </div>
-                <div class="form-group">
-                    <label for="name" class="control-label">name</label>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="name" >
-                    <span class="error" id="name_erro"> </span>
-                </div>
-                <div class="form-group">
-                    <label for="urlSc" class="control-label">urlSc</label>
-                    <input type="url" class="form-control"  id="urlSc" name="urlSc" placeholder="urlSc" >
-                </div>
-                <div class="form-group">
-                    <label for="rufnummerSc" class="control-label">rufnummerSc</label>
-                    <input type="tel" class="form-control"  id="rufnummerSc" name="rufnummerSc">
-                    <span class="error" id="rufnummerSc_erro"> </span>
-                </div>
-                <div class="form-group">
-                    <label for="urlCc" class="control-label">urlCc</label>
-                    <input type="url" class="form-control" id="urlCc" name="urlCc" placeholder="urlCc">
-                </div>
-                <div class="form-group">
-                    <label for="$rufnummerCc" class="control-label">rufnummerCc</label>
-                    <input type="tel" class="form-control" id="rufnummerCc" name="rufnummerCc" placeholder="rufnummerCc">
-                </div>
-
-                <div class="form-group">
-                    <label for="auftraggsart" class="control-label">auftragsart</label>
-                    <input type="text" class="form-control" id="auftraggsart" name="auftraggsart" placeholder="auftragsart">
-                    <span class="error" id="auftraggsart_error"> </span>
-                </div>
+                        <div class="form-group">
+                            <label for="auftraggsart" class="control-label">auftragsart</label>
+                            <input type="text" class="form-control" id="auftraggsart" name="auftraggsart" placeholder="auftragsart">
+                            <span class="error" id="auftraggsart_error"> </span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" name="id" id="id" />
+                        <input type="hidden" name="action" id="action" value="" />
+                        <input type="submit" name="save" id="save" class="btn btn-info" value="Save" />
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
             </div>
-            <div class="modal-footer">
-                <input type="hidden" name="id" id="id" />
-                <input type="hidden" name="action" id="action" value="" />
-                <input type="submit" name="save" id="save" class="btn btn-info" value="Save" />
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-    </div>
-    </form>
-</div>
+        </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.js"></script>
@@ -114,16 +104,22 @@
 
 
 <script>
+
+
     //// C'est quand la page a ete charge que le script doit etre utiliser
     $(document).ready( function ()
     {
+
         $.noConflict();
+        $.extend( $.fn.DataTable.ext.classes, {
+            sWrapper: "dataTables_wrapper container-fluid dt-bootstrap4",
+        } );
         $('#onTouchCarrier').DataTable( {
             "lengthChange": true,
-            "processing": true,
-            //selected: true,
-            "serverSide": true,
-            'serverMethod': 'post',
+            //bAutoWidth": false,
+            "paging":true,
+            // "processing": true,
+            //"paging": true,
             ajax: {
                 url: "ajax_action.php" , dataSrc: '',
                 type: "POST",
@@ -150,10 +146,12 @@
             ],
             "pageLength": 10
         });
+        $("#onTouchCarrier").css("width","600px")
 
-
-        $("#carrierModal").on('submit', '#carrierForm', function (event) {
+        $("#carrierModal").submit(function (event)
+        {
             event.preventDefault();
+            console.log('submit');
             $('#save').attr('disabled', 'disabled');
            /* $('#kundennummer').on('input', function() {*/
             /*    checkckundennummer();
@@ -252,7 +250,20 @@
 
 
 
+  // togler modal
+        $('#add').click(function ()
+        {
+            $('#carrierModal').modal('show');
+            console.log('ouvre le modale ');
+        });
 
+
+
+        $('#carrierModal').on('hidden.bs.modal', function(){
+            $(this).find('form')[0].reset();
+            //$(':input', this).val('');
+            //console.log('modsl form clearn');
+        });
 
 
 
@@ -378,9 +389,7 @@
             return true;
         }
 
-
     }
-
 
     // update function
     $("#onTouchCarrier ").on('click', '.edit', function(e)
@@ -435,25 +444,6 @@
         })
         e.preventDefault();
     });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </script>
-
-
-
-
-
 </body>
 </html>
