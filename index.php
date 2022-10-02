@@ -117,6 +117,7 @@
         $('#onTouchCarrier').DataTable( {
             "lengthChange": true,
             //bAutoWidth": false,
+            responsive: true,
             "paging":true,
             // "processing": true,
             //"paging": true,
@@ -131,9 +132,14 @@
                 { data: "id" },
                 { data: "kundennummer" },
                 { data: "name"},
-                { data: "urlSc" },
+                {
+                    "data": 'urlSc',
+                    "render": function (data) {if (data !== '') {return '<a href="' + data + '">' + data + '</a>';}}
+                },
                 { data: "rufnummerSc" },
-                { data: "urlCc" },
+                {"data":"urlCc",
+                    "render": function(data) {if (data !== '') {return '<a href="'+data+'">'+ data +'</a>';}}
+                },
                 { data: "rufnummerCc" },
                 { data: "auftraggsart" },
                 {
