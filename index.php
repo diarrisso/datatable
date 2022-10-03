@@ -10,30 +10,30 @@
     <title>Blog Cuisine</title>
 </head>
 
-    <div class="container">
-        <span id="message"></span>
-               <button type="button" name="add" class="btn btn-primary" id="add">
-                   Add Neue Eintrage
-               </button>
+<div class="container">
+    <span id="message"></span>
+    <button type="button" name="add" class="btn btn-primary" id="add">
+        Add Neue Eintrage
+    </button>
 
 
-                <table id="onTouchCarrier" class="table table-bordered table-striped" style="width: 600px!important;">
-                        <thead>
-                            <tr>
-                                <th>id</th>
-                                <th>kundennummer</th>
-                                <th>name</th>
-                                <th>urlsc</th>
-                                <th>rufnummersc</th>
-                                <th>urlcc</th>
-                                <th>rufnummercc</th>
-                                <th>auftragsart</th>
-                                <th></th>
+    <table id="onTouchCarrier" class="table table-bordered table-striped" style="width: 600px!important;">
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>kundennummer</th>
+            <th>name</th>
+            <th>urlsc</th>
+            <th>rufnummersc</th>
+            <th>urlcc</th>
+            <th>rufnummercc</th>
+            <th>auftragsart</th>
+            <th></th>
 
-                            </tr>
-                        </thead>
-                </table>
-        </div>
+        </tr>
+        </thead>
+    </table>
+</div>
 
 <!--</div>
 <style>
@@ -43,59 +43,59 @@
 
 </style>
 -->
-        <div id="carrierModal" class="modal fade"  tabindex="-1">
-            <div class="modal-dialog">
-                <form method="post" id="carrierForm">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <span id="message"></span>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title"><i class="fa fa-plus"></i> Edit User</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-group"
-                            <label for="kundennummer" class="control-label">kundennummer</label>
-                            <input type="text" class="form-control" id="kundennummer" name="kundennummer" placeholder="kundennummer" >
-                            <span class="error" id="kundennummer_erro"> </span>
-                        </div>
-                        <div class="form-group">
-                            <label for="name" class="control-label">name</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="name" >
-                            <span class="error" id="name_erro"> </span>
-                        </div>
-                        <div class="form-group">
-                            <label for="urlSc" class="control-label">urlSc</label>
-                            <input type="url" class="form-control"  id="urlSc" name="urlSc" placeholder="urlSc" >
-                        </div>
-                        <div class="form-group">
-                            <label for="rufnummerSc" class="control-label">rufnummerSc</label>
-                            <input type="tel" class="form-control"  id="rufnummerSc" name="rufnummerSc">
-                            <span class="error" id="rufnummerSc_erro"> </span>
-                        </div>
-                        <div class="form-group">
-                            <label for="urlCc" class="control-label">urlCc</label>
-                            <input type="url" class="form-control" id="urlCc" name="urlCc" placeholder="urlCc">
-                        </div>
-                        <div class="form-group">
-                            <label for="$rufnummerCc" class="control-label">rufnummerCc</label>
-                            <input type="tel" class="form-control" id="rufnummerCc" name="rufnummerCc" placeholder="rufnummerCc">
-                        </div>
+<div id="carrierModal" class="modal fade"  tabindex="-1">
+    <div class="modal-dialog">
+        <form method="post" id="carrierForm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span id="message"></span>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><i class="fa fa-plus"></i> Edit User</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group"
+                    <label for="kundennummer" class="control-label">kundennummer</label>
+                    <input type="text" class="form-control" id="kundennummer" name="kundennummer" placeholder="kundennummer" >
+                    <span class="error" id="kundennummer_erro"> </span>
+                </div>
+                <div class="form-group">
+                    <label for="name" class="control-label">name</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="name" >
+                    <span class="error" id="name_erro"> </span>
+                </div>
+                <div class="form-group">
+                    <label for="urlSc" class="control-label">urlSc</label>
+                    <input type="url" class="form-control"  id="urlSc" name="urlSc" placeholder="urlSc" >
+                </div>
+                <div class="form-group">
+                    <label for="rufnummerSc" class="control-label">rufnummerSc</label>
+                    <input type="tel" class="form-control"  id="rufnummerSc" name="rufnummerSc">
+                    <span class="error" id="rufnummerSc_erro"> </span>
+                </div>
+                <div class="form-group">
+                    <label for="urlCc" class="control-label">urlCc</label>
+                    <input type="url" class="form-control" id="urlCc" name="urlCc" placeholder="urlCc">
+                </div>
+                <div class="form-group">
+                    <label for="$rufnummerCc" class="control-label">rufnummerCc</label>
+                    <input type="tel" class="form-control" id="rufnummerCc" name="rufnummerCc" placeholder="rufnummerCc">
+                </div>
 
-                        <div class="form-group">
-                            <label for="auftraggsart" class="control-label">auftragsart</label>
-                            <input type="text" class="form-control" id="auftraggsart" name="auftraggsart" placeholder="auftragsart">
-                            <span class="error" id="auftraggsart_error"> </span>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <input type="hidden" name="id" id="id" />
-                        <input type="hidden" name="action" id="action" value="" />
-                        <input type="submit" name="save" id="save" class="btn btn-info" value="Save" />
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </form>
+                <div class="form-group">
+                    <label for="auftraggsart" class="control-label">auftragsart</label>
+                    <input type="text" class="form-control" id="auftraggsart" name="auftraggsart" placeholder="auftragsart">
+                    <span class="error" id="auftraggsart_error"> </span>
+                </div>
             </div>
-        </div>
+            <div class="modal-footer">
+                <input type="hidden" name="id" id="id" />
+                <input type="hidden" name="action" id="action" value="" />
+                <input type="submit" name="save" id="save" class="btn btn-info" value="Save" />
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </form>
+    </div>
+</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.js"></script>
@@ -133,12 +133,15 @@
                 { data: "kundennummer" },
                 { data: "name"},
                 {
-                    "data": 'urlSc',
-                    "render": function (data) {if (data !== '') {return '<a href="' + data + '">' + data + '</a>';}}
+                    data: 'urlSc',
+                    render : function(data, type, row, meta) {return'<a href="' + data + '">' + data + '</a>';},
                 },
+
                 { data: "rufnummerSc" },
-                {"data":"urlCc",
-                    "render": function(data) {if (data !== '') {return '<a href="'+data+'">'+ data +'</a>';}}
+
+                {
+                    data:"urlCc",
+                    render : function(data, type, row, meta) {return'<a href="' + data + '">' + data + '</a>';},
                 },
                 { data: "rufnummerCc" },
                 { data: "auftraggsart" },
@@ -159,7 +162,7 @@
             event.preventDefault();
             console.log('submit');
             $('#save').attr('disabled', 'disabled');
-           /* $('#kundennummer').on('input', function() {*/
+            /* $('#kundennummer').on('input', function() {*/
             /*    checkckundennummer();
 
             });
@@ -186,14 +189,14 @@
 
             }
 */
-           /* else if ( !checkckundennummer() || !checkcname() || !checkauftragsart()  )
+            /* else if ( !checkckundennummer() || !checkcname() || !checkauftragsart()  )
 
-            {
-                $("#message").html('<div class="alert alert-warning">die drei felter sind plicht felder</div>');
+             {
+                 $("#message").html('<div class="alert alert-warning">die drei felter sind plicht felder</div>');
 
 
-            }
-            else {*/
+             }
+             else {*/
             var formData = $(this).serialize();
             $.ajax({
                 url: "ajax_action.php",
@@ -201,36 +204,36 @@
                 data: formData,
                 dataType:'json',
                 beforeSend: function() {
-                   $('#save').html('<i class="fa-solid fa-spinner fa-spin"></i>');
-                  $('#save').css({
-                      "border-radius": "50%"
+                    $('#save').html('<i class="fa-solid fa-spinner fa-spin"></i>');
+                    $('#save').css({
+                        "border-radius": "50%"
                     });
-                 },
+                },
                 success: function (data) {
                     //var dateroor = JSON.parse(data)
                     if (data.error)
                     {
                         console.log(data.error);
-                      /*  jQuery.each( data.error, function( i, val ) {
-                            $("#" + val).text("Mine is " + val + ".");
-                        });
-                            console.log('salut');
-                        $('#kundennummer_erro').html('<div class="alert alert-danger"> data.error </div>');*/
+                        /*  jQuery.each( data.error, function( i, val ) {
+                              $("#" + val).text("Mine is " + val + ".");
+                          });
+                              console.log('salut');
+                          $('#kundennummer_erro').html('<div class="alert alert-danger"> data.error </div>');*/
 
-                   /* if(response.type === 'kundennummer')
-                    { //load json data from server and output message
-                        $('#kundennummer_erro').html(response.text);
-                    }
-                       else if (response.type === 'name')
-                    {
-                        $('#name_erro').html(response.text);
-*/
-                       /* $('#kundennummer_erro').html(response.text);
-                        output = '<div class="error">'+data.text+'</div>';
-                        $('#name_erro').css('border','red 1px solid');
-                        $("#carrierForm  input[required=true], #carrierForm input[required=true]").val('');
-                        //$("#carrierForm ").slideUp(); //hide form after success
-                        $('#save').attr('disabled', true);*/
+                        /* if(response.type === 'kundennummer')
+                         { //load json data from server and output message
+                             $('#kundennummer_erro').html(response.text);
+                         }
+                            else if (response.type === 'name')
+                         {
+                             $('#name_erro').html(response.text);
+     */
+                        /* $('#kundennummer_erro').html(response.text);
+                         output = '<div class="error">'+data.text+'</div>';
+                         $('#name_erro').css('border','red 1px solid');
+                         $("#carrierForm  input[required=true], #carrierForm input[required=true]").val('');
+                         //$("#carrierForm ").slideUp(); //hide form after success
+                         $('#save').attr('disabled', true);*/
                     }
                     else
                     {
@@ -256,7 +259,7 @@
 
 
 
-  // togler modal
+        // togler modal
         $('#add').click(function ()
         {
             $('#carrierModal').modal('show');
@@ -408,7 +411,7 @@
         /*$('#onTouchCarrier tbody').on( 'click', 'tr', function () {
             console.log( table.row( this ).data() );
         } );*/
-            console.log(rowData);
+        console.log(rowData);
         $('#kundennummer').val(rowData.kundennummer);
         $('#name').val(rowData.name);
         $('#urlSc').val(rowData.urlSc);
@@ -421,12 +424,12 @@
         var id = $(this).attr("id");
         var action = 'getRecord';
         $.ajax({
-           /* "url": "update_action.php",
-            method:"GET",
-            data:'id='+id ,*/
+            /* "url": "update_action.php",
+             method:"GET",
+             data:'id='+id ,*/
             "url": "update_action.php",
             method:"POST",
-             //data:{rowData,id:id}
+            //data:{rowData,id:id}
             data: {id: id, action: action},
             dataType: "json",
             success:function(response){
