@@ -129,16 +129,19 @@
                 "contentType":'application/json; charset=utf-8',
             },
             columns: [
-                { data: "id" },
+               { data: "id" },
                 { data: "kundennummer" },
                 { data: "name"},
                 {
-                    "data": 'urlSc',
-                    "render": function (data) {if (data !== '') {return '<a href="' + data + '">' + data + '</a>';}}
+                    data: 'urlSc',
+                    render : function(data, type, row, meta) {return'<a href="' + data + '">' + data + '</a>';},
                 },
+
                 { data: "rufnummerSc" },
-                {"data":"urlCc",
-                    "render": function(data) {if (data !== '') {return '<a href="'+data+'">'+ data +'</a>';}}
+
+                {
+                    data:"urlCc",
+                    render : function(data, type, row, meta) {return'<a href="' + data + '">' + data + '</a>';},
                 },
                 { data: "rufnummerCc" },
                 { data: "auftraggsart" },
