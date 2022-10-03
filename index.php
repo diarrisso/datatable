@@ -9,10 +9,10 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
     <title>Blog Cuisine</title>
 </head>
-
+<body>
 <div class="container">
     <span id="message"></span>
-    <button type="button" name="add" class="btn btn-primary" id="add">
+    <button type="button" name="add" class="btn btn-primary mt-3 mb-3" id="add">
         Add Neue Eintrage
     </button>
 
@@ -115,12 +115,11 @@
             sWrapper: "dataTables_wrapper container-fluid dt-bootstrap4",
         } );
         $('#onTouchCarrier').DataTable( {
-            "lengthChange": true,
-            //bAutoWidth": false,
+            lengthChange: true,
+            bAutoWidth: false,
             responsive: true,
-            "paging":true,
-            // "processing": true,
-            //"paging": true,
+            paging:true,
+            processing: true,
             ajax: {
                 url: "ajax_action.php" , dataSrc: '',
                 type: "POST",
@@ -151,52 +150,21 @@
                         return '<button  type="button" name="edit" class="btn btn-primary edit" id="' + row.id +'" data-toggle="modal" data-target="#carrierModal">Edit</button>'
                     }
                 },
-                //{defaultContent :'<button type="button" name="edit"    class="btn btn-primary edit" data-toggle="modal" data-target="#carrierModal" >Edite</button>'}
             ],
             "pageLength": 10
         });
         $("#onTouchCarrier").css("width","600px")
 
-        $("#carrierModal").submit(function (event)
+        $("#carrierForm").submit(function (event)
         {
             event.preventDefault();
-            console.log('submit');
-            $('#save').attr('disabled', 'disabled');
-            /* $('#kundennummer').on('input', function() {*/
-            /*    checkckundennummer();
-
-            });
-
-            $('#name').on('input', function() {
-                checkcname();
-            });
-
-            $('#rufnummerSc').on('input', function() {
-                checkRufnummerSc();
-            });
-
-
-            $('#auftraggsart').on('input', function() {
-                checkauftragsart();
-                $('#auftraggsart_erro').css('color','red ');
-            });
-
-
-            if ( !checkckundennummer() && !checkcname() && !checkauftragsart()  ) {
-
-                $("#message").html('<div class="alert alert-warning">die drei felter sind plicht felder</div>');
-
-
-            }
-*/
-            /* else if ( !checkckundennummer() || !checkcname() || !checkauftragsart()  )
-
-             {
-                 $("#message").html('<div class="alert alert-warning">die drei felter sind plicht felder</div>');
-
-
-             }
-             else {*/
+             $('#kundennummer').on('input', function() {checkckundennummer();});
+            $('#name').on('input', function() {checkcname();});
+            $('#rufnummerSc').on('input', function() {checkRufnummerSc();});
+            $('#auftraggsart').on('input', function() {checkauftragsart();$('#auftraggsart_erro').css('color','red ');});
+            if ( !checkckundennummer() && !checkcname() && !checkauftragsart() ) {}
+             else if ( !checkckundennummer() || !checkcname() || !checkauftragsart()){}
+             else {
             var formData = $(this).serialize();
             $.ajax({
                 url: "ajax_action.php",
@@ -205,75 +173,81 @@
                 dataType:'json',
                 beforeSend: function() {
                     $('#save').html('<i class="fa-solid fa-spinner fa-spin"></i>');
-                    $('#save').css({
-                        "border-radius": "50%"
-                    });
                 },
                 success: function (data) {
-                    //var dateroor = JSON.parse(data)
-                    if (data.error)
-                    {
+                    console.log(data);
+                    if (data.error) {
                         console.log(data.error);
-                        /*  jQuery.each( data.error, function( i, val ) {
-                              $("#" + val).text("Mine is " + val + ".");
-                          });
-                              console.log('salut');
-                          $('#kundennummer_erro').html('<div class="alert alert-danger"> data.error </div>');*/
 
-                        /* if(response.type === 'kundennummer')
-                         { //load json data from server and output message
-                             $('#kundennummer_erro').html(response.text);
-                         }
-                            else if (response.type === 'name')
-                         {
-                             $('#name_erro').html(response.text);
-     */
-                        /* $('#kundennummer_erro').html(response.text);
-                         output = '<div class="error">'+data.text+'</div>';
-                         $('#name_erro').css('border','red 1px solid');
-                         $("#carrierForm  input[required=true], #carrierForm input[required=true]").val('');
-                         //$("#carrierForm ").slideUp(); //hide form after success
-                         $('#save').attr('disabled', true);*/
+                        $('#kundennummer_erro').html('<div class="alert alert-danger"> data.error </div>');
+
+                        if (data.type === 'kundennummer') { //load json data from server and output message
+                            $('#kundennummer_erro').html(data.text);
+                        } else if (data.type === 'name') {
+                            $('#name_erro').html(data.text);
+
+                            $('#kundennummer_erro').html(data.text);
+                            output = '<div class="error">' + data.text + '</div>';
+                            $('#name_erro').css('border', 'red 1px solid');
+                            $("#carrierForm  input[required=true], #carrierForm input[required=true]").val('');
+                        }
                     }
                     else
                     {
                         output = '<div class="success">'+data.text+'</div>';
                         //reset values in all input fields
                         $('#carrierModal').modal('hide');
-                        $('#save').attr('disabled', true);
-                        //$('#save').attr('disabled', false);
-                        $("#message").html('<div class="success" > Ihre Daten wurd elfogreich gesende</div>');
+                        $('#save').attr('disabled', false);
+                        $("#message").html('<div class=" alert alert-success" id="success-alert"> '+data.Msg+'</div>');
+                        $("#success-alert").fadeTo(2000, 500).slideUp(500, function() {$("#success-alert").slideUp(500);});
                         $('#carrierForm')[0].reset();
                     }
-
                 },
                 error: function (request, status, error) {
-                    alert(request.responseText);
+                    console.log(request.responseText);
+                    console.log(error);
+                    console.log(status);
                 }
-
             });
-            //}
-
+            }
         });
-
-
-
-
         // togler modal
-        $('#add').click(function ()
-        {
-            $('#carrierModal').modal('show');
-            console.log('ouvre le modale ');
-        });
-
-
-
+        $('#add').click(function () {$('#carrierModal').modal('show');});
         $('#carrierModal').on('hidden.bs.modal', function(){
             $(this).find('form')[0].reset();
-            //$(':input', this).val('');
-            //console.log('modsl form clearn');
         });
 
+        // update scripts
+        $("#onTouchCarrier ").on('click', '.edit', function(e)
+        {
+            var table = $('#onTouchCarrier').DataTable();
+            var row  = $(this).parents('tr')[0];
+            var rowData = table.row( row ).data();
+            $('#kundennummer').val( rowData.kundennummer );
+            $('#name').val( rowData.name );
+            $('#urlSc').val( rowData.urlSc );
+            $('#rufnummerSc').val( rowData.rufnummerSc );
+            $('#urlCc').val( rowData.urlCc );
+            $('#rufnummerCc').val( rowData.rufnummerCc );
+            $('#auftraggsart').val( rowData.auftraggsart );
+            var id = $( this ).attr("id");
+            var action = 'getRecord';
+            $.ajax({
+                "url": "update_action.php",
+                method:"POST",
+                data: {id: id, action: action},
+                dataType: "json",
+                success:function( response ){
+                    $('.modal-title').html("<i class='fa fa-plus'></i> Edit ontouchcarrier");
+                    $('#action').val('updateOnTouchCarrier');
+                    $('#save').val('Update');
+                },
+                error: function (request, status, error) {
+                    alert( error.data );
+                }
+            })
+            e.preventDefault();
+        });
 
 
     });
@@ -303,7 +277,6 @@
         }
         else {
             $('#kundennummer_erro').html('');
-            //$('#kundennummer').css('border', 'green 1px solid');
             return true;
         }
     }
@@ -325,10 +298,7 @@
             return false;
         }
 
-        //else if (!name.match(/^[a-z]+$/i))
         else if (!name.match(/\d/))
-
-            ///[a-z]+/g
         {
             $('#name_erro').html('il ne doit pas comporter de chiffre dans cette field ');
             $('#name').css('border', 'red 1px solid ');
@@ -336,7 +306,6 @@
         else
         {
             $('#name_erro').html('');
-            //$('#name').css('border','green 1px solid ');
             return true;
         }
     }
@@ -360,14 +329,13 @@
             return false;
         }
         else if (!auftraggsart.match(/^[a-z]+$/i))
-            ///[a-z]+/g
         {
             $('#auftraggsart_erro').html('il ne doit pas comporter de chiffre dans cette field ');
             $('#auftraggsart').css('border', 'red 1px solid ');
         }
         else {
             $('#auftraggsart_error').html('');
-            //$('#auftraggsart').css('border', 'green 1px solid');
+
             return true;
         }
     }
@@ -400,59 +368,7 @@
 
     }
 
-    // update function
-    $("#onTouchCarrier ").on('click', '.edit', function(e)
-    {
-        var table = $('#onTouchCarrier').DataTable();
-        console.log(parent);
-        var row  = $(this).parents('tr')[0];
-        console.log(row);
-        var rowData = table.row(row).data();
-        /*$('#onTouchCarrier tbody').on( 'click', 'tr', function () {
-            console.log( table.row( this ).data() );
-        } );*/
-        console.log(rowData);
-        $('#kundennummer').val(rowData.kundennummer);
-        $('#name').val(rowData.name);
-        $('#urlSc').val(rowData.urlSc);
-        $('#rufnummerSc').val(rowData.rufnummerSc);
-        $('#urlCc').val(rowData.urlCc);
-        $('#rufnummerCc').val(rowData.rufnummerCc);
-        $('#auftraggsart').val(rowData.auftraggsart);
 
-
-        var id = $(this).attr("id");
-        var action = 'getRecord';
-        $.ajax({
-            /* "url": "update_action.php",
-             method:"GET",
-             data:'id='+id ,*/
-            "url": "update_action.php",
-            method:"POST",
-            //data:{rowData,id:id}
-            data: {id: id, action: action},
-            dataType: "json",
-            success:function(response){
-                //var response = JSON.parse(data);
-                //console.log(response.name);
-                /*$('#carrierModal').modal('show');
-                $('#kundennummer').val(response.kundennummer);
-                $('#name').val(response.name);
-                $('#urlSc').val(response.urlSc);
-                $('#rufnummerSc').val(response.rufnummerSc);
-                $('#urlCc').val(response.urlCc);
-                $('#rufnummerCc').val(response.rufnummerCc);
-                $('#auftraggsart').val(response.auftraggsart);*/
-                $('.modal-title').html("<i class='fa fa-plus'></i> Edit ontouchcarrier");
-                $('#action').val('updateOnTouchCarrier');
-                $('#save').val('Update');
-            },
-            error: function (request, status, error) {
-                alert(error.data);
-            }
-        })
-        e.preventDefault();
-    });
 </script>
 </body>
 </html>
