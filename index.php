@@ -9,31 +9,31 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
     <title>Blog Cuisine</title>
 </head>
+<body>
+<div class="container">
+    <span id="message"></span>
+    <button type="button" name="add" class="btn btn-primary mt-3 mb-3" id="add">
+        Add Neue Eintrage
+    </button>
 
-    <div class="container">
-        <span id="message"></span>
-               <button type="button" name="add" class="btn btn-primary" id="add">
-                   Add Neue Eintrage
-               </button>
 
+    <table id="onTouchCarrier" class="table table-bordered table-striped" style="width: 600px!important;">
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>kundennummer</th>
+            <th>name</th>
+            <th>urlsc</th>
+            <th>rufnummersc</th>
+            <th>urlcc</th>
+            <th>rufnummercc</th>
+            <th>auftragsart</th>
+            <th></th>
 
-                <table id="onTouchCarrier" class="table table-bordered table-striped" style="width: 600px!important;">
-                        <thead>
-                            <tr>
-                                <th>id</th>
-                                <th>kundennummer</th>
-                                <th>name</th>
-                                <th>urlsc</th>
-                                <th>rufnummersc</th>
-                                <th>urlcc</th>
-                                <th>rufnummercc</th>
-                                <th>auftragsart</th>
-                                <th></th>
-
-                            </tr>
-                        </thead>
-                </table>
-        </div>
+        </tr>
+        </thead>
+    </table>
+</div>
 
 <!--</div>
 <style>
@@ -43,59 +43,59 @@
 
 </style>
 -->
-        <div id="carrierModal" class="modal fade"  tabindex="-1">
-            <div class="modal-dialog">
-                <form method="post" id="carrierForm">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <span id="message"></span>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title"><i class="fa fa-plus"></i> Edit User</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-group"
-                            <label for="kundennummer" class="control-label">kundennummer</label>
-                            <input type="text" class="form-control" id="kundennummer" name="kundennummer" placeholder="kundennummer" >
-                            <span class="error" id="kundennummer_erro"> </span>
-                        </div>
-                        <div class="form-group">
-                            <label for="name" class="control-label">name</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="name" >
-                            <span class="error" id="name_erro"> </span>
-                        </div>
-                        <div class="form-group">
-                            <label for="urlSc" class="control-label">urlSc</label>
-                            <input type="url" class="form-control"  id="urlSc" name="urlSc" placeholder="urlSc" >
-                        </div>
-                        <div class="form-group">
-                            <label for="rufnummerSc" class="control-label">rufnummerSc</label>
-                            <input type="tel" class="form-control"  id="rufnummerSc" name="rufnummerSc">
-                            <span class="error" id="rufnummerSc_erro"> </span>
-                        </div>
-                        <div class="form-group">
-                            <label for="urlCc" class="control-label">urlCc</label>
-                            <input type="url" class="form-control" id="urlCc" name="urlCc" placeholder="urlCc">
-                        </div>
-                        <div class="form-group">
-                            <label for="$rufnummerCc" class="control-label">rufnummerCc</label>
-                            <input type="tel" class="form-control" id="rufnummerCc" name="rufnummerCc" placeholder="rufnummerCc">
-                        </div>
+<div id="carrierModal" class="modal fade"  tabindex="-1">
+    <div class="modal-dialog">
+        <form method="post" id="carrierForm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span id="message"></span>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><i class="fa fa-plus"></i> Edit User</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group"
+                    <label for="kundennummer" class="control-label">kundennummer</label>
+                    <input type="text" class="form-control" id="kundennummer" name="kundennummer" placeholder="kundennummer" >
+                    <span class="error" id="kundennummer_erro"> </span>
+                </div>
+                <div class="form-group">
+                    <label for="name" class="control-label">name</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="name" >
+                    <span class="error" id="name_erro"> </span>
+                </div>
+                <div class="form-group">
+                    <label for="urlSc" class="control-label">urlSc</label>
+                    <input type="url" class="form-control"  id="urlSc" name="urlSc" placeholder="urlSc" >
+                </div>
+                <div class="form-group">
+                    <label for="rufnummerSc" class="control-label">rufnummerSc</label>
+                    <input type="tel" class="form-control"  id="rufnummerSc" name="rufnummerSc">
+                    <span class="error" id="rufnummerSc_erro"> </span>
+                </div>
+                <div class="form-group">
+                    <label for="urlCc" class="control-label">urlCc</label>
+                    <input type="url" class="form-control" id="urlCc" name="urlCc" placeholder="urlCc">
+                </div>
+                <div class="form-group">
+                    <label for="$rufnummerCc" class="control-label">rufnummerCc</label>
+                    <input type="tel" class="form-control" id="rufnummerCc" name="rufnummerCc" placeholder="rufnummerCc">
+                </div>
 
-                        <div class="form-group">
-                            <label for="auftraggsart" class="control-label">auftragsart</label>
-                            <input type="text" class="form-control" id="auftraggsart" name="auftraggsart" placeholder="auftragsart">
-                            <span class="error" id="auftraggsart_error"> </span>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <input type="hidden" name="id" id="id" />
-                        <input type="hidden" name="action" id="action" value="" />
-                        <input type="submit" name="save" id="save" class="btn btn-info" value="Save" />
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </form>
+                <div class="form-group">
+                    <label for="auftraggsart" class="control-label">auftragsart</label>
+                    <input type="text" class="form-control" id="auftraggsart" name="auftraggsart" placeholder="auftragsart">
+                    <span class="error" id="auftraggsart_error"> </span>
+                </div>
             </div>
-        </div>
+            <div class="modal-footer">
+                <input type="hidden" name="id" id="id" />
+                <input type="hidden" name="action" id="action" value="" />
+                <input type="submit" name="save" id="save" class="btn btn-info" value="Save" />
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </form>
+    </div>
+</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.js"></script>
@@ -109,18 +109,16 @@
     //// C'est quand la page a ete charge que le script doit etre utiliser
     $(document).ready( function ()
     {
-
         $.noConflict();
         $.extend( $.fn.DataTable.ext.classes, {
             sWrapper: "dataTables_wrapper container-fluid dt-bootstrap4",
         } );
         $('#onTouchCarrier').DataTable( {
-            "lengthChange": true,
-            //bAutoWidth": false,
+            lengthChange: true,
+            bAutoWidth: false,
             responsive: true,
-            "paging":true,
-            // "processing": true,
-            //"paging": true,
+            paging:true,
+            processing: true,
             ajax: {
                 url: "ajax_action.php" , dataSrc: '',
                 type: "POST",
@@ -151,52 +149,31 @@
                         return '<button  type="button" name="edit" class="btn btn-primary edit" id="' + row.id +'" data-toggle="modal" data-target="#carrierModal">Edit</button>'
                     }
                 },
-                //{defaultContent :'<button type="button" name="edit"    class="btn btn-primary edit" data-toggle="modal" data-target="#carrierModal" >Edite</button>'}
             ],
             "pageLength": 10
         });
         $("#onTouchCarrier").css("width","600px")
 
-        $("#carrierModal").submit(function (event)
+        //$("#carrierForm").submit('#save',function (event)
+        $("#carrierModal").on('submit','#carrierForm', function(event)
         {
             event.preventDefault();
-            console.log('submit');
-            $('#save').attr('disabled', 'disabled');
-           /* $('#kundennummer').on('input', function() {*/
-            /*    checkckundennummer();
+            var  save = $('#save').val();
 
-            });
-
-            $('#name').on('input', function() {
-                checkcname();
-            });
-
-            $('#rufnummerSc').on('input', function() {
-                checkRufnummerSc();
-            });
-
-
-            $('#auftraggsart').on('input', function() {
-                checkauftragsart();
-                $('#auftraggsart_erro').css('color','red ');
-            });
-
-
-            if ( !checkckundennummer() && !checkcname() && !checkauftragsart()  ) {
-
-                $("#message").html('<div class="alert alert-warning">die drei felter sind plicht felder</div>');
-
-
-            }
-*/
-           /* else if ( !checkckundennummer() || !checkcname() || !checkauftragsart()  )
-
+            if (save === 'Save')
             {
-                $("#message").html('<div class="alert alert-warning">die drei felter sind plicht felder</div>');
-
-
+                $('#action').val('addData');
+            } else {
+                $('#action').val('updateOnTouchCarrier');
             }
-            else {*/
+
+             $('#kundennummer').on('input', function() {checkckundennummer();});
+            $('#name').on('input', function() {checkcname();});
+            $('#rufnummerSc').on('input', function() {checkRufnummerSc();});
+            $('#auftraggsart').on('input', function() {checkauftragsart();$('#auftraggsart_erro').css('color','red ');});
+            if ( !checkckundennummer() && !checkcname() && !checkauftragsart() ) {}
+             else if ( !checkckundennummer() || !checkcname() || !checkauftragsart()){}
+             else {
             var formData = $(this).serialize();
             $.ajax({
                 url: "ajax_action.php",
@@ -204,81 +181,80 @@
                 data: formData,
                 dataType:'json',
                 beforeSend: function() {
-                   $('#save').html('<i class="fa-solid fa-spinner fa-spin"></i>');
-                  $('#save').css({
-                      "border-radius": "50%"
-                    });
-                 },
+                    $('#save').html('<i class="fa-solid fa-spinner fa-spin"></i>');
+                },
                 success: function (data) {
-                    //var dateroor = JSON.parse(data)
-                    if (data.error)
-                    {
+                    console.log(data);
+                    if (data.error) {
                         console.log(data.error);
-                      /*  jQuery.each( data.error, function( i, val ) {
-                            $("#" + val).text("Mine is " + val + ".");
-                        });
-                            console.log('salut');
-                        $('#kundennummer_erro').html('<div class="alert alert-danger"> data.error </div>');*/
 
-                   /* if(response.type === 'kundennummer')
-                    { //load json data from server and output message
-                        $('#kundennummer_erro').html(response.text);
-                    }
-                       else if (response.type === 'name')
-                    {
-                        $('#name_erro').html(response.text);
-*/
-                       /* $('#kundennummer_erro').html(response.text);
-                        output = '<div class="error">'+data.text+'</div>';
-                        $('#name_erro').css('border','red 1px solid');
-                        $("#carrierForm  input[required=true], #carrierForm input[required=true]").val('');
-                        //$("#carrierForm ").slideUp(); //hide form after success
-                        $('#save').attr('disabled', true);*/
+                        $('#kundennummer_erro').html('<div class="alert alert-danger"> data.error </div>');
+
+                        if (data.type === 'kundennummer') { //load json data from server and output message
+                            $('#kundennummer_erro').html(data.text);
+                        } else if (data.type === 'name') {
+                            $('#name_erro').html(data.text);
+
+                            $('#kundennummer_erro').html(data.text);
+                            output = '<div class="error">' + data.text + '</div>';
+                            $('#name_erro').css('border', 'red 1px solid');
+                            $("#carrierForm  input[required=true], #carrierForm input[required=true]").val('');
+                        }
                     }
                     else
                     {
                         output = '<div class="success">'+data.text+'</div>';
                         //reset values in all input fields
-                        $('#carrierModal').modal('hide');
-                        $('#save').attr('disabled', true);
-                        //$('#save').attr('disabled', false);
-                        $("#message").html('<div class="success" > Ihre Daten wurd elfogreich gesende</div>');
                         $('#carrierForm')[0].reset();
-                    }
+                        $('#carrierModal').modal('hide');
+                        $('#save').attr('disabled', false);
 
+                        if (data.Msg)
+                        {
+                            $("#message").html('<div class=" alert alert-success" id="success-alert"> '+data.Msg+'</div>');
+                        } else
+                        {
+                            $("#message").html('<div class=" alert alert-success" id="success-alert"> '+data.Update+'</div>');
+                        }
+
+                        $("#success-alert").fadeTo(2000, 500).slideUp(500, function() {$("#success-alert").slideUp(500);});
+                    }
                 },
                 error: function (request, status, error) {
-                    alert(request.responseText);
+                    console.log(request.responseText);
+                    console.log(error);
+                    console.log(status);
                 }
-
             });
-            //}
-
+            }
         });
-
-
-
-
-  // togler modal
-        $('#add').click(function ()
-        {
-            $('#carrierModal').modal('show');
-            console.log('ouvre le modale ');
-        });
-
-
-
+        // Moggler Modal
+        $('#add').click(function () {$('#carrierModal').modal('show');});
         $('#carrierModal').on('hidden.bs.modal', function(){
             $(this).find('form')[0].reset();
-            //$(':input', this).val('');
-            //console.log('modsl form clearn');
         });
 
-
-
+        // update scripts
+        $("#onTouchCarrier ").on('click', '.edit', function(e)
+        {
+            e.preventDefault();
+            var table = $('#onTouchCarrier').DataTable();
+            var row  = $(this).parents('tr')[0];
+            var rowData = table.row( row ).data();
+            $('#kundennummer').val( rowData.kundennummer );
+            $('#name').val( rowData.name );
+            $('#urlSc').val( rowData.urlSc );
+            $('#rufnummerSc').val( rowData.rufnummerSc );
+            $('#urlCc').val( rowData.urlCc );
+            $('#rufnummerCc').val( rowData.rufnummerCc );
+            $('#auftraggsart').val( rowData.auftraggsart );
+            $('#save').val('Update');
+            $('.modal-title').html("<i class='fa fa-plus'></i> Editer");
+            $('#action').val('updateOnTouchCarrier');
+             var Id = $(this).attr("id");
+             $('#id').val(Id);
+        });
     });
-
-
 
     function checkckundennummer() {
 
@@ -303,7 +279,6 @@
         }
         else {
             $('#kundennummer_erro').html('');
-            //$('#kundennummer').css('border', 'green 1px solid');
             return true;
         }
     }
@@ -325,10 +300,7 @@
             return false;
         }
 
-        //else if (!name.match(/^[a-z]+$/i))
         else if (!name.match(/\d/))
-
-            ///[a-z]+/g
         {
             $('#name_erro').html('il ne doit pas comporter de chiffre dans cette field ');
             $('#name').css('border', 'red 1px solid ');
@@ -336,7 +308,6 @@
         else
         {
             $('#name_erro').html('');
-            //$('#name').css('border','green 1px solid ');
             return true;
         }
     }
@@ -360,14 +331,13 @@
             return false;
         }
         else if (!auftraggsart.match(/^[a-z]+$/i))
-            ///[a-z]+/g
         {
             $('#auftraggsart_erro').html('il ne doit pas comporter de chiffre dans cette field ');
             $('#auftraggsart').css('border', 'red 1px solid ');
         }
         else {
             $('#auftraggsart_error').html('');
-            //$('#auftraggsart').css('border', 'green 1px solid');
+
             return true;
         }
     }
@@ -397,62 +367,7 @@
             $('#rufnummerSc_erro').css('display', 'none');
             return true;
         }
-
     }
-
-    // update function
-    $("#onTouchCarrier ").on('click', '.edit', function(e)
-    {
-        var table = $('#onTouchCarrier').DataTable();
-        console.log(parent);
-        var row  = $(this).parents('tr')[0];
-        console.log(row);
-        var rowData = table.row(row).data();
-        /*$('#onTouchCarrier tbody').on( 'click', 'tr', function () {
-            console.log( table.row( this ).data() );
-        } );*/
-            console.log(rowData);
-        $('#kundennummer').val(rowData.kundennummer);
-        $('#name').val(rowData.name);
-        $('#urlSc').val(rowData.urlSc);
-        $('#rufnummerSc').val(rowData.rufnummerSc);
-        $('#urlCc').val(rowData.urlCc);
-        $('#rufnummerCc').val(rowData.rufnummerCc);
-        $('#auftraggsart').val(rowData.auftraggsart);
-
-
-        var id = $(this).attr("id");
-        var action = 'getRecord';
-        $.ajax({
-           /* "url": "update_action.php",
-            method:"GET",
-            data:'id='+id ,*/
-            "url": "update_action.php",
-            method:"POST",
-             //data:{rowData,id:id}
-            data: {id: id, action: action},
-            dataType: "json",
-            success:function(response){
-                //var response = JSON.parse(data);
-                //console.log(response.name);
-                /*$('#carrierModal').modal('show');
-                $('#kundennummer').val(response.kundennummer);
-                $('#name').val(response.name);
-                $('#urlSc').val(response.urlSc);
-                $('#rufnummerSc').val(response.rufnummerSc);
-                $('#urlCc').val(response.urlCc);
-                $('#rufnummerCc').val(response.rufnummerCc);
-                $('#auftraggsart').val(response.auftraggsart);*/
-                $('.modal-title').html("<i class='fa fa-plus'></i> Edit ontouchcarrier");
-                $('#action').val('updateOnTouchCarrier');
-                $('#save').val('Update');
-            },
-            error: function (request, status, error) {
-                alert(error.data);
-            }
-        })
-        e.preventDefault();
-    });
 </script>
 </body>
 </html>

@@ -18,7 +18,7 @@ if ( empty( $_POST['kundennummer'] ) ) {
         die("Connection failed: ");
     }
 
-    $sql = "SELECT * FROM Blog.carrier";
+    $sql = "SELECT * FROM Blog.carrier ORDER BY  carrier.id desc LIMIT 10";
 
     $stmt = $conn->prepare($sql);
     $stmt->execute();
@@ -51,22 +51,15 @@ if ( empty( $_POST['kundennummer'] ) ) {
 // function post insert;
 $db = new Database();
 $conn = $db->getConnection();
-//if (!empty($_POST['action']) && $_POST['action'] == 'addEmployee'){
 
-
-
-
-if ( dataisvalid() !== true )
+if ( dataValidion() !== true )
 {
-    echo json_encode( array ('error' => dataisvalid() ) );
+    echo json_encode( array ('error' => dataValidion() ) );
     exit();
 }
 
-
-
-
-
-if ( !empty($_POST['kundennummer']) && dataisvalid() )
+if ( !empty($_POST['action']) && $_POST['action'] === 'addData' && dataValidion() )
+//if ( !empty($_POST['kundennummer'])  && dataValidion() )
 {
 
     $response = array();
@@ -82,6 +75,9 @@ if ( !empty($_POST['kundennummer']) && dataisvalid() )
 			VALUES ('".$kundenummer."', '".$name."', '".$urlSc."', '".$rufnummerSc."', '".$urlCc."','".$rufnummerCc."','".$auftraggsart."')";
     $statement = $conn->prepare($insertQuery);
     $statement->execute();
+
+    echo  json_encode( array( 'Msg'=> 'les donnees ont ete enregistrer avec success') );
+
 }
 
 
@@ -92,7 +88,7 @@ if ( !empty($_POST['kundennummer']) && dataisvalid() )
 /**
  * @return array|true
  */
-function dataisvalid()
+function dataValidion()
 {
     if ( isset($_POST['kundennummer'] )  )
     {
@@ -157,21 +153,19 @@ function dataisvalid()
 
 }
 
-
 // update datatables
-if (!empty($_POST['action']) && $_POST['action'] == 'updateOnTouchCarrier') {
-    var_dump($_POST['action']);
-    if($_POST['id']) {
+if ( !empty($_POST['action']) && $_POST['action'] === 'updateOnTouchCarrier' && dataValidion() ) {
+
+    if( $_POST['id'] ) {
         $updateQuery = "UPDATE Blog.carrier 
 			SET carrier.kundennummer = '".$_POST["kundennummer"]."', carrier.name = '".$_POST["name"]."', 
 			 carrier.urlSc = '".$_POST["urlSc"]."', carrier.rufnummerSc = '".$_POST["rufnummerSc"]."' , 
-			 carrier.urlCc = '".$_POST["urlScc"]."', carrier.rufnummerCc = '".$_POST["rufnummerCc"]."', carrier.auftraggsart = '".$_POST["auftraggsart"]."'
+			 carrier.urlCc = '".$_POST["urlSc"]."', carrier.rufnummerCc = '".$_POST["rufnummerCc"]."', carrier.auftraggsart = '".$_POST["auftraggsart"]."'
 			WHERE carrier.id ='".$_POST["id"]."'";
         $isUpdated = $conn->prepare($updateQuery);
         $isUpdated->execute();
-        echo json_encode(
-            $isUpdated
-        );
+        echo json_encode( array ('Update' => 'les donnes ont ete mise en jour ') );
     }
+
 }
 
