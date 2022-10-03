@@ -109,7 +109,6 @@
     //// C'est quand la page a ete charge que le script doit etre utiliser
     $(document).ready( function ()
     {
-
         $.noConflict();
         $.extend( $.fn.DataTable.ext.classes, {
             sWrapper: "dataTables_wrapper container-fluid dt-bootstrap4",
@@ -155,9 +154,19 @@
         });
         $("#onTouchCarrier").css("width","600px")
 
-        $("#carrierForm").submit(function (event)
+        //$("#carrierForm").submit('#save',function (event)
+        $("#carrierModal").on('submit','#carrierForm', function(event)
         {
             event.preventDefault();
+            var  save = $('#save').val();
+
+            if (save === 'Save')
+            {
+                $('#action').val('addData');
+            } else {
+                $('#action').val('updateOnTouchCarrier');
+            }
+
              $('#kundennummer').on('input', function() {checkckundennummer();});
             $('#name').on('input', function() {checkcname();});
             $('#rufnummerSc').on('input', function() {checkRufnummerSc();});
@@ -196,11 +205,19 @@
                     {
                         output = '<div class="success">'+data.text+'</div>';
                         //reset values in all input fields
+                        $('#carrierForm')[0].reset();
                         $('#carrierModal').modal('hide');
                         $('#save').attr('disabled', false);
-                        $("#message").html('<div class=" alert alert-success" id="success-alert"> '+data.Msg+'</div>');
+
+                        if (data.Msg)
+                        {
+                            $("#message").html('<div class=" alert alert-success" id="success-alert"> '+data.Msg+'</div>');
+                        } else
+                        {
+                            $("#message").html('<div class=" alert alert-success" id="success-alert"> '+data.Update+'</div>');
+                        }
+
                         $("#success-alert").fadeTo(2000, 500).slideUp(500, function() {$("#success-alert").slideUp(500);});
-                        $('#carrierForm')[0].reset();
                     }
                 },
                 error: function (request, status, error) {
@@ -211,7 +228,7 @@
             });
             }
         });
-        // togler modal
+        // Moggler Modal
         $('#add').click(function () {$('#carrierModal').modal('show');});
         $('#carrierModal').on('hidden.bs.modal', function(){
             $(this).find('form')[0].reset();
@@ -220,6 +237,7 @@
         // update scripts
         $("#onTouchCarrier ").on('click', '.edit', function(e)
         {
+            e.preventDefault();
             var table = $('#onTouchCarrier').DataTable();
             var row  = $(this).parents('tr')[0];
             var rowData = table.row( row ).data();
@@ -230,29 +248,13 @@
             $('#urlCc').val( rowData.urlCc );
             $('#rufnummerCc').val( rowData.rufnummerCc );
             $('#auftraggsart').val( rowData.auftraggsart );
-            var id = $( this ).attr("id");
-            var action = 'getRecord';
-            $.ajax({
-                "url": "update_action.php",
-                method:"POST",
-                data: {id: id, action: action},
-                dataType: "json",
-                success:function( response ){
-                    $('.modal-title').html("<i class='fa fa-plus'></i> Edit ontouchcarrier");
-                    $('#action').val('updateOnTouchCarrier');
-                    $('#save').val('Update');
-                },
-                error: function (request, status, error) {
-                    alert( error.data );
-                }
-            })
-            e.preventDefault();
+            $('#save').val('Update');
+            $('.modal-title').html("<i class='fa fa-plus'></i> Editer");
+            $('#action').val('updateOnTouchCarrier');
+             var Id = $(this).attr("id");
+             $('#id').val(Id);
         });
-
-
     });
-
-
 
     function checkckundennummer() {
 
@@ -365,10 +367,7 @@
             $('#rufnummerSc_erro').css('display', 'none');
             return true;
         }
-
     }
-
-
 </script>
 </body>
 </html>
