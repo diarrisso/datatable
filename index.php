@@ -119,10 +119,10 @@
             "paging":true,
             responsive: true,
             ajax: {
-                url: "ajax_action.php" , dataSrc: "",
+                url: "ajax_action.php" , dataSrc: "data",
                 type: "POST",
                 dataType: "json",
-                data:"data",
+                //data:"data",
             },
             columns: [
                 { data: "DT_RowId" },
@@ -152,7 +152,6 @@
         });
         $("#onTouchCarrier").css("width","600px")
 
-        //$("#carrierForm").submit('#save',function (event)
         $("#carrierModal").on('submit','#carrierForm', function(event)
         {
             event.preventDefault();

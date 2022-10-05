@@ -1,27 +1,16 @@
 <?php
-/*$scriptdomain = "http://localhost:8022/ajax_action.php";
-header("Access-Control-Allow-Origin: $scriptdomain");*/
 require_once __DIR__. "/config/Database.php";
 
 require_once __DIR__."/Model/Ontouch.php";
 
 if ( empty( $_POST['kundennummer'] ) ) {
 
-
-
-
     $db = new Database();
     $conn = $db->getConnection();
-
-
     if (!$conn) {
         die("Connection failed: ");
     }
-
-
-
     $serverside = array();
-    //$sql = "SELECT * FROM Blog.carrier ORDER BY carrier.id LIMIT 12 ";
     $sql = "SELECT * FROM Blog.carrier  LIMIT ".$_REQUEST['start']." ,".$_REQUEST['length']." ";
 
     $stmt = $conn->prepare($sql);
@@ -33,18 +22,14 @@ if ( empty( $_POST['kundennummer'] ) ) {
     $statement->execute();
     $countResult = $statement->fetchColumn();
 
-
-
     $json_data = array(
         "recordsTotal"    => intval( $countResult ),
         "recordsFiltered" => intval($countResult),
-
     );
 
     $data = array();
 
     foreach ($result as $value)
-
     {
         $modelCarrier = new Ontouch();
 
@@ -59,7 +44,9 @@ if ( empty( $_POST['kundennummer'] ) ) {
         $data [] = $row;
 
     }
-    echo json_encode($data);
+
+    $json_data ['data'] = $data;
+    echo json_encode($json_data);
 }
 
 
