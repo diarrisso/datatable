@@ -114,11 +114,10 @@
             sWrapper: "dataTables_wrapper container-fluid dt-bootstrap4",
         } );
         $('#onTouchCarrier').DataTable( {
-            lengthChange: true,
-            bAutoWidth: false,
+            "processing": true,
+            "serverSide": true,
+            "paging":true,
             responsive: true,
-            paging:true,
-            processing: true,
             ajax: {
                 url: "ajax_action.php" , dataSrc: '',
                 type: "POST",
@@ -154,7 +153,6 @@
         });
         $("#onTouchCarrier").css("width","600px")
 
-        //$("#carrierForm").submit('#save',function (event)
         $("#carrierModal").on('submit','#carrierForm', function(event)
         {
             event.preventDefault();
@@ -266,6 +264,7 @@
             $('#kundennummer').css('border', 'red 1px solid ');
             return false;
         }
+        //SABINA  SARAN  DIARRISSO
 
         else if ( !kundennummer.match(/^\d+$/) ) {
             //it's all digits

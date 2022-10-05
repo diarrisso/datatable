@@ -1,38 +1,39 @@
 <?php
-/*$scriptdomain = "http://localhost:8022/ajax_action.php";
-header("Access-Control-Allow-Origin: $scriptdomain");*/
 require_once __DIR__. "/config/Database.php";
 
 require_once __DIR__."/Model/Ontouch.php";
 
 if ( empty( $_POST['kundennummer'] ) ) {
 
-
-
-
     $db = new Database();
     $conn = $db->getConnection();
-
-
     if (!$conn) {
         die("Connection failed: ");
     }
-
-    $sql = "SELECT * FROM Blog.carrier ORDER BY  carrier.id desc LIMIT 10";
+    $serverside = array();
+    $sql = "SELECT * FROM Blog.carrier  LIMIT ".$_REQUEST['start']." ,".$_REQUEST['length']." ";
 
     $stmt = $conn->prepare($sql);
     $stmt->execute();
     $result = $stmt->fetchAll();
 
+    $count = "SELECT COUNT(*) FROM Blog.carrier ";
+    $statement = $conn->query($count);
+    $statement->execute();
+    $countResult = $statement->fetchColumn();
+
+    $json_data = array(
+        "recordsTotal"    => intval( $countResult ),
+        "recordsFiltered" => intval($countResult),
+    );
 
     $data = array();
 
     foreach ($result as $value)
-
     {
         $modelCarrier = new Ontouch();
 
-        $row ['id'] =       $value['id'] ;
+        $row ['DT_RowId'] =       $value['id'] ;
         $row ['kundennummer'] =   $value['kundennummer'] ;
         $row ['name'] =           $value['name'] ;
         $row ['urlSc'] =         $value['urlSc'] ;
@@ -43,8 +44,14 @@ if ( empty( $_POST['kundennummer'] ) ) {
         $data [] = $row;
 
     }
-    echo json_encode($data);
+
+    $json_data ['data'] = $data;
+    echo json_encode($json_data);
 }
+
+
+
+
 
 
 
@@ -100,14 +107,10 @@ function dataValidion()
             $output['kundennummer'] = 'bitte kein string';
         }
 
-
         if(is_numeric($_POST['name']) || strlen($_POST['name']) < 3  && empty( $_POST['name'])  )
         {
             $output['namee'] = 'Name muss ein string sein!';
         }
-
-
-
 
         if(!is_string($_POST['urlSc'] ) && !empty( $_POST['urlSc'] ))
         {
@@ -115,29 +118,23 @@ function dataValidion()
         }
 
 
-
         if( !filter_var($_POST['rufnummerSc'], FILTER_SANITIZE_NUMBER_INT) &&  !empty( $_POST['rufnummerSc'])){ //check for valid numbers in phone number field
             $output['rufnummerSce'] = 'rufnummerSc nicht gut';
         }
-
 
 
         if( !filter_var($_POST['urlCc'], FILTER_SANITIZE_STRING) && !empty( $_POST['urlCc'])){ //
             $output['urlCce'] =  'urlcc';
         }
 
-
         if( !filter_var($_POST['rufnummerCc'], FILTER_SANITIZE_NUMBER_INT) && !empty( $_POST['rufnummerCc'])){ //check for valid numbers in phone number field
             $output['rufnummerCce'] = 'rufnummerCc BIITE';
         }
 
 
-
         if(is_numeric($_POST['auftraggsart']) && empty($_POST['auftraggsart'])  ){ //
             $output['auftraggsarte'] = 'auftrage nest pas bon';
         }
-
-
 
 
         if ( empty( $output ) === false)
