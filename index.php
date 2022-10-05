@@ -114,20 +114,18 @@
             sWrapper: "dataTables_wrapper container-fluid dt-bootstrap4",
         } );
         $('#onTouchCarrier').DataTable( {
-            lengthChange: true,
-            bAutoWidth: false,
+            "processing": true,
+            "serverSide": true,
+            "paging":true,
             responsive: true,
-            paging:true,
-            processing: true,
             ajax: {
-                url: "ajax_action.php" , dataSrc: '',
+                url: "ajax_action.php" , dataSrc: "",
                 type: "POST",
                 dataType: "json",
                 data:"data",
-                "contentType":'application/json; charset=utf-8',
             },
             columns: [
-                { data: "id" },
+                { data: "DT_RowId" },
                 { data: "kundennummer" },
                 { data: "name"},
                 {
@@ -266,6 +264,7 @@
             $('#kundennummer').css('border', 'red 1px solid ');
             return false;
         }
+        //SABINA  SARAN  DIARRISSO
 
         else if ( !kundennummer.match(/^\d+$/) ) {
             //it's all digits
