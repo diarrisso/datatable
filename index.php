@@ -122,7 +122,6 @@
                 url: "ajax_action.php" , dataSrc: "data",
                 type: "POST",
                 dataType: "json",
-                //data:"data",
             },
             columns: [
                 { data: "DT_RowId" },
@@ -249,7 +248,7 @@
             $('.modal-title').html("<i class='fa fa-plus'></i> Editer");
             $('#action').val('updateOnTouchCarrier');
              var Id = $(this).attr("id");
-             $('#id').val(Id);
+             $('#id').val(rowData.DT_RowId);
         });
     });
 

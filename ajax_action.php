@@ -50,11 +50,6 @@ if ( empty( $_POST['kundennummer'] ) ) {
 }
 
 
-
-
-
-
-
 // function post insert;
 $db = new Database();
 $conn = $db->getConnection();
@@ -68,7 +63,6 @@ if ( dataValidion() !== true )
 if ( !empty($_POST['action']) && $_POST['action'] === 'addData' && dataValidion() )
 //if ( !empty($_POST['kundennummer'])  && dataValidion() )
 {
-
     $response = array();
     $kundenummer  = htmlspecialchars(trim($_POST['kundennummer']));
     $name         =  htmlspecialchars(trim($_POST['name']));
@@ -85,10 +79,6 @@ if ( !empty($_POST['action']) && $_POST['action'] === 'addData' && dataValidion(
 
     echo  json_encode( array( 'Msg'=> 'les donnees ont ete enregistrer avec success') );
 }
-
-
-
-
 
 
 /**
@@ -152,12 +142,14 @@ function dataValidion()
 // update datatables
 if ( !empty($_POST['action']) && $_POST['action'] === 'updateOnTouchCarrier' && dataValidion() ) {
 
-    if( $_POST['id'] ) {
+   $id  = $_REQUEST['id'] ;
+
+    if( $id ) {
         $updateQuery = "UPDATE Blog.carrier 
 			SET carrier.kundennummer = '".$_POST["kundennummer"]."', carrier.name = '".$_POST["name"]."', 
 			 carrier.urlSc = '".$_POST["urlSc"]."', carrier.rufnummerSc = '".$_POST["rufnummerSc"]."' , 
 			 carrier.urlCc = '".$_POST["urlSc"]."', carrier.rufnummerCc = '".$_POST["rufnummerCc"]."', carrier.auftraggsart = '".$_POST["auftraggsart"]."'
-			WHERE carrier.id ='".$_POST["id"]."'";
+			WHERE carrier.id ='".$id."'";
         $isUpdated = $conn->prepare($updateQuery);
         $isUpdated->execute();
         echo json_encode( array ('Update' => 'les donnes ont ete mise en jour ') );
