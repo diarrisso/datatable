@@ -11,12 +11,24 @@ if ( empty( $_POST['kundennummer'] ) ) {
         die("Connection failed: ");
     }
     $serverside = array();
-    $sql = "SELECT * FROM Blog.carrier  LIMIT ".$_REQUEST['start']." ,".$_REQUEST['length']." ";
 
-    $stmt = $conn->prepare($sql);
-    $stmt->execute();
-    $result = $stmt->fetchAll();
+    $searchValue = $_REQUEST['search']['value'];
 
+    if ($searchValue)
+    {
+        $sqlfilter = "SELECT * FROM Blog.carrier where name like '%".$searchValue."%'";
+        $stmt = $conn->prepare($sqlfilter);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+
+    }else{
+        $sql = "SELECT * FROM Blog.carrier  LIMIT ".$_REQUEST['start']." ,".$_REQUEST['length']." ";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+    }
+
+    
     $count = "SELECT COUNT(*) FROM Blog.carrier ";
     $statement = $conn->query($count);
     $statement->execute();
