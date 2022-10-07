@@ -35,8 +35,10 @@ if ( empty( $_POST['kundennummer'] ) ) {
     $countResult = $statement->fetchColumn();
 
     $json_data = array(
+        "draw"	=>	intval($_POST["draw"]),
         "recordsTotal"    => intval( $countResult ),
         "recordsFiltered" => intval($countResult),
+        //"data"  => $countResult
     );
 
     $data = array();
@@ -89,7 +91,7 @@ if ( !empty($_POST['action']) && $_POST['action'] === 'addData' && dataValidion(
     $statement = $conn->prepare($insertQuery);
     $statement->execute();
 
-    echo  json_encode( array( 'Msg'=> 'les donnees ont ete enregistrer avec success') );
+    echo  json_encode( array( 'Msg'=> 'les donnees ont ete enregistrer avec success', 'data' => $kundenummer ) );
 }
 
 

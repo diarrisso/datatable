@@ -204,6 +204,7 @@
                         $('#carrierForm')[0].reset();
                         $('#carrierModal').modal('hide');
                         $('#save').attr('disabled', false);
+                        $('#onTouchCarrier').DataTable().ajax.reload();
 
                         if (data.Msg)
                         {
