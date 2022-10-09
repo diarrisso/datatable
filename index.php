@@ -7,6 +7,8 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" ">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css">
+
     <title>Blog Cuisine</title>
 </head>
 <body>
@@ -97,11 +99,14 @@
     </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js" ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js" ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js" ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js" ></script>
+<script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js" ></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" ></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
-
 
 <script>
 
@@ -110,10 +115,11 @@
     $(document).ready( function ()
     {
         $.noConflict();
-        $.extend( $.fn.DataTable.ext.classes, {
+      /*  $.extend( $.fn.DataTable.ext.classes, {
             sWrapper: "dataTables_wrapper container-fluid dt-bootstrap4",
-        } );
+        } );*/
         $('#onTouchCarrier').DataTable( {
+            //searchDelay: 5000,
             "processing": true,
             "serverSide": true,
             "paging":true,
@@ -123,6 +129,13 @@
                 type: "POST",
                 dataType: "json",
             },
+            dom: 'Bfrtip',
+            buttons: [
+                'copyHtml5',
+                'excelHtml5',
+                'csvHtml5',
+                'pdfHtml5'
+                ],
             columns: [
                 { data: "DT_RowId" },
                 { data: "kundennummer" },
@@ -225,6 +238,43 @@
             });
             }
         });
+
+        //search option custom
+        /*// Call datatables, and return the API to the variable for use in our code
+        // Binds datatables to all elements with a class of datatable
+        var dtable = $("#onTouchCarrier").dataTable().api();
+
+        // Grab the datatables input box and alter how it is bound to events
+        $(".dataTables_filter input")
+        .unbind() // Unbind previous default bindings
+        .bind("input", function(e) { // Bind our desired behavior
+            // If the length is 3 or more characters, or the user pressed ENTER, search
+            if(this.value.length >= 3 || e.keyCode === 13) {
+                // Call the API search function
+                dtable.search(this.value).draw();
+            }
+            // Ensure we clear the search if they backspace far enough
+            if(this.value === "") {
+                dtable.search("").draw();
+            }
+            return;
+        });*/
+        // after 2 seconde
+        var suche = null;
+        $(".dataTables_filter input")
+        .unbind()
+        .bind("input", function() {
+            // interrompt le délai et l'exécution du code associé à ce délai.
+            clearTimeout(this);
+            // action à exécuter et un délai avant son exécution
+            suche = setTimeout(function(){
+                var dtable = $("#onTouchCarrier").dataTable().api();
+                var item = $(".dataTables_filter input");
+                return dtable.search($(item).val()).draw();
+            }, 2000);
+            console.log(this);
+        });
+
         // Moggler Modal
         $('#add').click(function () {$('#carrierModal').modal('show');});
         $('#carrierModal').on('hidden.bs.modal', function(){
