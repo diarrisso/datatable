@@ -100,6 +100,16 @@ if ( !empty($_POST['action']) && $_POST['action'] === 'addData' && dataValidion(
  */
 function dataValidion()
 {
+
+    $regex = "((https?|ftp)\:\/\/)?";
+    $regex .= "([a-z0-9+!*(),;?&=\$_.-]+(\:[a-z0-9+!*(),;?&=\$_.-]+)?@)?";
+    $regex .= "([a-z0-9-.]*)\.([a-z]{2,3})";
+    $regex .= "(\:[0-9]{2,5})?";
+    $regex .= "(\/([a-z0-9+\$_-]\.?)+)*\/?";
+    $regex .= "(\?[a-z+&\$_.-][a-z0-9;:@&%=+\/\$_.-]*)?";
+    $regex .= "(#[a-z_.-][a-z0-9+\$_.-]*)?";
+
+
     if ( isset($_POST['kundennummer'] )  )
     {
 
@@ -112,32 +122,34 @@ function dataValidion()
 
         if(is_numeric($_POST['name']) || strlen($_POST['name']) < 3  && empty( $_POST['name'])  )
         {
-            $output['namee'] = 'Name muss ein string sein!';
+            $output['name'] = 'Name muss ein string sein!';
         }
 
-        if(!is_string($_POST['urlSc'] ) && !empty( $_POST['urlSc'] ))
+        if( !preg_match("/^$regex$/i", $_POST['urlSc']) && !empty( $_POST['urlSc']))
+
         {
-            $output['urlSce'] = 'urlsc link mit string';
+            $output['urlSc'] = 'urlsc ist noi valid';
         }
 
 
         if( !filter_var($_POST['rufnummerSc'], FILTER_SANITIZE_NUMBER_INT) &&  !empty( $_POST['rufnummerSc'])){ //check for valid numbers in phone number field
-            $output['rufnummerSce'] = 'rufnummerSc nicht gut';
+            $output['rufnummerSc'] = 'rufnummerSc nicht gut';
         }
 
 
-        if( !filter_var($_POST['urlCc'], FILTER_SANITIZE_STRING) && !empty( $_POST['urlCc'])){ //
-            $output['urlCce'] =  'urlcc';
+        if( !preg_match("/^$regex$/i", $_POST['urlCc']) && !empty( $_POST['urlCc'])){ //
+            $output['urlCc'] =  'urlcc ist not valid';
         }
 
         if( !filter_var($_POST['rufnummerCc'], FILTER_SANITIZE_NUMBER_INT) && !empty( $_POST['rufnummerCc'])){ //check for valid numbers in phone number field
-            $output['rufnummerCce'] = 'rufnummerCc BIITE';
+            $output['rufnummerCc'] = 'rufnummerCc BIITE';
         }
 
 
-        if(is_numeric($_POST['auftraggsart']) && empty($_POST['auftraggsart'])  ){ //
-            $output['auftraggsarte'] = 'auftrage nest pas bon';
+        if(is_integer($_POST['auftraggsart']) && empty($_POST['auftraggsart'])  ){ //
+            $output['auftraggsart'] = 'Backend Validierung ist nicht gut';
         }
+
 
 
         if ( empty( $output ) === false)
@@ -153,6 +165,20 @@ function dataValidion()
 
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // update datatables
 if ( !empty($_POST['action']) && $_POST['action'] === 'updateOnTouchCarrier' && dataValidion() ) {
 
@@ -162,7 +188,7 @@ if ( !empty($_POST['action']) && $_POST['action'] === 'updateOnTouchCarrier' && 
         $updateQuery = "UPDATE Blog.carrier 
 			SET carrier.kundennummer = '".$_POST["kundennummer"]."', carrier.name = '".$_POST["name"]."', 
 			 carrier.urlSc = '".$_POST["urlSc"]."', carrier.rufnummerSc = '".$_POST["rufnummerSc"]."' , 
-			 carrier.urlCc = '".$_POST["urlSc"]."', carrier.rufnummerCc = '".$_POST["rufnummerCc"]."', carrier.auftraggsart = '".$_POST["auftraggsart"]."'
+			 carrier.urlCc = '".$_POST["urlCc"]."', carrier.rufnummerCc = '".$_POST["rufnummerCc"]."', carrier.auftraggsart = '".$_POST["auftraggsart"]."'
 			WHERE carrier.id ='".$id."'";
         $isUpdated = $conn->prepare($updateQuery);
         $isUpdated->execute();

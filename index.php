@@ -58,35 +58,38 @@
                     <div class="form-group"
                     <label for="kundennummer" class="control-label">kundennummer</label>
                     <input type="text" class="form-control" id="kundennummer" name="kundennummer" placeholder="kundennummer" >
-                    <span class="error" id="kundennummer_erro"> </span>
+                    <span class="invalid-feedback" id="kundennummer_erro"> </span>
                 </div>
                 <div class="form-group">
                     <label for="name" class="control-label">name</label>
                     <input type="text" class="form-control" id="name" name="name" placeholder="name" >
-                    <span class="error" id="name_erro"> </span>
+                    <span class="invalid-feedback" id="name_erro"> </span>
                 </div>
                 <div class="form-group">
                     <label for="urlSc" class="control-label">urlSc</label>
-                    <input type="url" class="form-control"  id="urlSc" name="urlSc" placeholder="urlSc" >
+                    <input type="text" class="form-control"  id="urlSc" name="urlSc" placeholder="urlSc" >
+                    <span class="invalid-feedback" id="urlSc_erro"> </span>
                 </div>
                 <div class="form-group">
                     <label for="rufnummerSc" class="control-label">rufnummerSc</label>
                     <input type="tel" class="form-control"  id="rufnummerSc" name="rufnummerSc">
-                    <span class="error" id="rufnummerSc_erro"> </span>
+                    <span class="invalid-feedback" id="rufnummerSc_erro"> </span>
                 </div>
                 <div class="form-group">
                     <label for="urlCc" class="control-label">urlCc</label>
-                    <input type="url" class="form-control" id="urlCc" name="urlCc" placeholder="urlCc">
+                    <input type="text" class="form-control" id="urlCc" name="urlCc" placeholder="urlCc">
+                    <span class="invalid-feedback" id="urlCc_erro"> </span>
                 </div>
                 <div class="form-group">
                     <label for="$rufnummerCc" class="control-label">rufnummerCc</label>
-                    <input type="tel" class="form-control" id="rufnummerCc" name="rufnummerCc" placeholder="rufnummerCc">
+                     <input type="tel" class="form-control" id="rufnummerCc" name="rufnummerCc" placeholder="rufnummerCc">
+                     <span class="invalid-feedback" id="rufnummerCc_erro"> </span>
                 </div>
 
                 <div class="form-group">
                     <label for="auftraggsart" class="control-label">auftragsart</label>
                     <input type="text" class="form-control" id="auftraggsart" name="auftraggsart" placeholder="auftragsart">
-                    <span class="error" id="auftraggsart_error"> </span>
+                    <span class="invalid-feedback" id="auftraggsart_error"> </span>
                 </div>
             </div>
             <div class="modal-footer">
@@ -175,13 +178,21 @@
             } else {
                 $('#action').val('updateOnTouchCarrier');
             }
+             $('#kundennummer').on('input', function() {checkckundennummer()});
+             $('#name').on('input', function() {checkcname();});
+             $('#rufnummerSc').on('input', function() {checkRufnummerSc()});
+             $('#urlCc').on('input', function() {checkURLCc()} );
+             $('#urlSc').on('input', function() {checkURLSc()});
+             $('#auftraggsart').on('input', function() {checkauftragsart()});
 
-             $('#kundennummer').on('input', function() {checkckundennummer();});
-            $('#name').on('input', function() {checkcname();});
-            $('#rufnummerSc').on('input', function() {checkRufnummerSc();});
-            $('#auftraggsart').on('input', function() {checkauftragsart();$('#auftraggsart_erro').css('color','red ');});
-            if ( !checkckundennummer() && !checkcname() && !checkauftragsart() ) {}
-             else if ( !checkckundennummer() || !checkcname() || !checkauftragsart()){}
+
+
+            if ( !checkckundennummer() && !checkcname() && !checkauftragsart() ) {
+                $('.invalid-feedback').css('display', 'block');
+            }
+             else if ( !checkckundennummer() || !checkcname() || !checkauftragsart()){
+                $('.invalid-feedback').css('display', 'block');
+            }
              else {
             var formData = $(this).serialize();
             $.ajax({
@@ -193,22 +204,54 @@
                     $('#save').html('<i class="fa-solid fa-spinner fa-spin"></i>');
                 },
                 success: function (data) {
-                    console.log(data);
                     if (data.error) {
                         console.log(data.error);
 
-                        $('#kundennummer_erro').html('<div class="alert alert-danger"> data.error </div>');
+                        //$('#kundennummer_erro').html('<div class="alert alert-danger"> data.error </div>');
 
-                        if (data.type === 'kundennummer') { //load json data from server and output message
+                        if (data.error.kundennummer)
+                        {
                             $('#kundennummer_erro').html(data.text);
-                        } else if (data.type === 'name') {
-                            $('#name_erro').html(data.text);
+                            $('.invalid-feedback').css('display', 'block');
+                        }
 
-                            $('#kundennummer_erro').html(data.text);
+                        if (data.error.urlCc)
+                        {
+                            $('#urlCc_erro').html(data.error.urlCc);
+                            $('#urlCc').addClass('is-invalid');
+                            $('.invalid-feedback').css('display', 'block');
+                            console.log(data.error.urlCc);
+
+                        }
+
+                        if (data.error.urlSc)
+                        {
+                            $('#urlSc_erro').html(data.error.urlSc);
+                            $('.invalid-feedback').css('display', 'block');
+                            $('#urlCc').addClass('is-invalid');
+                            console.log(data.error.urlSc);
+                        }
+
+                        if (data.error.name) {
+                            $('#name_erro').html(data.name);
+                            $('.invalid-feedback').css('display', 'block');
+                        }
+
+                        if (data.error === 'rufnummerCce') {
+                            $('#rufnummerCc_erro').html(data.urlCc);
+                            $('.invalid-feedback').css('display', 'block');
+                        }
+
+                        if (data.error.auftraggsarte) {
+                            $('#auftraggsart_error').html(data.urlCc);
+                            $('.invalid-feedback').css('display', 'block');
+                        }
+
+
                             output = '<div class="error">' + data.text + '</div>';
                             $('#name_erro').css('border', 'red 1px solid');
                             $("#carrierForm  input[required=true], #carrierForm input[required=true]").val('');
-                        }
+
                     }
                     else
                     {
@@ -309,8 +352,7 @@
 
         if ( kundennummer === '' ) {
             $('#kundennummer_erro').html('kundennunner est obligatoire et doit pas etre vide ');
-            $('#kundennummer_erro').css('color', 'red ');
-            $('#kundennummer').css('border', 'red 1px solid ');
+
             return false;
         }
         //SABINA  SARAN  DIARRISSO
@@ -318,15 +360,17 @@
         else if ( !kundennummer.match(/^\d+$/) ) {
             //it's all digits
             $('#kundennummer_erro').html('kundennunner doit avoir des chiffres ');
-            $('#kundennummer_erro').css('color', 'red ');
+            $('#kundennummer_erro').addClass('is-invalid');
 
         } else if ($('#kundennummer').val().length < 4) {
             $('#kundennummer_erro').html('le numero de client doit avoir plus de 4 caractere');
+            $('#kundennummer_erro').addClass('is-invalid');
             return false;
 
         }
         else {
             $('#kundennummer_erro').html('');
+            $('#kundennummer_erro').removeClass('is-invalid');
             return true;
         }
     }
@@ -347,12 +391,12 @@
             $('#name_erro').html('nane soll große als  4');
             return false;
         }
-
+/*
         else if (!name.match(/\d/))
         {
             $('#name_erro').html('il ne doit pas comporter de chiffre dans cette field ');
             $('#name').css('border', 'red 1px solid ');
-        }
+        }*/
         else
         {
             $('#name_erro').html('');
@@ -363,29 +407,34 @@
 
     function checkauftragsart() {
 
-        var pattern = /^[A-Za-z0-9]+$/;
+        //var pattern = /^[A-Za-z0-9]+$/;
+        //var regex = /^.+\s.$/ ;
+        //var regex = /[a-zA-Z0-9_ ]/ ;
+        var regex = /^[a-zA-Z ]*$/ ; // cool
         var auftraggsart = $('#auftraggsart').val();
 
 
         if (auftraggsart === '') {
-            $('#auftraggsart_error').html('Auftragsart est obligatoire  et doit etre des nomm pas de chiffre');
-            $('#auftraggsart').css('border','red 1px solid ');
-            $('#auftraggsart_error').css('color','red ');
+            $('#auftraggsart_error').html(' Frondend : Auftragsart est obligatoire  et doit etre des nomm pas de chiffre');
+            $('#auftraggsart').addClass('is-invalid');
             return false;
-        } else if ($('#auftraggsart').val().length < 1)
+
+        } else if ( $('#auftraggsart').val().length < 2)
         {
-            $('#auftraggsart_error').html('auftragsart doit au mimunum 2 ou bien plus ');
-            $('#auftraggsart_error').css('color','red ');
+            $('#auftraggsart_error').html('Frontend:  auftragsart doit au mimunum 2 ou bien plus ');
+            $('#auftraggsart_error').addClass('is-invalid');
             return false;
         }
-        else if (!auftraggsart.match(/^[a-z]+$/i))
+        //else if (!auftraggsart.match(/^[a-z]+$/i))
+        else if (!auftraggsart.match(regex))
         {
-            $('#auftraggsart_erro').html('il ne doit pas comporter de chiffre dans cette field ');
-            $('#auftraggsart').css('border', 'red 1px solid ');
+            $('#auftraggsart_error').html('Frontend :il ne doit pas comporter de chiffre dans cette field ');
+            $('#auftraggsart').addClass('is-invalid');
+            return false;
         }
         else {
             $('#auftraggsart_error').html('');
-
+            $('#auftraggsart').removeClass('is-invalid');
             return true;
         }
     }
@@ -416,6 +465,55 @@
             return true;
         }
     }
+
+
+
+
+    function  checkURLSc()
+    {
+        var URLSc = $('#urlSc').val();
+        if (!URLSc.match(/((?:(?:http?|ftp)[s]*:\/\/)?[a-z0-9-%\/\&=?\.]+\.[a-z]{2,4}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?)/gi))
+        {
+            $('#urlSc_erro').html('URL Sc Frontend validierung');
+            $('#URLSc').addClass('is-invalid');
+        }
+        else {
+            $('#urlSc_erro').html('');
+            $('#URLSc').removeClass('is-invalid');
+            return true;
+        }
+    }
+
+
+
+
+
+
+    function  checkURLCc()
+    {
+        var urlCc = $('#urlCc').val();
+        if (!urlCc.match(/((?:(?:http?|ftp)[s]*:\/\/)?[a-z0-9-%\/\&=?\.]+\.[a-z]{2,4}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?)/gi))
+        {
+            $('#urlCc_erro').html(' Urlcc Frontend validierung');
+            $('#urlCc').addClass('is-invalid');
+        }
+        else {
+            $('#urlCc_erro').html('');
+            $('#urlCc').removeClass('is-invalid');
+            return true;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
 </script>
 </body>
 </html>
