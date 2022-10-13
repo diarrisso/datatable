@@ -472,7 +472,7 @@
     function  checkURLSc()
     {
         var URLSc = $('#urlSc').val();
-        if (!URLSc.match(/((?:(?:http?|ftp)[s]*:\/\/)?[a-z0-9-%\/\&=?\.]+\.[a-z]{2,4}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?)/gi))
+        if (!URLSc.match(/((?:(?:http?)[s]*:\/\/)?[a-z0-9-%\/\&=?\.]+\.[a-z]{2,4}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?)/gi))
         {
             $('#urlSc_erro').html('URL Sc Frontend validierung');
             $('#URLSc').addClass('is-invalid');
@@ -492,7 +492,7 @@
     function  checkURLCc()
     {
         var urlCc = $('#urlCc').val();
-        if (!urlCc.match(/((?:(?:http?|ftp)[s]*:\/\/)?[a-z0-9-%\/\&=?\.]+\.[a-z]{2,4}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?)/gi))
+        if (!urlCc.match(/((?:(?:http?)[s]*:\/\/)?[a-z0-9-%\/\&=?\.]+\.[a-z]{2,4}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?)/gi))
         {
             $('#urlCc_erro').html(' Urlcc Frontend validierung');
             $('#urlCc').addClass('is-invalid');
