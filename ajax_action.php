@@ -113,12 +113,17 @@ function validateURL($URL) {
     }
 }
 
+/**
+ * @param $rufnummer
+ * @return false|int
+ */
+function validRufnummer($rufnummer)
+{
+    $pattern = '/^[0:]([0-9]{11,18})$/';
+    $result = preg_match($pattern,$rufnummer);
 
-
-
-
-
-
+    return $result;
+}
 
 /**
  * @return array|true
@@ -133,8 +138,6 @@ function dataValidion()
     $regex .= "(\/([a-z0-9+\$_-]\.?)+)*\/?";
     $regex .= "(\?[a-z+&\$_.-][a-z0-9;:@&%=+\/\$_.-]*)?";
     $regex .= "(#[a-z_.-][a-z0-9+\$_.-]*)?";
-
-
 
 
     if ( isset($_POST['kundennummer'] )  )
@@ -152,7 +155,7 @@ function dataValidion()
             $output['name'] = 'Name muss ein string sein!';
         }
 
-        //if( !preg_match("/^$regex$/i", $_POST['urlSc']) && !empty( $_POST['urlSc']))
+
         if(!validateURL( $_POST['urlSc'] ) && !empty( $_POST['urlSc'] ))
 
         {
@@ -160,18 +163,18 @@ function dataValidion()
         }
 
 
-        if( !filter_var($_POST['rufnummerSc'], FILTER_SANITIZE_NUMBER_INT) &&  !empty( $_POST['rufnummerSc'])){ //check for valid numbers in phone number field
-            $output['rufnummerSc'] = 'rufnummerSc nicht gut';
+        if( !validRufnummer($_POST['rufnummerSc']) &&  !empty( $_POST['rufnummerSc'])){ //check for valid numbers in phone number field
+            $output['rufnummerSc'] = ' Backend: rufnummerSc nicht gut';
         }
 
 
-        //if( !preg_match("/^$regex$/i", $_POST['urlCc']) && !empty( $_POST['urlCc'])){ //
+
         if (!validateURL( $_POST['urlCc'])  && !empty( $_POST['urlCc']) ){ //
             $output['urlCc'] =  ' backend: urlcc ist not valid';
         }
 
-        if( !filter_var($_POST['rufnummerCc'], FILTER_SANITIZE_NUMBER_INT) && !empty( $_POST['rufnummerCc'])){ //check for valid numbers in phone number field
-            $output['rufnummerCc'] = 'rufnummerCc BIITE';
+        if( !validRufnummer($_POST['rufnummerCc']) && !empty( $_POST['rufnummerCc'])){ //check for valid numbers in phone number field
+            $output['rufnummerCc'] = 'Backend: rufnummerCc BIITE';
         }
 
 
@@ -186,23 +189,8 @@ function dataValidion()
             return  $output;
         }
     }
-
     return true;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // update datatables
 if ( !empty($_POST['action']) && $_POST['action'] === 'updateOnTouchCarrier' && dataValidion() ) {
