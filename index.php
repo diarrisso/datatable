@@ -4,7 +4,7 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" ">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css">
@@ -87,9 +87,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="auftraggsart" class="control-label">auftragsart</label>
-                    <input type="text" class="form-control" id="auftraggsart" name="auftraggsart" placeholder="auftragsart">
-                    <span class="invalid-feedback" id="auftraggsart_error"> </span>
+                    <label for="auftragsart" class="control-label">auftragsart</label>
+                    <input type="text" class="form-control" id="auftragsart" name="auftragsart" placeholder="auftragsart">
+                    <span class="invalid-feedback" id="auftragsart_error"> </span>
                 </div>
             </div>
             <div class="modal-footer">
@@ -155,11 +155,13 @@
                     render : function(data, type, row, meta) {return'<a href="' + data + '">' + data + '</a>';},
                 },
                 { data: "rufnummerCc" },
-                { data: "auftraggsart" },
+                { data: "auftragsart" },
                 {
                     'data': null,
                     'render': function (data, type, row) {
-                        return '<button  type="button" name="edit" class="btn btn-primary edit" id="' + row.id +'" data-toggle="modal" data-target="#carrierModal">Edit</button>'
+                        return '<button  type="button" name="edit" class="btn btn-primary edit" id="' + row.id +'" data-toggle="modal" data-target="#carrierModal" title="Edit">' +
+                            '<i class="fa fa-edit" style="font-size:24px"></i>' +
+                            '</button>'
                     }
                 },
             ],
@@ -178,19 +180,19 @@
             } else {
                 $('#action').val('updateOnTouchCarrier');
             }
-             $('#kundennummer').on('input', function() {checkckundennummer()});
+            // live validierung Frontend
+            /* $('#kundennummer').on('input', function() {checkckundennummer()});
              $('#name').on('input', function() {checkcname();});
              $('#rufnummerSc').on('input', function() {checkRufnummerSc()});
              $('#urlCc').on('input', function() {checkURLCc()} );
              $('#urlSc').on('input', function() {checkURLSc()});
              $('#auftraggsart').on('input', function() {checkauftragsart()});
-
-
-
-            if ( !checkckundennummer() && !checkcname() && !checkauftragsart() ) {
+            */
+            if ( !checkckundennummer() && !checkcname() && !checkauftragsart()  ) {
                 $('.invalid-feedback').css('display', 'block');
             }
-             else if ( !checkckundennummer() || !checkcname() || !checkauftragsart()){
+             else if ( !checkckundennummer() || !checkcname() || !checkauftragsart() || !checkRufnummerSc() || !checkURLCc() || !checkURLSc()
+            || ! checkRufnummerCc()){
                 $('.invalid-feedback').css('display', 'block');
             }
              else {
@@ -207,11 +209,9 @@
                     if (data.error) {
                         console.log(data.error);
 
-                        //$('#kundennummer_erro').html('<div class="alert alert-danger"> data.error </div>');
-
                         if (data.error.kundennummer)
                         {
-                            $('#kundennummer_erro').html(data.text);
+                            $('#kundennummer_erro').html(data.error.kundennummer);
                             $('.invalid-feedback').css('display', 'block');
                         }
 
@@ -219,37 +219,45 @@
                         {
                             $('#urlCc_erro').html(data.error.urlCc);
                             $('#urlCc').addClass('is-invalid');
-                            $('.invalid-feedback').css('display', 'block');
-                            console.log(data.error.urlCc);
 
+                            console.log(data.error.urlCc);
                         }
 
                         if (data.error.urlSc)
                         {
                             $('#urlSc_erro').html(data.error.urlSc);
-                            $('.invalid-feedback').css('display', 'block');
                             $('#urlCc').addClass('is-invalid');
                             console.log(data.error.urlSc);
                         }
 
-                        if (data.error.name) {
-                            $('#name_erro').html(data.name);
-                            $('.invalid-feedback').css('display', 'block');
+                        if (data.error.name)
+                        {
+                            $('#name_erro').html(data.error.name);
+                            $('#name').addClass('is-invalid');
                         }
 
-                        if (data.error === 'rufnummerCce') {
-                            $('#rufnummerCc_erro').html(data.urlCc);
-                            $('.invalid-feedback').css('display', 'block');
+
+                        if (data.error.rufnummerCc)
+                        {
+                            $('#rufnummerCc_erro').html(data.error.rufnummerCc);
+
+                            $('#rufnummerCc').addClass('is-invalid');
                         }
 
-                        if (data.error.auftraggsarte) {
-                            $('#auftraggsart_error').html(data.urlCc);
-                            $('.invalid-feedback').css('display', 'block');
+                        if (data.error.rufnummerSc)
+                        {
+                            $('#rufnummerSc_erro').html(data.error.rufnummerSc);
+                            $('#rufnummerCc').addClass('is-invalid');
+                        }
+
+
+                        if (data.error.auftragsart) {
+                            $('#auftragsart_error').html(data.auftragsart);
+                            $('#auftragsart').addClass('is-invalid');
                         }
 
 
                             output = '<div class="error">' + data.text + '</div>';
-                            $('#name_erro').css('border', 'red 1px solid');
                             $("#carrierForm  input[required=true], #carrierForm input[required=true]").val('');
 
                     }
@@ -331,13 +339,14 @@
             var table = $('#onTouchCarrier').DataTable();
             var row  = $(this).parents('tr')[0];
             var rowData = table.row( row ).data();
+            console.log(rowData);
             $('#kundennummer').val( rowData.kundennummer );
             $('#name').val( rowData.name );
             $('#urlSc').val( rowData.urlSc );
-            $('#rufnummerSc').val( rowData.rufnummerSc );
+            $('#rufnummerCc').val( rowData.rufnummerSc );
             $('#urlCc').val( rowData.urlCc );
             $('#rufnummerCc').val( rowData.rufnummerCc );
-            $('#auftraggsart').val( rowData.auftraggsart );
+            $('#auftragsart').val( rowData.auftragsart );
             $('#save').val('Update');
             $('.modal-title').html("<i class='fa fa-plus'></i> Editer");
             $('#action').val('updateOnTouchCarrier');
@@ -352,7 +361,7 @@
 
         if ( kundennummer === '' ) {
             $('#kundennummer_erro').html('kundennunner est obligatoire et doit pas etre vide ');
-
+            $('#kundennummer').addClass('is-invalid');
             return false;
         }
         //SABINA  SARAN  DIARRISSO
@@ -360,17 +369,17 @@
         else if ( !kundennummer.match(/^\d+$/) ) {
             //it's all digits
             $('#kundennummer_erro').html('kundennunner doit avoir des chiffres ');
-            $('#kundennummer_erro').addClass('is-invalid');
+            $('#kundennummer').addClass('is-invalid');
 
         } else if ($('#kundennummer').val().length < 4) {
             $('#kundennummer_erro').html('le numero de client doit avoir plus de 4 caractere');
-            $('#kundennummer_erro').addClass('is-invalid');
+            $('#kundennummer').addClass('is-invalid');
             return false;
 
         }
         else {
             $('#kundennummer_erro').html('');
-            $('#kundennummer_erro').removeClass('is-invalid');
+            $('#kundennummer').removeClass('is-invalid');
             return true;
         }
     }
@@ -381,8 +390,7 @@
 
         if (name === '') {
             $('#name_erro').html('name is Field is required');
-            $('#name_erro').css('color', 'red ');
-            $('#name').css('border', 'red 1px solid ');
+            $('#name').addClass('is-invalid');
             return false;
         }
 
@@ -391,88 +399,79 @@
             $('#name_erro').html('nane soll große als  4');
             return false;
         }
-/*
-        else if (!name.match(/\d/))
-        {
-            $('#name_erro').html('il ne doit pas comporter de chiffre dans cette field ');
-            $('#name').css('border', 'red 1px solid ');
-        }*/
         else
         {
             $('#name_erro').html('');
+            $('#name').removeClass('is-invalid');
             return true;
         }
     }
-
-
     function checkauftragsart() {
 
-        //var pattern = /^[A-Za-z0-9]+$/;
-        //var regex = /^.+\s.$/ ;
-        //var regex = /[a-zA-Z0-9_ ]/ ;
         var regex = /^[a-zA-Z ]*$/ ; // cool
-        var auftraggsart = $('#auftraggsart').val();
+        var auftragsart = $('#auftragsart').val();
 
 
-        if (auftraggsart === '') {
-            $('#auftraggsart_error').html(' Frondend : Auftragsart est obligatoire  et doit etre des nomm pas de chiffre');
-            $('#auftraggsart').addClass('is-invalid');
+        if (auftragsart === '') {
+            $('#auftragsart_error').html(' Frondend : Auftragsart est obligatoire  et doit etre des nomm pas de chiffre');
+            $('#auftragsart').addClass('is-invalid');
             return false;
 
-        } else if ( $('#auftraggsart').val().length < 2)
+        } else if ( $('#auftragsart').val().length < 2)
         {
-            $('#auftraggsart_error').html('Frontend:  auftragsart doit au mimunum 2 ou bien plus ');
-            $('#auftraggsart_error').addClass('is-invalid');
+            $('#auftragsart_error').html('Frontend:  auftragsart doit au mimunum 2 ou bien plus ');
+            $('#auftragsart_error').addClass('is-invalid');
             return false;
         }
-        //else if (!auftraggsart.match(/^[a-z]+$/i))
-        else if (!auftraggsart.match(regex))
+        else if (!auftragsart.match(regex))
         {
-            $('#auftraggsart_error').html('Frontend :il ne doit pas comporter de chiffre dans cette field ');
-            $('#auftraggsart').addClass('is-invalid');
+            $('#auftragsart_error').html('Frontend :il ne doit pas comporter de chiffre dans cette field ');
+            $('#auftragsart').addClass('is-invalid');
             return false;
         }
         else {
-            $('#auftraggsart_error').html('');
-            $('#auftraggsart').removeClass('is-invalid');
+            $('#auftragsart_error').html('');
+            $('#auftragsart').removeClass('is-invalid');
             return true;
         }
     }
 
     function  checkRufnummerSc()
     {
-
         var rufnummerSc = $('#rufnummerSc').val();
-
-
-        if (!rufnummerSc === '' ) {
-            $('#rufnummerSc').html('nur telephone nummer');
-            $('#rufnummerSc').css('border','red 1px solid ');
-            $('#rufnummerSc_erro').css('color','red ');
+        if ( rufnummerSc !== '' && !rufnummerSc.match(/^[0:]([0-9]{11,18})$/)) {
+            $('#rufnummerSc_erro').html(' FRONTEND :nur telephone nummer');
+            $('#rufnummerSc').addClass('is-invalid');
             return false;
         }
-
-        else if (!rufnummerSc.match(/08(?:\s*(?:\d\s*){5,18})?$/))
-
-        {
-            $('#rufnummerSc_erro').html('JAIN BESOIN DES NUMMERO VALIDE');
-            $('#rufnummerSc').css('border', 'red 1px solid ');
-        }
         else {
-            $('#rufnummerSc').html('');
-            $('#rufnummerSc').css('border', 'green 1px solid');
-            $('#rufnummerSc_erro').css('display', 'none');
+            $('#rufnummerSc_erro').html('');
+            $('#rufnummerSc').removeClass('is-invalid');
             return true;
         }
     }
 
 
 
+    function  checkRufnummerCc()
+    {
+        var rufnummerCc = $('#rufnummerCc').val();
+        if (rufnummerCc !== '' && !rufnummerCc.match(/^[0:]([0-9]{11,18})$/)) {
+            $('#rufnummerCc_erro').html('frontend : nur telephone nummer');
+            $('#rufnummerCc').addClass('is-invalid');
+            return false;
+        }
+        else {
+            $('#rufnummerCc_erro').html('');
+            $('#rufnummerCc').removeClass('is-invalid');
+            return true;
+        }
+    }
 
     function  checkURLSc()
     {
         var URLSc = $('#urlSc').val();
-        if (!URLSc.match(/((?:(?:http?)[s]*:\/\/)?[a-z0-9-%\/\&=?\.]+\.[a-z]{2,4}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?)/gi))
+        if ( URLSc !== '' && !URLSc.match(/((?:(?:http?)[s]*:\/\/)?[a-z0-9-%\/\&=?\.]+\.[a-z]{2,4}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?)/gi))
         {
             $('#urlSc_erro').html('URL Sc Frontend validierung');
             $('#URLSc').addClass('is-invalid');
@@ -484,15 +483,10 @@
         }
     }
 
-
-
-
-
-
     function  checkURLCc()
     {
         var urlCc = $('#urlCc').val();
-        if (!urlCc.match(/((?:(?:http?)[s]*:\/\/)?[a-z0-9-%\/\&=?\.]+\.[a-z]{2,4}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?)/gi))
+        if ( urlCc !== '' && !urlCc.match(/((?:(?:http?)[s]*:\/\/)?[a-z0-9-%\/\&=?\.]+\.[a-z]{2,4}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?)/gi))
         {
             $('#urlCc_erro').html(' Urlcc Frontend validierung');
             $('#urlCc').addClass('is-invalid');
@@ -503,17 +497,6 @@
             return true;
         }
     }
-
-
-
-
-
-
-
-
-
-
-
 </script>
 </body>
 </html>

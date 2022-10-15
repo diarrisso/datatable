@@ -54,7 +54,7 @@ if ( empty( $_POST['kundennummer'] ) ) {
         $row ['rufnummerSc'] =   $value['rufnummerSc'] ;
         $row ['urlCc'] =         $value['urlCc'] ;
         $row ['rufnummerCc'] =   $value['rufnummerCc'] ;
-        $row ['auftraggsart'] =   $value['auftraggsart'] ;
+        $row ['auftragsart'] =   $value['auftraggsart'] ;
         $data [] = $row;
 
     }
@@ -84,7 +84,7 @@ if ( !empty($_POST['action']) && $_POST['action'] === 'addData' && dataValidion(
     $rufnummerSc         =  htmlspecialchars(trim($_POST['rufnummerSc']));
     $urlCc         =  htmlspecialchars(trim($_POST['urlCc']));
     $rufnummerCc  = htmlspecialchars(trim($_POST['rufnummerCc']));
-    $auftraggsart = htmlspecialchars(trim($_POST['auftraggsart']));
+    $auftraggsart = htmlspecialchars(trim($_POST['auftragsart']));
 
     $insertQuery = "INSERT INTO Blog.carrier(carrier.kundennummer, carrier.name, carrier.urlSc, carrier.rufnummerSc, carrier.urlCc, carrier.rufnummerCc, carrier.auftraggsart) 
 			VALUES ('".$kundenummer."', '".$name."', '".$urlSc."', '".$rufnummerSc."', '".$urlCc."','".$rufnummerCc."','".$auftraggsart."')";
@@ -100,7 +100,8 @@ if ( !empty($_POST['action']) && $_POST['action'] === 'addData' && dataValidion(
  * @param $URL
  * @return bool
  */
-function validateURL($URL) {
+function validateURL($URL): bool
+{
     $pattern_1 = "%^(?:(?:https?|ftp|www|http)://)(?:\S+(?::\S*)?@|\d{1,3}(?:\.\d{1,3}){3}|(?:(?:[a-z\d\x{00a1}-\x{ffff}]+-?)*[a-z\d\x{00a1}-\x{ffff}]+)(?:\.(?:[a-z\d\x{00a1}-\x{ffff}]+-?)*[a-z\d\x{00a1}-\x{ffff}]+)*(?:\.[a-z\x{00a1}-\x{ffff}]{2,6}))(?::\d+)?(?:[^\s]*)?$%iu";
     //$pattern_1 = "/^(http|https|ftp):\/\/(([A-Z0-9][A-Z0-9_-]*)(\.[A-Z0-9][A-Z0-9_-]*)+.(com|org|net|dk|at|us|tv|info|uk|co.uk|biz|se|de)$)(:(\d+))?\/?/i";
     //$pattern_2 = "/^(www)((\.[A-Z0-9][A-Z0-9_-]*)+.(com|org|net|dk|at|us|tv|info|uk|co.uk|biz|se|de)$)(:(\d+))?\/?/i";
@@ -146,7 +147,7 @@ function dataValidion()
         $output = array();
 
         if(!filter_var($_POST['kundennummer'], FILTER_VALIDATE_INT) || empty( $_POST['kundennummer'] ))
-        { //email validation
+        {
             $output['kundennummer'] = 'bitte kein string';
         }
 
@@ -164,7 +165,7 @@ function dataValidion()
 
 
         if( !validRufnummer($_POST['rufnummerSc']) &&  !empty( $_POST['rufnummerSc'])){ //check for valid numbers in phone number field
-            $output['rufnummerSc'] = ' Backend: rufnummerSc nicht gut';
+            $output['rufnummerSc'] = ' Backend: rufnummerSc Bitte SC';
         }
 
 
@@ -174,12 +175,12 @@ function dataValidion()
         }
 
         if( !validRufnummer($_POST['rufnummerCc']) && !empty( $_POST['rufnummerCc'])){ //check for valid numbers in phone number field
-            $output['rufnummerCc'] = 'Backend: rufnummerCc BIITE';
+            $output['rufnummerCc'] = 'Backend: rufnummerCc BIITE cc';
         }
 
 
-        if(is_integer($_POST['auftraggsart']) && empty($_POST['auftraggsart'])  ){ //
-            $output['auftraggsart'] = 'Backend Validierung ist nicht gut';
+        if(is_integer($_POST['auftragsart']) && empty($_POST['auftragsart'])  ){ //
+            $output['auftragsart'] = 'Backend Validierung ist nicht gut';
         }
 
 
@@ -201,7 +202,7 @@ if ( !empty($_POST['action']) && $_POST['action'] === 'updateOnTouchCarrier' && 
         $updateQuery = "UPDATE Blog.carrier 
 			SET carrier.kundennummer = '".$_POST["kundennummer"]."', carrier.name = '".$_POST["name"]."', 
 			 carrier.urlSc = '".$_POST["urlSc"]."', carrier.rufnummerSc = '".$_POST["rufnummerSc"]."' , 
-			 carrier.urlCc = '".$_POST["urlCc"]."', carrier.rufnummerCc = '".$_POST["rufnummerCc"]."', carrier.auftraggsart = '".$_POST["auftraggsart"]."'
+			 carrier.urlCc = '".$_POST["urlCc"]."', carrier.rufnummerCc = '".$_POST["rufnummerCc"]."', carrier.auftraggsart = '".$_POST["auftragsart"]."'
 			WHERE carrier.id ='".$id."'";
         $isUpdated = $conn->prepare($updateQuery);
         $isUpdated->execute();
