@@ -43,42 +43,42 @@
                 <div class="modal-header">
                     <span id="message"></span>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"><i class="fa fa-plus"></i> Edit User</h4>
+                    <h4 class="modal-title"><i class="fa fa-plus"></i>Edit User</h4>
                 </div>
                 <div class="modal-body">
                     <div class="form-group"
-                    <label for="kundennummer" class="control-label">kundennummer</label>
+                    <label for="kundennummer" class="control-label">Kundennummer</label>
                     <input type="text" class="form-control" id="kundennummer" name="kundennummer" placeholder="kundennummer" >
-                    <span class="invalid-feedback" id="kundennummer_erro"> </span>
+                    <span class="invalid-feedback" id="kundennummer_error"> </span>
                 </div>
                 <div class="form-group">
-                    <label for="name" class="control-label">name</label>
+                    <label for="name" class="control-label">Name</label>
                     <input type="text" class="form-control" id="name" name="name" placeholder="name" >
-                    <span class="invalid-feedback" id="name_erro"> </span>
+                    <span class="invalid-feedback" id="name_error"> </span>
                 </div>
                 <div class="form-group">
-                    <label for="urlSc" class="control-label">urlSc</label>
+                    <label for="urlSc" class="control-label">UrlSc</label>
                     <input type="text" class="form-control"  id="urlSc" name="urlSc" placeholder="urlSc" >
-                    <span class="invalid-feedback" id="urlSc_erro"> </span>
+                    <span class="invalid-feedback" id="urlSc_error"> </span>
                 </div>
                 <div class="form-group">
-                    <label for="rufnummerSc" class="control-label">rufnummerSc</label>
+                    <label for="rufnummerSc" class="control-label">RufnummerSc</label>
                     <input type="tel" class="form-control"  id="rufnummerSc" name="rufnummerSc">
-                    <span class="invalid-feedback" id="rufnummerSc_erro"> </span>
+                    <span class="invalid-feedback" id="rufnummerSc_error"> </span>
                 </div>
                 <div class="form-group">
-                    <label for="urlCc" class="control-label">urlCc</label>
+                    <label for="urlCc" class="control-label">UrlCc</label>
                     <input type="text" class="form-control" id="urlCc" name="urlCc" placeholder="urlCc">
-                    <span class="invalid-feedback" id="urlCc_erro"> </span>
+                    <span class="invalid-feedback" id="urlCc_error"> </span>
                 </div>
                 <div class="form-group">
-                    <label for="$rufnummerCc" class="control-label">rufnummerCc</label>
+                    <label for="$rufnummerCc" class="control-label">RufnummerCc</label>
                      <input type="tel" class="form-control" id="rufnummerCc" name="rufnummerCc" placeholder="rufnummerCc">
-                     <span class="invalid-feedback" id="rufnummerCc_erro"> </span>
+                     <span class="invalid-feedback" id="rufnummerCc_error"> </span>
                 </div>
 
                 <div class="form-group">
-                    <label for="auftragsart" class="control-label">auftragsart</label>
+                    <label for="auftragsart" class="control-label">Auftragsart</label>
                     <input type="text" class="form-control" id="auftragsart" name="auftragsart" placeholder="auftragsart">
                     <span class="invalid-feedback" id="auftragsart_error"> </span>
                 </div>
@@ -182,15 +182,24 @@
             // variable parametter
             let rufnummerSC = $('#rufnummerSc');
             let rufnummerSCValue = $('#rufnummerSc').val();
-            let rufnummerSCError = $('#rufnummerSc_erro');
+            let rufnummerSCError = $('#rufnummerSc_error');
             let rufnummerCC = $('#rufnummerCc');
             let rufnummerCCValue = $('#rufnummerCc').val();
-            let rufnummerCCError = $('#rufnummerCc_erro');
+            let rufnummerCCError = $('#rufnummerCc_error');
+            let urlCC = $('#urlCc');
+            let urlCCValue = $('#urlCc').val();
+            let urlCcError = $('#urlCc_error');
+            let urlSC = $('#urlSc');
+            let urlSCValue = $('#urlSc').val();
+            let urlScError = $('#urlSc_error');
+
+
             if ( !checkckundennummer() && !checkcname() && !checkauftragsart()  ) {
                 $('.invalid-feedback').css('display', 'block');
             }
-             else if ( !checkckundennummer() || !checkcname() || !checkauftragsart() || !checkRufnummer(rufnummerSC,rufnummerSCValue,rufnummerSCError) || !checkURLCc() || !checkURLSc()
-            || ! checkRufnummer(rufnummerCC,rufnummerCCValue,rufnummerCCError)){
+             else if ( !checkckundennummer() || !checkcname() || !checkauftragsart() ||
+                !checkRufnummer( rufnummerSC,rufnummerSCValue,rufnummerSCError ) || !checkURL( urlCC,urlCCValue,urlCcError )
+                || !checkURL( urlSC,urlSCValue,urlScError ) || ! checkRufnummer( rufnummerCC,rufnummerCCValue,rufnummerCCError )){
                 $('.invalid-feedback').css('display', 'block');
             }
              else {
@@ -209,42 +218,41 @@
 
                         if (data.error.kundennummer)
                         {
-                            $('#kundennummer_erro').html(data.error.kundennummer);
-                            $('.invalid-feedback').css('display', 'block');
+                            $('#kundennummer_error').html(data.error.kundennummer);
+                            $('#kundennummer').addClass('is-invalid');
                         }
 
                         if (data.error.urlCc)
                         {
-                            $('#urlCc_erro').html(data.error.urlCc);
+                            $('#urlCc_error').html(data.error.urlCc);
                             $('#urlCc').addClass('is-invalid');
 
-                            console.log(data.error.urlCc);
                         }
 
                         if (data.error.urlSc)
                         {
-                            $('#urlSc_erro').html(data.error.urlSc);
-                            $('#urlCc').addClass('is-invalid');
-                            console.log(data.error.urlSc);
+                            $('#urlSc_error').html(data.error.urlSc);
+                            $('#urlSc').addClass('is-invalid');
+
                         }
 
                         if (data.error.name)
                         {
-                            $('#name_erro').html(data.error.name);
+                            $('#name_error').html(data.error.name);
                             $('#name').addClass('is-invalid');
                         }
 
 
                         if (data.error.rufnummerCc)
                         {
-                            $('#rufnummerCc_erro').html(data.error.rufnummerCc);
+                            $('#rufnummerCc_error').html(data.error.rufnummerCc);
 
                             $('#rufnummerCc').addClass('is-invalid');
                         }
 
                         if (data.error.rufnummerSc)
                         {
-                            $('#rufnummerSc_erro').html(data.error.rufnummerSc);
+                            $('#rufnummerSc_error').html(data.error.rufnummerSc);
                             $('#rufnummerCc').addClass('is-invalid');
                         }
 
@@ -358,7 +366,7 @@
         var kundennummer = $('#kundennummer').val();
 
         if ( kundennummer === '' ) {
-            $('#kundennummer_erro').html('kundennunner est obligatoire et doit pas etre vide ');
+            $('#kundennummer_error').html('kundennunner est obligatoire et doit pas etre vide ');
             $('#kundennummer').addClass('is-invalid');
             return false;
         }
@@ -366,17 +374,17 @@
 
         else if ( !kundennummer.match(/^\d+$/) ) {
             //it's all digits
-            $('#kundennummer_erro').html('kundennunner doit avoir des chiffres ');
+            $('#kundennummer_error').html('kundennunner doit avoir des chiffres ');
             $('#kundennummer').addClass('is-invalid');
 
         } else if ($('#kundennummer').val().length < 4) {
-            $('#kundennummer_erro').html('le numero de client doit avoir plus de 4 caractere');
+            $('#kundennummer_error').html('le numero de client doit avoir plus de 4 caractere');
             $('#kundennummer').addClass('is-invalid');
             return false;
 
         }
         else {
-            $('#kundennummer_erro').html('');
+            $('#kundennummer_error').html('');
             $('#kundennummer').removeClass('is-invalid');
             return true;
         }
@@ -387,19 +395,19 @@
         var name = $('#name').val();
 
         if (name === '') {
-            $('#name_erro').html('name is Field is required');
+            $('#name_error').html('name is Field is required');
             $('#name').addClass('is-invalid');
             return false;
         }
 
         else if ($('#name').val().length < 4)
         {
-            $('#name_erro').html('nane soll große als  4');
+            $('#name_error').html('nane soll große als  4');
             return false;
         }
         else
         {
-            $('#name_erro').html('');
+            $('#name_error').html('');
             $('#name').removeClass('is-invalid');
             return true;
         }
@@ -446,35 +454,19 @@
         return true;
     }
 
-    function  checkURLSc()
+    function  checkURL(input,inputValue,errorMessage)
     {
-        var URLSc = $('#urlSc').val();
-        if ( URLSc !== '' && !URLSc.match(/((?:(?:http?)[s]*:\/\/)?[a-z0-9-%\/\&=?\.]+\.[a-z]{2,4}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?)/gi))
+        if ( inputValue !== '' && !inputValue.match(/((?:(?:http?)[s]*:\/\/)?[a-z0-9-%\/\&=?\.]+\.[a-z]{2,4}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?)/gi))
         {
-            $('#urlSc_erro').html('URL Sc Frontend validierung');
-            $('#URLSc').addClass('is-invalid');
+            errorMessage.html('Frontend: URL ist nicht valide');
+            input.addClass('is-invalid');
         }
-        else {
-            $('#urlSc_erro').html('');
-            $('#URLSc').removeClass('is-invalid');
-            return true;
-        }
+        errorMessage.html('');
+        input.removeClass('is-invalid');
+        return true;
+
     }
 
-    function  checkURLCc()
-    {
-        var urlCc = $('#urlCc').val();
-        if ( urlCc !== '' && !urlCc.match(/((?:(?:http?)[s]*:\/\/)?[a-z0-9-%\/\&=?\.]+\.[a-z]{2,4}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?)/gi))
-        {
-            $('#urlCc_erro').html(' Urlcc Frontend validierung');
-            $('#urlCc').addClass('is-invalid');
-        }
-        else {
-            $('#urlCc_erro').html('');
-            $('#urlCc').removeClass('is-invalid');
-            return true;
-        }
-    }
 </script>
 </body>
 </html>
