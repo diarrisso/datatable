@@ -194,12 +194,13 @@
             let urlScError = $('#urlSc_error');
 
 
-            if ( !checkckundennummer() && !checkcname() && !checkauftragsart()  ) {
+            if ( /*!checkckundennummer() &&*/ !checkcname() && !checkauftragsart()  ) {
                 $('.invalid-feedback').css('display', 'block');
             }
-             else if ( !checkckundennummer() || !checkcname() || !checkauftragsart() ||
-                !checkRufnummer( rufnummerSC,rufnummerSCValue,rufnummerSCError ) || !checkURL( urlCC,urlCCValue,urlCcError )
-                || !checkURL( urlSC,urlSCValue,urlScError ) || ! checkRufnummer( rufnummerCC,rufnummerCCValue,rufnummerCCError )){
+             else if ( /*!checkckundennummer() ||*/ !checkcname() || !checkauftragsart() ) //||
+               /* !checkRufnummer( rufnummerSC,rufnummerSCValue,rufnummerSCError )*/ /*|| !checkURL( urlCC,urlCCValue,urlCcError )
+                || !checkURL( urlSC,urlSCValue,urlScError ) || ! checkRufnummer( rufnummerCC,rufnummerCCValue,rufnummerCCError*/ //))
+                 {
                 $('.invalid-feedback').css('display', 'block');
             }
              else {
@@ -222,16 +223,16 @@
                             $('#kundennummer').addClass('is-invalid');
                         }
 
-                        if (data.error.urlCc)
+                        if (data.error.url)
                         {
-                            $('#urlCc_error').html(data.error.urlCc);
+                            $('#urlCc_error').html(data.error.url);
                             $('#urlCc').addClass('is-invalid');
 
                         }
 
-                        if (data.error.urlSc)
+                        if (data.error.url)
                         {
-                            $('#urlSc_error').html(data.error.urlSc);
+                            $('#urlSc_error').html(data.error.url);
                             $('#urlSc').addClass('is-invalid');
 
                         }
@@ -250,10 +251,10 @@
                             $('#rufnummerCc').addClass('is-invalid');
                         }
 
-                        if (data.error.rufnummerSc)
+                        if (data.error.rufnummerSC)
                         {
-                            $('#rufnummerSc_error').html(data.error.rufnummerSc);
-                            $('#rufnummerCc').addClass('is-invalid');
+                            $('#rufnummerSc_error').html(data.error.rufnummerSC);
+                            $('#rufnummerSc').addClass('is-invalid');
                         }
 
 
@@ -377,8 +378,8 @@
             $('#kundennummer_error').html('kundennunner doit avoir des chiffres ');
             $('#kundennummer').addClass('is-invalid');
 
-        } else if ($('#kundennummer').val().length < 4) {
-            $('#kundennummer_error').html('le numero de client doit avoir plus de 4 caractere');
+        } else if ($('#kundennummer').val().length !== 9) {
+            $('#kundennummer_error').html('le Numero de Cient doit etre de 10 Chiffres');
             $('#kundennummer').addClass('is-invalid');
             return false;
 
@@ -442,10 +443,10 @@
         }
     }
 
-    function  checkRufnummer(input, inputValue, errorMessage)
+    function  checkRufnummer(input, inputValue, errorMessage, id)
     {
         if ( inputValue !== '' && !inputValue.match(/^[0:]([0-9]{11,18})$/)) {
-            errorMessage.html(' FRONTEND :nur telephone nummer');
+            errorMessage.html(' FRONTEND :le'+id+' de Telephone pas valide');
             input.addClass('is-invalid');
             return false;
         }
