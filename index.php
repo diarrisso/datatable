@@ -36,15 +36,6 @@
         </thead>
     </table>
 </div>
-
-<!--</div>
-<style>
-    show {
-        display: block;
-    }
-
-</style>
--->
 <div id="carrierModal" class="modal fade"  tabindex="-1">
     <div class="modal-dialog">
         <form method="post" id="carrierForm">
@@ -188,11 +179,18 @@
              $('#urlSc').on('input', function() {checkURLSc()});
              $('#auftraggsart').on('input', function() {checkauftragsart()});
             */
+            // variable parametter
+            let rufnummerSC = $('#rufnummerSc');
+            let rufnummerSCValue = $('#rufnummerSc').val();
+            let rufnummerSCError = $('#rufnummerSc_erro');
+            let rufnummerCC = $('#rufnummerCc');
+            let rufnummerCCValue = $('#rufnummerCc').val();
+            let rufnummerCCError = $('#rufnummerCc_erro');
             if ( !checkckundennummer() && !checkcname() && !checkauftragsart()  ) {
                 $('.invalid-feedback').css('display', 'block');
             }
-             else if ( !checkckundennummer() || !checkcname() || !checkauftragsart() || !checkRufnummerSc() || !checkURLCc() || !checkURLSc()
-            || ! checkRufnummerCc()){
+             else if ( !checkckundennummer() || !checkcname() || !checkauftragsart() || !checkRufnummer(rufnummerSC,rufnummerSCValue,rufnummerSCError) || !checkURLCc() || !checkURLSc()
+            || ! checkRufnummer(rufnummerCC,rufnummerCCValue,rufnummerCCError)){
                 $('.invalid-feedback').css('display', 'block');
             }
              else {
@@ -436,36 +434,16 @@
         }
     }
 
-    function  checkRufnummerSc()
+    function  checkRufnummer(input, inputValue, errorMessage)
     {
-        var rufnummerSc = $('#rufnummerSc').val();
-        if ( rufnummerSc !== '' && !rufnummerSc.match(/^[0:]([0-9]{11,18})$/)) {
-            $('#rufnummerSc_erro').html(' FRONTEND :nur telephone nummer');
-            $('#rufnummerSc').addClass('is-invalid');
+        if ( inputValue !== '' && !inputValue.match(/^[0:]([0-9]{11,18})$/)) {
+            errorMessage.html(' FRONTEND :nur telephone nummer');
+            input.addClass('is-invalid');
             return false;
         }
-        else {
-            $('#rufnummerSc_erro').html('');
-            $('#rufnummerSc').removeClass('is-invalid');
-            return true;
-        }
-    }
-
-
-
-    function  checkRufnummerCc()
-    {
-        var rufnummerCc = $('#rufnummerCc').val();
-        if (rufnummerCc !== '' && !rufnummerCc.match(/^[0:]([0-9]{11,18})$/)) {
-            $('#rufnummerCc_erro').html('frontend : nur telephone nummer');
-            $('#rufnummerCc').addClass('is-invalid');
-            return false;
-        }
-        else {
-            $('#rufnummerCc_erro').html('');
-            $('#rufnummerCc').removeClass('is-invalid');
-            return true;
-        }
+        errorMessage.html('');
+        input.removeClass('is-invalid');
+        return true;
     }
 
     function  checkURLSc()
