@@ -192,14 +192,18 @@
             let urlSC = $('#urlSc');
             let urlSCValue = $('#urlSc').val();
             let urlScError = $('#urlSc_error');
+            let inputrufCc = 'rufnummerCc';
+            let inputrufSc = 'rufnummerSc';
+            let inputUrlCc = 'UrlCc';
+            let inputUrlSc = 'UrlSc';
 
 
-            if ( /*!checkckundennummer() &&*/ !checkcname() && !checkauftragsart()  ) {
+            if ( !checkckundennummer() && !checkcname() && !checkauftragsart()  ) {
                 $('.invalid-feedback').css('display', 'block');
             }
-             else if ( /*!checkckundennummer() ||*/ !checkcname() || !checkauftragsart() ) //||
-               /* !checkRufnummer( rufnummerSC,rufnummerSCValue,rufnummerSCError )*/ /*|| !checkURL( urlCC,urlCCValue,urlCcError )
-                || !checkURL( urlSC,urlSCValue,urlScError ) || ! checkRufnummer( rufnummerCC,rufnummerCCValue,rufnummerCCError*/ //))
+             else if ( !checkckundennummer() || !checkcname() || !checkauftragsart()  ||
+               !checkRufnummer( rufnummerSC,rufnummerSCValue,rufnummerSCError,inputrufSc ) || !checkURL( urlCC,urlCCValue,urlCcError,inputUrlCc )
+                || !checkURL( urlSC,urlSCValue,urlScError,inputUrlSc ) || ! checkRufnummer( rufnummerCC,rufnummerCCValue,rufnummerCCError,inputrufCc ))
                  {
                 $('.invalid-feedback').css('display', 'block');
             }
@@ -378,7 +382,7 @@
             $('#kundennummer_error').html('kundennunner doit avoir des chiffres ');
             $('#kundennummer').addClass('is-invalid');
 
-        } else if ($('#kundennummer').val().length !== 9) {
+        } else if ($('#kundennummer').val().length !== 10) {
             $('#kundennummer_error').html('le Numero de Cient doit etre de 10 Chiffres');
             $('#kundennummer').addClass('is-invalid');
             return false;
@@ -443,10 +447,10 @@
         }
     }
 
-    function  checkRufnummer(input, inputValue, errorMessage, id)
+    function  checkRufnummer(input, inputValue, errorMessage, inputId)
     {
         if ( inputValue !== '' && !inputValue.match(/^[0:]([0-9]{11,18})$/)) {
-            errorMessage.html(' FRONTEND :le'+id+' de Telephone pas valide');
+            errorMessage.html(' FRONTEND :le '+inputId+' de Telephone pas valide');
             input.addClass('is-invalid');
             return false;
         }
@@ -455,11 +459,11 @@
         return true;
     }
 
-    function  checkURL(input,inputValue,errorMessage)
+    function  checkURL(input,inputValue,errorMessage, inputId)
     {
         if ( inputValue !== '' && !inputValue.match(/((?:(?:http?)[s]*:\/\/)?[a-z0-9-%\/\&=?\.]+\.[a-z]{2,4}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?)/gi))
         {
-            errorMessage.html('Frontend: URL ist nicht valide');
+            errorMessage.html('Frontend: URL '+inputId+' ist nicht valide');
             input.addClass('is-invalid');
         }
         errorMessage.html('');
