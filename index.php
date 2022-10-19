@@ -172,13 +172,8 @@
                 $('#action').val('updateOnTouchCarrier');
             }
             // live validierung Frontend
-            /* $('#kundennummer').on('input', function() {checkckundennummer()});
-             $('#name').on('input', function() {checkcname();});
-             $('#rufnummerSc').on('input', function() {checkRufnummerSc()});
-             $('#urlCc').on('input', function() {checkURLCc()} );
-             $('#urlSc').on('input', function() {checkURLSc()});
-             $('#auftraggsart').on('input', function() {checkauftragsart()});
-            */
+
+
             // variable parametter
             let rufnummerSC = $('#rufnummerSc');
             let rufnummerSCValue = $('#rufnummerSc').val();
@@ -198,16 +193,92 @@
             let inputUrlSc = 'UrlSc';
 
 
-            if ( !checkckundennummer() && !checkcname() && !checkauftragsart()  ) {
+            /*$('#kundennummer').on('keyup', function() {
+
+                checkckundennummer();
+            });
+            $('#name').on('keyup', function() {
+                checkcname();
+            });
+            $('#rufnummerSc').on('keyup', function(){
+                checkRufnummer( rufnummerSC,rufnummerSCValue,rufnummerSCError,inputrufSc );
+            });
+            $('#rufnummerCc').on('keyup', function() {
+                checkRufnummer( rufnummerCC,rufnummerCCValue,rufnummerCCError,inputrufCc );
+            });
+            $('#urlCc').on('keyup', function() {
+                checkURL( urlCC,urlCCValue,urlCcError);
+            });
+            $('#urlSc').on('keyup', function() {
+                checkURL( urlSC,urlSCValue,urlScError );
+            });
+            $('#auftraggsart').on('keyup', function(){
+                checkauftragsart();
+            });
+
+            $('#name').on('keypress', function(key) {
+                if((key.charCode < 97 || key.charCode > 122) && (key.charCode < 65 || key.charCode > 90) && (key.charCode !== 45)) {
+                    checkcname();
+                }
+            });
+            $('#auftraggsart').on('keypress', function(key) {
+                if(key.charCode < 48 || key.charCode > 57) {
+                    checkauftragsart();
+                }
+            });*/
+
+        /*    if ( !checkckundennummer() && !checkcname() && !checkauftragsart() )
+            {
                 $('.invalid-feedback').css('display', 'block');
+            }*/
+
+
+            if ( !checkckundennummer() || !checkcname() || !checkauftragsart() ||
+                !checkURL( urlSC,urlSCValue,urlScError) ||
+                !checkRufnummer(rufnummerSC,rufnummerSCValue,rufnummerSCError,inputrufSc )
+                || !checkRufnummer(rufnummerSC,rufnummerSCValue,rufnummerSCError,inputrufSc ) ||
+                !checkURL( urlCC,urlCCValue,urlCcError ) )
+            {
+           if ( !checkckundennummer()  )
+           {
+
+               $('.invalid-feedback').addClass('d-block');
+           }
+
+            if ( !checkcname()  )
+            {
+                $('.invalid-feedback').addClass('d-block');
             }
-             else if ( !checkckundennummer() || !checkcname() || !checkauftragsart()  ||
-               !checkRufnummer( rufnummerSC,rufnummerSCValue,rufnummerSCError,inputrufSc ) || !checkURL( urlCC,urlCCValue,urlCcError,inputUrlCc )
-                || !checkURL( urlSC,urlSCValue,urlScError,inputUrlSc ) || ! checkRufnummer( rufnummerCC,rufnummerCCValue,rufnummerCCError,inputrufCc ))
-                 {
-                $('.invalid-feedback').css('display', 'block');
+
+            if ( !checkauftragsart() )
+            {
+                $('.invalid-feedback').addClass('d-block');
             }
-             else {
+
+           if ( !checkURL( urlSC,urlSCValue,urlScError) )
+           {
+               $('.invalid-feedback').addClass('d-block');
+           }
+           if ( !checkRufnummer(rufnummerSC,rufnummerSCValue,rufnummerSCError,inputrufSc  ))
+           {
+               $('.invalid-feedback').addClass('d-block');
+           }
+            if (!checkURL( urlCC,urlCCValue,urlCcError ) )
+           {
+               $('.invalid-feedback').addClass('d-block');
+           }
+           if ( !checkRufnummer( rufnummerCC,rufnummerCCValue,rufnummerCCError,inputrufCc ))
+           {
+               $('.invalid-feedback').addClass('d-block');
+           }
+
+            if ( !checkauftragsart() )
+            {
+                $('.invalid-feedback').addClass('d-block');
+            }
+        }else
+           {
+               //$('.invalid-feedback').css('display', 'block');
             var formData = $(this).serialize();
             $.ajax({
                 url: "ajax_action.php",
@@ -227,16 +298,16 @@
                             $('#kundennummer').addClass('is-invalid');
                         }
 
-                        if (data.error.url)
+                        if (data.error.urlCc)
                         {
-                            $('#urlCc_error').html(data.error.url);
+                            $('#urlCc_error').html(data.error.urlCc);
                             $('#urlCc').addClass('is-invalid');
 
                         }
 
-                        if (data.error.url)
+                        if (data.error.urlSc)
                         {
-                            $('#urlSc_error').html(data.error.url);
+                            $('#urlSc_error').html(data.error.urlSc);
                             $('#urlSc').addClass('is-invalid');
 
                         }
@@ -337,10 +408,14 @@
             console.log(this);
         });
 
-        // Moggler Modal
+        // Moggler Modal and reset error class and message error
         $('#add').click(function () {$('#carrierModal').modal('show');});
         $('#carrierModal').on('hidden.bs.modal', function(){
             $(this).find('form')[0].reset();
+            $(this).find('form').trigger('reset');
+            $(this).find('.is-invalid').removeClass('is-invalid');
+            $('.invalid-feedback').html('').hide();
+
         });
 
         // update scripts
@@ -423,12 +498,13 @@
         var auftragsart = $('#auftragsart').val();
 
 
-        if (auftragsart === '') {
+        if ( auftragsart === '' ) {
             $('#auftragsart_error').html(' Frondend : Auftragsart est obligatoire  et doit etre des nomm pas de chiffre');
             $('#auftragsart').addClass('is-invalid');
             return false;
 
-        } else if ( $('#auftragsart').val().length < 2)
+        }
+        else if ( $('#auftragsart').val().length < 2)
         {
             $('#auftragsart_error').html('Frontend:  auftragsart doit au mimunum 2 ou bien plus ');
             $('#auftragsart_error').addClass('is-invalid');
@@ -459,12 +535,15 @@
         return true;
     }
 
-    function  checkURL(input,inputValue,errorMessage, inputId)
+    function checkURL(input,inputValue,errorMessage)
     {
-        if ( inputValue !== '' && !inputValue.match(/((?:(?:http?)[s]*:\/\/)?[a-z0-9-%\/\&=?\.]+\.[a-z]{2,4}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?)/gi))
+        if ( inputValue !== '' && !inputValue.match(/^https?:\/\/\w+(\.\w+)*(:[0-9]+)?(\/.*)?$/))
+        //if ( inputValue !== '' && inputValue.match(/^https?:\/\/\w+(\.\w+)*(:[0-9]+)?(\/.*)?$/)
+            //&& inputValue.match(/((?:(?:http?)[s]*:\/\/)?[a-z0-9-%\/\&=?\.]+\.[a-z]{2,4}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?)/) )
         {
-            errorMessage.html('Frontend: URL '+inputId+' ist nicht valide');
+            errorMessage.html('Frontend: URL ist nicht valide');
             input.addClass('is-invalid');
+            return false;
         }
         errorMessage.html('');
         input.removeClass('is-invalid');

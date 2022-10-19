@@ -151,24 +151,29 @@ function dataValidion()
 
         if(!filter_var($_POST['kundennummer'], FILTER_VALIDATE_INT) || empty( $_POST['kundennummer'] ) || strlen( $_POST['kundennummer'] )!== 10 )
         {
-            $output['kundennummer'] = 'Kundennumer muss 10 Zahl sein bitte';
+            $output['kundennummer'] = ' Backend :Kundennumer muss 10 Zahl sein bitte';
         }
 
         if(is_numeric($_POST['name']) || strlen($_POST['name']) < 3  && empty( $_POST['name'])  )
         {
-            $output['name'] = 'Name muss ein string sein!';
+            $output['name'] = 'Backed: Name muss ein string sein!';
         }
 
-        if(!validateURL( $_POST['urlSc'] ) && !empty( $_POST['urlSc'] ) || !validateURL( $_POST['urlCc'])  && !empty( $_POST['urlCc']))
+        if(!validateURL( $_POST['urlSc'] ) && !empty( $_POST['urlSc'] ))
         {
-            $output['url'] = ' Backend: Bitte die URL ist nictt Valide';
+            $output['urlSc'] = ' Backend: Bitte die URL ist nictt Valide';
+        }
+
+        if(!validRufnummer( $_POST['rufnummerSc'] ) && !empty( $_POST['rufnummerSc'] ))
+        {
+            $output['rufnummerSc'] = ' Backend: Bitte die URL ist nictt Valide';
         }
 
 
        /* $errorSc =  validRufnummer($_POST['rufnummerSc']);
         $errorCc =  validRufnummer($_POST['rufnummerCc']);*/
-        if ( !validRufnummer($_POST['rufnummerSc']) && !empty( $_POST['rufnummerSc']) || !validRufnummer( $_POST['rufnummerCc'] ) && !empty( $_POST['rufnummerCc']))
-        //if ( $errorCc && !empty( $_POST['rufnummerSc']) || $errorSc)
+        //if ( !validRufnummer($_POST['rufnummerSc']) && !empty( $_POST['rufnummerSc']) || !validRufnummer( $_POST['rufnummerCc'] ) && !empty( $_POST['rufnummerCc']))
+        /*if ( $errorCc && !empty( $_POST['rufnummerSc']) || $errorSc)
         {
 
             //if (array_keys($array))
@@ -190,15 +195,15 @@ function dataValidion()
             //$output['rufnummer'] = 'Backend: Bitte die RUFNUMMER_'.$needle.' nicht valid';
 
             //$output['rufnummer'] = 'Backend: Bitte die RUFNUMMER nicht valid';
+        }*/
+
+       if (!validateURL( $_POST['urlCc'])  && !empty( $_POST['urlCc']) ){ //
+            $output['urlCc'] =  ' backend: urlcc ist not valid';
         }
 
-     /*   if (!validateURL( $_POST['urlCc'])  && !empty( $_POST['urlCc']) ){ //
-            $output['urlCc'] =  ' backend: urlcc ist not valid';
-        }*/
-
-        /*if( !validRufnummer($_POST['rufnummerCc']) && !empty( $_POST['rufnummerCc'])){ //check for valid numbers in phone number field
+        if( !validRufnummer($_POST['rufnummerCc']) && !empty( $_POST['rufnummerCc'])){ //check for valid numbers in phone number field
             $output['rufnummerCc'] = 'Backend: rufnummerCc BIITE cc';
-        }*/
+        }
 
 
         if(is_integer($_POST['auftragsart']) && empty($_POST['auftragsart'])  ){ //
