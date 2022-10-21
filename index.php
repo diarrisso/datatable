@@ -19,7 +19,7 @@
     </button>
 
 
-    <table id="onTouchCarrier" class="table table-bordered table-striped" style="width: 600px!important;">
+    <table  name="tableliste" id="onTouchCarrier" class="table table-bordered table-striped" style="width: 600px!important;">
         <thead>
         <tr>
             <th>id</th>
@@ -36,7 +36,7 @@
         </thead>
     </table>
 </div>
-<div id="carrierModal" class="modal fade"  tabindex="-1">
+<div name="modalForms"  id="carrierModal" class="modal fade"  tabindex="-1" role="dialog" >
     <div class="modal-dialog">
         <form method="post" id="carrierForm">
             <div class="modal-content">
@@ -150,7 +150,7 @@
                 {
                     'data': null,
                     'render': function (data, type, row) {
-                        return '<button  type="button" name="edit" class="btn btn-primary edit" id="' + row.id +'" data-toggle="modal" data-target="#carrierModal" title="Edit">' +
+                        return '<button  type="button" name="edit" class="btn btn-primary edit" id="' + row.id +'" data-toggle="modal" data-target="#carrierModa" title="Edit">' +
                             '<i class="fa fa-edit" style="font-size:24px"></i>' +
                             '</button>'
                     }
@@ -419,7 +419,7 @@
         });
 
         // update scripts
-        $("#onTouchCarrier ").on('click', '.edit', function(e)
+        /*$("#onTouchCarrier ").on('click', '.edit', function(e)
         {
             e.preventDefault();
             var table = $('#onTouchCarrier').DataTable();
@@ -438,8 +438,41 @@
             $('#action').val('updateOnTouchCarrier');
              var Id = $(this).attr("id");
              $('#id').val(rowData.DT_RowId);
-        });
+        });*/
+
+
+        // ranger Adimistration telekom
+        let maindiv = $('#onTouchCarrier_wrapper');
+         maindiv.on('click','button[name=edit]' ,function () {
+             rendershowmodal();
+             inputwithValue();
+         });
+
     });
+
+
+function rendershowmodal() {
+    $('#carrierModal').modal('show');
+}
+
+function inputwithValue ()
+{
+    var table = $('#onTouchCarrier').DataTable();
+    var row  = $(this).parents('tr')[0];
+    var rowData = table.row( row ).data();
+    var modalFormId = $('#carrierModal');
+    modalFormId.find('input[name=kundennummer]').val( rowData.kundennummer );
+    modalFormId.find("input[name='name']").val(rowData.name);
+    modalFormId.find("input[name='urlSc']").val(rowData.urlSc);
+    modalFormId.find("input[name='rufnummerCc']").val(rowData.rufnummerCc);
+    modalFormId.find("input[name='urlCc']").val(rowData.urlCc);
+    modalFormId.find("input[name='rufnummerCc']").val(rowData.rufnummerCc);
+    modalFormId.find("input[name='auftragsart']").val(rowData.auftragsart);
+}
+
+
+
+
 
     function checkckundennummer() {
 
