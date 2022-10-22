@@ -42,7 +42,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <span id="message"></span>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <button name="closeModal" type="button" class="close" >&times;</button>
+                    <!--<button name="closeModal" type="button" class="close" data-dismiss="modal">&times;</button>-->
                     <h4 class="modal-title"><i class="fa fa-plus"></i>Edit User</h4>
                 </div>
                 <div class="modal-body">
@@ -453,6 +454,10 @@
 
 function rendershowmodal() {
     $('#carrierModal').modal('show');
+    $('#carrierModal').on('click','button[name=closeModal]' ,function () {
+        $('#carrierModal').modal('hide');
+        console.log('close');
+    });
 }
 
 function inputwithValue ()
