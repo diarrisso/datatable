@@ -44,11 +44,11 @@
                     <span id="message"></span>
                     <button name="closeModal" type="button" class="close" >&times;</button>
                     <!--<button name="closeModal" type="button" class="close" data-dismiss="modal">&times;</button>-->
-                    <h4 class="modal-title"><i class="fa fa-plus"></i>Edit User</h4>
+                    <h4  name="modaltitle" class="modal-title"><i class="fa fa-plus"></i>Edit User</h4>
                 </div>
                 <div class="modal-body">
                     <div class="form-group"
-                    <label for="kundennummer" class="control-label">Kundennummer</label>
+                    <label name="kunndenn" for="kundennummer" class="control-label">Kundennummer</label>
                     <input type="text" class="form-control" id="kundennummer" name="kundennummer" placeholder="kundennummer" >
                     <span class="invalid-feedback" id="kundennummer_error"> </span>
                 </div>
@@ -441,12 +441,20 @@
              $('#id').val(rowData.DT_RowId);
         });*/
 
-
+        const employee = {
+            modaltitle: 'massinga',
+            inputsubmit: 'James',
+            templete: 'Spy'
+        };
+        const myFoods = {a: 'masingacite', b: 'toit', c: 'carrot', d: 'donut'}
         // ranger Adimistration telekom
         let maindiv = $('#onTouchCarrier_wrapper');
          maindiv.on('click','button[name=edit]' ,function () {
+             rendermodal(myFoods);
              rendershowmodal();
              inputwithValue();
+
+
          });
 
     });
@@ -460,7 +468,24 @@ function rendershowmodal() {
     });
 }
 
-function inputwithValue ()
+
+function rendermodal({a:modaltitle,b:inputsubmit, c:templete}) {
+
+    let maindiv = $('#carrierModal');
+    console.log(modaltitle);
+    console.log(inputsubmit);
+    console.log(templete);
+    maindiv.find('[name=modaltitle]').html(modaltitle);
+    maindiv.find('[name=kunndenn]').html(inputsubmit);
+    maindiv.find('input[name=save]').append(templete);
+
+}
+
+
+
+
+
+    function inputwithValue ()
 {
     var table = $('#onTouchCarrier').DataTable();
     var row  = $(this).parents('tr')[0];
