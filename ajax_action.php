@@ -3,7 +3,7 @@ require_once __DIR__. "/config/Database.php";
 
 require_once __DIR__."/Model/Ontouch.php";
 
-if ( empty( $_POST['kundennummer'] ) ) {
+
 
     $db = new Database();
     $conn = $db->getConnection();
@@ -11,31 +11,64 @@ if ( empty( $_POST['kundennummer'] ) ) {
         die("Connection failed: ");
     }
     $serverside = array();
+if ( empty( $_POST['kundennummer'] ) ) {
 
-    $searchValue = $_REQUEST['search']['value'];
-
-    if ($searchValue)
-    {
-        $sqlfilter = "SELECT * FROM Blog.carrier where name like '%".$searchValue."%'";
-        $stmt = $conn->prepare($sqlfilter);
-        $stmt->execute();
-        $result = $stmt->fetchAll();
-
-    }else{
-        $sql = "SELECT * FROM Blog.carrier  LIMIT ".$_REQUEST['start']." ,".$_REQUEST['length']." ";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
-        $result = $stmt->fetchAll();
+    $sqlQuery = 'SELECT * FROM  Blog.carrier ';
+    if (!empty($_POST['search']['value'])) {
+        $sqlQuery .= 'WHERE (id LIKE "%' .$_POST['search']['value']. '%" ';
+        $sqlQuery .= ' OR name LIKE "%' .$_POST['search']['value']. '%" ';
+        $sqlQuery .= ' OR kundennummer LIKE "%' .$_POST['search']['value']. '%" ';
+        $sqlQuery .= ' OR rufnummerCc LIKE "%' .$_POST['search']['value']. '%" ';
+        $sqlQuery .= ' OR rufnummerSc LIKE "%' . $_POST['search']['value']. '%" ';
+        $sqlQuery .= ' OR urlSc LIKE "%' .$_POST['search']['value']. '%" ';
+        $sqlQuery .= ' OR auftraggsart LIKE "%'.$_POST['search']['value']. '%"';
+        $sqlQuery .= ' OR urlCc LIKE "%' .$_POST['search']['value'].'%") ';
+    }
+    if (!empty($_POST['order'])) {
+        $sqlQuery .= 'ORDER BY ' . $_POST['order']['0']['column'] . ' ' . $_POST['order']['0']['dir'] . ' ';
+    } else {
+        $sqlQuery .= 'ORDER BY id ASC ';
+    }
+if (isset($_POST['start'] )) {
+    if ($_POST['length'] != -1) {
+        $sqlQuery .= 'LIMIT ' . $_POST['start'] . ', ' . $_POST['length'];
     }
 
-    
+
+
+
+/*
+    $stmt = $conn->prepare($sqlQuery);
+    $stmt->execute();
+    $result = $stmt->fetchAll();*/
+
+    $stmt = $conn->prepare($sqlQuery);
+    //$conn->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+    $stmt->execute();
+   $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    //$result = $stmt->fetchAll();
+
+
+
+    $stmtTotal = $conn->prepare('SELECT * FROM Blog.carrier ');
+    $stmtTotal->execute();
+    $stmt->execute();
+    $result = $stmt->fetchAll();
+    /*$allResult = $stmtTotal->get_result();
+    $allRecords = $allResult->num_rows;
+
+    $displayRecords = $result->num_rows;*/
+
     $count = "SELECT COUNT(*) FROM Blog.carrier ";
     $statement = $conn->query($count);
     $statement->execute();
     $countResult = $statement->fetchColumn();
 
+
+    if (isset($_POST['draw'])) {
+    }
     $json_data = array(
-        "draw"	=>	intval($_POST["draw"]),
+        "draw"	=>	isset( $_POST["draw"] ),
         "recordsTotal"    => intval( $countResult ),
         "recordsFiltered" => intval($countResult),
         //"data"  => $countResult
@@ -61,6 +94,7 @@ if ( empty( $_POST['kundennummer'] ) ) {
 
     $json_data ['data'] = $data;
     echo json_encode($json_data);
+
 }
 
 
@@ -93,6 +127,32 @@ if ( !empty($_POST['action']) && $_POST['action'] === 'addData' && dataValidion(
 
     echo  json_encode( array( 'Msg'=> 'les donnees ont ete enregistrer avec success', 'data' => $kundenummer ) );
 }
+
+}
+if ( isset( $_POST['action_delete']) && $_POST['action_delete'] === 'deleteRecord') {
+    $recordId = $_POST['id_de'];
+
+    if ( $recordId ) {
+
+        $deletequery = "DELETE FROM Blog.carrier WHERE carrier.id= '".$recordId."'";
+        $stmt= $conn->prepare($deletequery);
+        //$stmt->execute(array('id' => $_POST['id_de']));
+        $stmt->execute();
+        $resultDelete[] = array('Delete' =>' les donnes ont suprimer avec success ');
+        //echo json_encode( array('Delete' =>' les donnes ont suprimer avec success '));
+        //echo json_encode(array('data' => $resultDelete));
+        echo json_encode($resultDelete);
+
+
+    }
+
+}
+
+
+
+
+
+
 
 
 

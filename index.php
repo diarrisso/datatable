@@ -1,7 +1,5 @@
-
 <html lang="en">
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -78,11 +76,21 @@
                      <span class="invalid-feedback" id="rufnummerCc_error"> </span>
                 </div>
 
-                <div class="form-group">
+                        <select name='auftragsart'id="auftragsart" class='form-group'>
+                            <label for="auftragsart" class='control-label'>auftragsart</label>
+                            <option> Problem</option>
+                            <option >Beauftrags</option>
+                        </select>
+
+
+
+
+
+                <!--div class="form-group">
                     <label for="auftragsart" class="control-label">Auftragsart</label>
                     <input type="text" class="form-control" id="auftragsart" name="auftragsart" placeholder="auftragsart">
                     <span class="invalid-feedback" id="auftragsart_error"> </span>
-                </div>
+                </div>-->
             </div>
             <div class="modal-footer">
                 <input type="hidden" name="id" id="id" />
@@ -114,11 +122,15 @@
             sWrapper: "dataTables_wrapper container-fluid dt-bootstrap4",
         } );*/
         $('#onTouchCarrier').DataTable( {
-            //searchDelay: 5000,
-            "processing": true,
-            "serverSide": true,
+            "searchDelay": 2000,
+            'lengthChange': false,
+            'processing': true,
+            'serverSide': true,
+            'serverMethod': 'post',
             "paging":true,
-            responsive: true,
+            "responsive": true,
+            'serverMethod': 'post',
+            'order': [],
             ajax: {
                 url: "ajax_action.php" , dataSrc: "data",
                 type: "POST",
@@ -151,14 +163,21 @@
                 {
                     'data': null,
                     'render': function (data, type, row) {
-                        return '<button  type="button" name="edit" class="btn btn-primary edit" id="' + row.id +'" data-toggle="modal" data-target="#carrierModa" title="Edit">' +
-                            '<i class="fa fa-edit" style="font-size:24px"></i>' +
-                            '</button>'
+                        return '<div class="btn-group"> ' +
+                            '<button  type="button" name="edit" class="btn btn-primary edit mx-2" id="' + data.id +'" data-toggle="modal" data-target="#carrierModa" title="Edit">' + '<i class="fa fa-edit" style="font-size:24px"></i>' + '</button>'+
+                            '<button  type="button" name="delete" class="btn btn-primary delete" id="' + data['DT_RowId'] +'" data-toggle="modal" data-target="#carrierModa" title="Delete">' + '<i class="fa fa-trash" style="font-size:24px"></i>' + '</button>'+
+                           '</div>'
                     }
                 },
             ],
-            "pageLength": 10
-        });
+            /*'columnDefs': [
+                {
+                    'targets': [0, 6, 7],
+                    'orderable': false,
+                },
+            ],*/
+            'pageLength': 10
+        })
         $("#onTouchCarrier").css("width","600px")
 
         $("#carrierModal").on('submit','#carrierForm', function(event)
@@ -353,6 +372,7 @@
                         $('#save').attr('disabled', false);
                         $('#onTouchCarrier').DataTable().ajax.reload();
 
+
                         if (data.Msg)
                         {
                             $("#message").html('<div class=" alert alert-success" id="success-alert"> '+data.Msg+'</div>');
@@ -420,9 +440,10 @@
         });
 
         // update scripts
-        /*$("#onTouchCarrier ").on('click', '.edit', function(e)
+        $("#onTouchCarrier ").on('click', '.edit', function(e)
         {
             e.preventDefault();
+            $('#carrierModal').modal('show');
             var table = $('#onTouchCarrier').DataTable();
             var row  = $(this).parents('tr')[0];
             var rowData = table.row( row ).data();
@@ -439,52 +460,75 @@
             $('#action').val('updateOnTouchCarrier');
              var Id = $(this).attr("id");
              $('#id').val(rowData.DT_RowId);
-        });*/
+        });
 
-        const employee = {
-            modaltitle: 'massinga',
+       // const employee = {
+           /* modaltitle: 'massinga',
             inputsubmit: 'James',
             templete: 'Spy'
-        };
-        const myFoods = {a: 'masingacite', b: 'toit', c: 'carrot', d: 'donut'}
+        };*/
+        //const myFoods = {a: 'masingacite', b: 'toit', c: 'carrot', d: 'donut'}
         // ranger Adimistration telekom
-        let maindiv = $('#onTouchCarrier_wrapper');
+        /*let maindiv = $('#onTouchCarrier_wrapper');
          maindiv.on('click','button[name=edit]' ,function () {
              rendermodal(myFoods);
              rendershowmodal();
              inputwithValue();
 
 
-         });
+         });*/
+
+        $('#onTouchCarrier ').on('click','.delete' ,function () {
+            var id_de = $(this).attr('id');
+            let table = $('#onTouchCarrier').DataTable();
+            var action_delete = 'deleteRecord';
+            if (confirm('Are you sure you want to delete this record?')) {
+                $.ajax({
+                    url: 'ajax_action.php',
+                    method: 'POST',
+                    data: {id_de:id_de,action_delete:action_delete},
+                    dataType: 'json',
+                    beforeSend:function() {
+                        $('#save').html('<i class="fa-solid fa-spinner fa-spin"></i>');
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        $('#onTouchCarrier').DataTable().ajax.reload();
+                        if (data.Update) {
+                            $('#message').html('<div class=" alert alert-success" id="success-alert"> ' + data.Delete + '</div>');
+                            $('#message').html('<div class=" alert alert-success" id="success-alert"> ' + data.Update + '</div>');
+                        }
+                    }, error: function (request, status, error) {
+                        console.log(request.responseText);
+                        console.log(error);
+                        console.log(status);
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
 
     });
 
-
+/*
 function rendershowmodal() {
     $('#carrierModal').modal('show');
     $('#carrierModal').on('click','button[name=closeModal]' ,function () {
         $('#carrierModal').modal('hide');
         console.log('close');
-    });
-}
-
-
+    });*/
+//}/*
+/*
 function rendermodal({a:modaltitle,b:inputsubmit, c:templete}) {
-
     let maindiv = $('#carrierModal');
     console.log(modaltitle);
     console.log(inputsubmit);
     console.log(templete);
-    maindiv.find('[name=modaltitle]').html(modaltitle);
     maindiv.find('[name=kunndenn]').html(inputsubmit);
     maindiv.find('input[name=save]').append(templete);
 
-}
-
-
-
-
-
+}*!/*/
     function inputwithValue ()
 {
     var table = $('#onTouchCarrier').DataTable();
@@ -499,11 +543,6 @@ function rendermodal({a:modaltitle,b:inputsubmit, c:templete}) {
     modalFormId.find("input[name='rufnummerCc']").val(rowData.rufnummerCc);
     modalFormId.find("input[name='auftragsart']").val(rowData.auftragsart);
 }
-
-
-
-
-
     function checkckundennummer() {
 
         var kundennummer = $('#kundennummer').val();
