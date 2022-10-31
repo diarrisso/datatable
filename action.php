@@ -20,7 +20,7 @@ if (!empty($_POST['action']) && $_POST['action'] == 'empDelete') {
     $emp->deleteEmployee();
 }*/
 
-if (isset($_POST['action']) && $_POST['action'] === 'import') {
+/*if (isset($_POST['action']) && $_POST['action'] === 'import') {
 
         $getAllPost = new Post();
         $allPost = $getAllPost->getAllPost();
@@ -30,6 +30,6 @@ if (isset($_POST['action']) && $_POST['action'] === 'import') {
         } catch (\PhpOffice\PhpSpreadsheet\Writer\Exception|\PhpOffice\PhpSpreadsheet\Exception $e) {
             error_log('$message' . $e);
         }
-}
+}*/
 
 

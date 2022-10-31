@@ -17,7 +17,8 @@
     </button>
 
 
-    <table  name="tableliste" id="onTouchCarrier" class="table table-bordered table-striped" style="width: 600px!important;">
+    <table  name="tableliste" id="onTouchCarrier" class='stripe row-border order-column' style='width:100%'>
+    <!--<table  name="tableliste" id="onTouchCarrier" class="table table-bordered table-striped row-border order-column" style="width: 600px!important;">-->
         <thead>
         <tr>
             <th>id</th>
@@ -28,10 +29,22 @@
             <th>urlcc</th>
             <th>rufnummercc</th>
             <th>auftragsart</th>
-            <th></th>
+            <th>Action</th>
 
         </tr>
         </thead>
+        <tfoot>
+        <tr>
+            <th>id</th>
+            <th>kundennummer</th>
+            <th>name</th>
+            <th>urlsc</th>
+            <th>rufnummersc</th>
+            <th>urlcc</th>
+            <th>rufnummercc</th>
+            <th>auftragsart</th>
+        </tr>
+        </tfoot>
     </table>
     <form action='ajax_action.php' class='excel-upl' id='excel-upl'
           enctype='multipart/form-data' method='get' accept-charset='utf-8'>
@@ -148,10 +161,14 @@
       /*  $.extend( $.fn.DataTable.ext.classes, {
             sWrapper: "dataTables_wrapper container-fluid dt-bootstrap4",
         } );*/
-        $('#onTouchCarrier').DataTable( {
+        var table = $('#onTouchCarrier').DataTable( {
+            searchPanes: {
+                viewTotal: true
+            },
+            dom: 'Plfrtip',
             //searchDelay: 5000,
             /*"processing": true,*/
-            scrollY: '300px',
+            scrollY: '500px',
             scrollX: true,
             scrollCollapse: true,
             fixedColumns: true,
@@ -166,7 +183,7 @@
                 type: "POST",
                 dataType: "json",
             },
-            dom: 'Bfrtip',
+            //dom: 'Bfrtip',
             buttons: [
                 'copyHtml5',
                 'excelHtml5',
@@ -200,6 +217,16 @@
                     }
                 },
             ],
+            initComplete: function(){
+            this.api().columns().every(function(){
+                let column = this;
+                $('input', this.header()).on('keyup change', function () {
+                    if (column.search() !== this.value) {
+                        column.search(this.value,true).draw();
+                    }
+                });
+            });
+                },
             "pageLength": 10
         });
         $("#onTouchCarrier").css("width","600px")
@@ -415,6 +442,27 @@
             });
             }
         });
+
+        $('#onTouchCarrier tfoot th').each( function (i) {
+            var title = $('#onTouchCarrier thead th').eq( $(this).index() ).text();
+            $(this).html( '<input type="text" placeholder="'+title+'" data-index="'+i+'" />' );
+        } );
+
+        $( table.table().container() ).on( 'keyup', 'tfoot input', function () {
+            table
+                .column( $(this).data('index') )
+                .search( this.value )
+                .draw();
+        } );
+
+
+
+
+
+
+
+
+
 
         //search option custom
         /*// Call datatables, and return the API to the variable for use in our code
