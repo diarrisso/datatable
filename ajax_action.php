@@ -17,7 +17,8 @@ if (empty($_POST['kundennummer']))  {
 
     if ($searchValue)
     {
-        $sqlfilter = "SELECT * FROM Blog.carrier where name like '%".$searchValue."%'  ";
+        $sqlfilter = "SELECT * FROM Blog.carrier where name  like '%".$searchValue."%' or  kundennummer like '%".$searchValue."%' or rufnummerSc like '%".$searchValue."%' 
+         or rufnummerSc like '%".$searchValue."%' or urlCc   like  '%".$searchValue."%' or urlSc like '%".$searchValue."' or auftraggsart like '%".$searchValue."'";
         $stmt = $conn->prepare($sqlfilter);
         $stmt->execute();
         $result = $stmt->fetchAll();
@@ -237,6 +238,21 @@ if ( !empty($_POST['action']) && $_POST['action'] === 'updateOnTouchCarrier' && 
     }
 
 }
+
+
+
+if ( isset( $_GET['action']) && $_GET['action'] === 'import') {
+
+    $getAllPost = new Post();
+    $allPost = $getAllPost->getAllPost();
+    $tester = new ExportService();
+    try {
+        $tester->exportExcel($allPost);
+    } catch (\PhpOffice\PhpSpreadsheet\Writer\Exception|\PhpOffice\PhpSpreadsheet\Exception $e) {
+        error_log('$message' . $e);
+    }
+}
+
 
 
 
