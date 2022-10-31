@@ -33,8 +33,8 @@
         </tr>
         </thead>
     </table>
-    <form action='action.php' class='excel-upl' id='excel-upl'
-          enctype='multipart/form-data' method='post' accept-charset='utf-8'>
+    <form action='ajax_action.php' class='excel-upl' id='excel-upl'
+          enctype='multipart/form-data' method='get' accept-charset='utf-8'>
         <div class='row padall'>
             <div class='col-lg-12'>
                 <div class='float-right'>
@@ -150,13 +150,16 @@
         } );*/
         $('#onTouchCarrier').DataTable( {
             //searchDelay: 5000,
-            /*"processing": true,
-            "serverSide": true,*/
-            "paging":true,
+            /*"processing": true,*/
+            scrollY: '300px',
+            scrollX: true,
+            scrollCollapse: true,
+            fixedColumns: true,
+            paging:true,
             responsive: true,
-            'processing': true,
-            'serverSide': true,
-            'serverMethod': 'post',
+            processing: true,
+            serverSide: true,
+            serverMethod: 'post',
             'order': [],
             ajax: {
                 url: "ajax_action.php" , dataSrc: "data",
