@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__. "/config/Database.php";
 require_once __DIR__."/Model/Ontouch.php";
+require_once __DIR__."/lib/ExportService.php";
+require_once __DIR__."/lib/Post.php";
 $db = new Database();
 $conn = $db->getConnection();
 if (!$conn) {

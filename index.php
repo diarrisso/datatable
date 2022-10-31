@@ -33,14 +33,14 @@
         </tr>
         </thead>
     </table>
-    <form action='<?php echo strtok($_SERVER['REQUEST_URI']);?>phpspreadsheet/export' class='excel-upl' id='excel-upl'
+    <form action='action.php' class='excel-upl' id='excel-upl'
           enctype='multipart/form-data' method='post' accept-charset='utf-8'>
         <div class='row padall'>
             <div class='col-lg-12'>
                 <div class='float-right'>
                    <!-- <input type='radio' checked='checked' name='export_type' value='xlsx'> .xlsx
-                    <input type='radio' name='export_type' value='xls'> .xls
-                    <input type='radio' name='export_type' value='csv'> .csv-->
+                    <input type='radio' name='export_type' value='xls'> .xls-->
+                    <input type='hidden' name='action' value="import">
                     <button type='submit' name='import' class='btn btn-primary'>Export</button>
                 </div>
             </div>
@@ -515,9 +515,13 @@
                 success: function (data) {
                     console.log(data);
                     var dataResult = JSON.parse(data);
-                    if (dataResult.statusCode === 200) {
+                    if (dataResult.statusCode) {
                        // row.fadeOut().remove();
                         $('#onTouchCarrier').DataTable().ajax.reload();
+                        $('#message').html('<div class=" alert alert-success" id="success-alert"> ' + dataResult.statusCode + '</div>');
+                        $('#success-alert').fadeTo(2000, 500).slideUp(500, function () {
+                            $('#success-alert').slideUp(500);
+                        });
                     }
                 }
             });

@@ -18,18 +18,28 @@ class ExportService
         $spreadsheet = new Spreadsheet();
         $spreadsheet->getProperties()->setTitle('excelsheet');
         $spreadsheet->setActiveSheetIndex(0);
-        $spreadsheet->getActiveSheet()->SetCellValue('A1', 'id');
-        $spreadsheet->getActiveSheet()->SetCellValue('B1', 'name');
-        $spreadsheet->getActiveSheet()->SetCellValue('C1', 'kundennumer');
-        $spreadsheet->getActiveSheet()->SetCellValue('D1', 'urtlsc');
-        $spreadsheet->getActiveSheet()->SetCellValue('E1', 'rufnummersc');
-        $spreadsheet->getActiveSheet()->SetCellValue('F1', 'urlsc');
-        $spreadsheet->getActiveSheet()->SetCellValue('G1', 'rufnummerCc');
-        $spreadsheet->getActiveSheet()->SetCellValue('H1','auftraggsart');
+
+        $spreadsheet->getActiveSheet()->SetCellValue('A1', 'ID');
+        $spreadsheet->getActiveSheet()->SetCellValue('B1', 'NAME');
+        $spreadsheet->getActiveSheet()->SetCellValue('C1', 'KUNDENNUMMER');
+        $spreadsheet->getActiveSheet()->SetCellValue('D1', 'URLCC');
+        $spreadsheet->getActiveSheet()->SetCellValue('E1', 'RUFNUMMER');
+        $spreadsheet->getActiveSheet()->SetCellValue('F1', 'URLSC');
+        $spreadsheet->getActiveSheet()->SetCellValue('G1', 'RUFNUMMER');
+        $spreadsheet->getActiveSheet()->SetCellValue('H1','AUFTRAGSART');
+        $spreadsheet->getActiveSheet()->getColumnDimension('A')->setWidth(50, 'pt');
+        $spreadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(200, 'pt');
+        $spreadsheet->getActiveSheet()->getColumnDimension('C')->setWidth(90, 'pt');
+        $spreadsheet->getActiveSheet()->getColumnDimension('D')->setWidth(300, 'pt');
+        $spreadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(120, 'pt');
+        $spreadsheet->getActiveSheet()->getColumnDimension('F')->setWidth(320, 'pt');
+        $spreadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(120, 'pt');
+        $spreadsheet->getActiveSheet()->getColumnDimension('H')->setWidth(120, 'pt');
         $spreadsheet->getActiveSheet()
             ->getStyle('A1:H1')
             ->getFont()
-            ->setBold(true);
+            ->setBold(true)
+        ->getColor()->getRGB();
         $rowCount = 2;
         if (!empty($postResult)) {
             foreach ($postResult as $element) {
@@ -45,30 +55,20 @@ class ExportService
             }
             $spreadsheet->getActiveSheet()
                 ->getStyle('A:H')
-                ->getAlignment()
-                ->setWrapText(true);
+                ->getFont();
+                //->getAlignment();
+                //->setWrapText(true);
 
             $spreadsheet->getActiveSheet()
-                ->getRowDimension($rowCount)
-                ->setRowHeight(-1);
+                ->getRowDimension($rowCount);
+                //->setRowHeight(4);
         }
-        /*$writer = IOFactory::createWriter($spreadsheet, 'Xls');
+        $writer = IOFactory::createWriter($spreadsheet, 'Xls');
         header("Content-type: application/vnd-ms-excel");
         $fileName = 'exported_excel_' . time() . '.xls';
         $headerContent = 'Content-Disposition: attachment; filename="' . $fileName . '"';
         header("Content-Disposition: attachment; filename=exported_excel.xls");
-        $writer->save('php://output');*/
-
-
-            $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xls($spreadsheet);
-            $fileName = 'exported_excel_' . time() . '.xls';
-            header('Content-Type: application/vnd.ms-excel');
-            header('Cache-Control: max-age=0');
-            $writer->save('php://output'. $fileName);
-        /*redirect(HTTP_UPLOAD_PATH.$fileName); */
-        $filepath = file_get_contents('php://output' . $fileName);
+        $writer->save('php://output');
     }
-
-
 }
 
