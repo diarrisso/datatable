@@ -1,7 +1,5 @@
-
 <html lang="en">
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -35,6 +33,34 @@
         </tr>
         </thead>
     </table>
+    <form action='<?php echo strtok($_SERVER['REQUEST_URI']);?>phpspreadsheet/export' class='excel-upl' id='excel-upl'
+          enctype='multipart/form-data' method='post' accept-charset='utf-8'>
+        <div class='row padall'>
+            <div class='col-lg-12'>
+                <div class='float-right'>
+                   <!-- <input type='radio' checked='checked' name='export_type' value='xlsx'> .xlsx
+                    <input type='radio' name='export_type' value='xls'> .xls
+                    <input type='radio' name='export_type' value='csv'> .csv-->
+                    <button type='submit' name='import' class='btn btn-primary'>Export</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!--<div class='btn'>
+        <form action='' method='POST'>
+            <a href="<?php /*echo strtok($_SERVER['REQUEST_URI']); */?>
+            <?php
+/*            if(isset($_SERVER['QUERY_STRING'])){
+           parse_str($_SERVER['QUERY_STRING'], $args);
+          } else {
+         $args = array();
+            } */?>?action=export" target="_blank">
+                <button type='button' id='btnExport' name='action' value='Export to Excel' class='btn btn-info'>Export
+                    to Excel
+                </button>
+            </a>
+        </form>
+    </div>-->
 </div>
 <div name="modalForms"  id="carrierModal" class="modal fade"  tabindex="-1" role="dialog" >
     <div class="modal-dialog">
@@ -78,12 +104,21 @@
                      <span class="invalid-feedback" id="rufnummerCc_error"> </span>
                 </div>
 
-                <div class="form-group">
+                        <select name='auftragsart'id="auftragsart" class='form-group'>
+                            <label for="auftragsart" class='control-label'>auftragsart</label>
+                            <option> Problem</option>
+                            <option >Beauftrags</option>
+                        </select>
+
+
+
+
+
+                <!--div class="form-group">
                     <label for="auftragsart" class="control-label">Auftragsart</label>
                     <input type="text" class="form-control" id="auftragsart" name="auftragsart" placeholder="auftragsart">
                     <span class="invalid-feedback" id="auftragsart_error"> </span>
-                </div>
-            </div>
+                </div>-->
             <div class="modal-footer">
                 <input type="hidden" name="id" id="id" />
                 <input type="hidden" name="action" id="action" value="" />
@@ -115,10 +150,14 @@
         } );*/
         $('#onTouchCarrier').DataTable( {
             //searchDelay: 5000,
-            "processing": true,
-            "serverSide": true,
+            /*"processing": true,
+            "serverSide": true,*/
             "paging":true,
             responsive: true,
+            'processing': true,
+            'serverSide': true,
+            'serverMethod': 'post',
+            'order': [],
             ajax: {
                 url: "ajax_action.php" , dataSrc: "data",
                 type: "POST",
@@ -151,9 +190,10 @@
                 {
                     'data': null,
                     'render': function (data, type, row) {
-                        return '<button  type="button" name="edit" class="btn btn-primary edit" id="' + row.id +'" data-toggle="modal" data-target="#carrierModa" title="Edit">' +
-                            '<i class="fa fa-edit" style="font-size:24px"></i>' +
-                            '</button>'
+                        return '<div class="btn-group"> ' +
+                            '<button  type="button" name="edit" class="btn btn-primary edit mx-2" id="' + data.id +'" data-toggle="modal" data-target="#carrierModa" title="Edit">' + '<i class="fa fa-edit" style="font-size:24px"></i>' + '</button>'+
+                            '<button  type="button" name="delete" class="btn btn-primary delete" id="' + data['DT_RowId'] +'" data-toggle="modal" data-target="#carrierModa" title="Delete">' + '<i class="fa fa-trash" style="font-size:24px"></i>' + '</button>'+
+                           '</div>'
                     }
                 },
             ],
@@ -454,8 +494,37 @@
              rendershowmodal();
              inputwithValue();
 
-
          });
+
+
+         //Delete Aktion  row
+
+        $('#onTouchCarrier ').on('click', '.delete', function () {
+            var $ele = $(this).parent().parent();
+            var table = $('#onTouchCarrier').DataTable();
+            var row  = $(this).parents('tr')[0];
+            var rowData = table.row( row ).data();
+            console.log($ele);
+            $.ajax({
+                url: 'delete_ajax.php',
+                type: 'POST',
+                cache: false,
+                data: {
+                    id: $(this).attr('id')
+                },
+                success: function (data) {
+                    console.log(data);
+                    var dataResult = JSON.parse(data);
+                    if (dataResult.statusCode === 200) {
+                       // row.fadeOut().remove();
+                        $('#onTouchCarrier').DataTable().ajax.reload();
+                    }
+                }
+            });
+        });
+
+
+
 
     });
 
@@ -470,12 +539,10 @@ function rendershowmodal() {
 
 
 function rendermodal({a:modaltitle,b:inputsubmit, c:templete}) {
-
     let maindiv = $('#carrierModal');
     console.log(modaltitle);
     console.log(inputsubmit);
     console.log(templete);
-    maindiv.find('[name=modaltitle]').html(modaltitle);
     maindiv.find('[name=kunndenn]').html(inputsubmit);
     maindiv.find('input[name=save]').append(templete);
 
@@ -499,11 +566,6 @@ function rendermodal({a:modaltitle,b:inputsubmit, c:templete}) {
     modalFormId.find("input[name='rufnummerCc']").val(rowData.rufnummerCc);
     modalFormId.find("input[name='auftragsart']").val(rowData.auftragsart);
 }
-
-
-
-
-
     function checkckundennummer() {
 
         var kundennummer = $('#kundennummer').val();

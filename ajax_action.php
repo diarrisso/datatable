@@ -1,34 +1,32 @@
 <?php
 require_once __DIR__. "/config/Database.php";
-
 require_once __DIR__."/Model/Ontouch.php";
+$db = new Database();
+$conn = $db->getConnection();
+if (!$conn) {
+    die('Connection failed: ');
+}
+if (empty($_POST['kundennummer']))  {
 
-if ( empty( $_POST['kundennummer'] ) ) {
 
-    $db = new Database();
-    $conn = $db->getConnection();
-    if (!$conn) {
-        die("Connection failed: ");
-    }
     $serverside = array();
 
     $searchValue = $_REQUEST['search']['value'];
 
     if ($searchValue)
     {
-        $sqlfilter = "SELECT * FROM Blog.carrier where name like '%".$searchValue."%'";
+        $sqlfilter = "SELECT * FROM Blog.carrier where name like '%".$searchValue."%'  ";
         $stmt = $conn->prepare($sqlfilter);
         $stmt->execute();
         $result = $stmt->fetchAll();
 
-    }else{
-        $sql = "SELECT * FROM Blog.carrier  LIMIT ".$_REQUEST['start']." ,".$_REQUEST['length']." ";
-        $stmt = $conn->prepare($sql);
+    } else{
+        $sqlfilter = "SELECT * FROM Blog.carrier LIMIT ".$_REQUEST['start']." ,".$_REQUEST['length']." ";
+        $stmt = $conn->prepare($sqlfilter);
         $stmt->execute();
         $result = $stmt->fetchAll();
-    }
 
-    
+    }
     $count = "SELECT COUNT(*) FROM Blog.carrier ";
     $statement = $conn->query($count);
     $statement->execute();
@@ -61,8 +59,8 @@ if ( empty( $_POST['kundennummer'] ) ) {
 
     $json_data ['data'] = $data;
     echo json_encode($json_data);
-}
 
+}
 
 // function post insert;
 $db = new Database();
@@ -237,4 +235,9 @@ if ( !empty($_POST['action']) && $_POST['action'] === 'updateOnTouchCarrier' && 
     }
 
 }
+
+
+
+
+
 

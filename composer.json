@@ -1,6 +1,8 @@
 {
     "require": {
-        "phpoffice/phpspreadsheet": "^1.25"
+        "phpoffice/phpspreadsheet": "^1.25",
+      "ext-json": "*",
+        "ext-pdo": "*"
     },
     "config": {
         "platform": {
