@@ -10,6 +10,13 @@
     <title>Blog Cuisine</title>
 </head>
 <body>
+
+<style>
+
+    thead input {
+        width: 100%;
+    }
+</style>
 <div class="container">
     <span id="message"></span>
     <button type="button" name="add" class="btn btn-primary mt-3 mb-3" id="add">
@@ -17,7 +24,8 @@
     </button>
 
 
-    <table  name="tableliste" id="onTouchCarrier" class='stripe row-border order-column' style='width:100%'>
+    <!--<table  name="tableliste" id="onTouchCarrier" class='stripe row-border order-column' style='width:100%'>-->
+    <table  name="tableliste" id="onTouchCarrier" class='display' style='width:100%'>
     <!--<table  name="tableliste" id="onTouchCarrier" class="table table-bordered table-striped row-border order-column" style="width: 600px!important;">-->
         <thead>
         <tr>
@@ -33,18 +41,6 @@
 
         </tr>
         </thead>
-        <tfoot>
-        <tr>
-            <th>id</th>
-            <th>kundennummer</th>
-            <th>name</th>
-            <th>urlsc</th>
-            <th>rufnummersc</th>
-            <th>urlcc</th>
-            <th>rufnummercc</th>
-            <th>auftragsart</th>
-        </tr>
-        </tfoot>
     </table>
     <form action='ajax_action.php' class='excel-upl' id='excel-upl'
           enctype='multipart/form-data' method='get' accept-charset='utf-8'>
@@ -161,17 +157,20 @@
       /*  $.extend( $.fn.DataTable.ext.classes, {
             sWrapper: "dataTables_wrapper container-fluid dt-bootstrap4",
         } );*/
+
+
+        $('#onTouchCarrier thead tr').clone(true).addClass('filters').appendTo('#onTouchCarrier thead');
+
         var table = $('#onTouchCarrier').DataTable( {
-            searchPanes: {
-                viewTotal: true
-            },
-            dom: 'Plfrtip',
             //searchDelay: 5000,
             /*"processing": true,*/
+            dom: 'Blfrtip',
+            select: true,
+            orderCellsTop: true,
+            fixedHeader: true,
             scrollY: '500px',
             scrollX: true,
             scrollCollapse: true,
-            fixedColumns: true,
             paging:true,
             responsive: true,
             processing: true,
@@ -217,16 +216,52 @@
                     }
                 },
             ],
-            initComplete: function(){
-            this.api().columns().every(function(){
+
+
+                // Setup - add a text input to each footer cell
+
+                    initComplete: function () {
+                        var api = this.api();
+
+                        // For each column
+                        api.columns().eq(0).each(function (colIdx) {
+                                // Set the header cell to contain the input element
+                                var cell = $('.filters th').eq(
+                                    $(api.column(colIdx).header()).index()
+                                );
+                                var title = $(cell).text();
+                                $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                                // On every keypress in this input
+                                $('input', $('.filters th').eq($(api.column(colIdx).header()).index())).off('keyup change').on('change', function (e) {
+                                    // Get the search value
+                                    $(this).attr('title', $(this).val());
+                                    var regexr = "({search})"; //$(this).parents('th').find('select').val();
+                                    var cursorPosition = this.selectionStart;
+                                    // Search the column for that value
+                                    api.column(colIdx).search(this.value !== '' ? regexr.replace("{search}", '(((' + this.value + ')))') : '', this.value !== '', this.value === '').draw();
+                                })
+                                    .on('keyup', function (e) {
+                                        e.stopPropagation();
+
+                                        $(this).trigger('change');
+                                        $(this).focus()[0].setSelectionRange(cursorPosition, cursorPosition);
+                                    });
+                            });
+                    },
+
+
+
+            //initComplete: function(){
+            /*this.api().columns().every(function(){
                 let column = this;
                 $('input', this.header()).on('keyup change', function () {
                     if (column.search() !== this.value) {
                         column.search(this.value,true).draw();
                     }
-                });
-            });
-                },
+                });*/
+            //}
+                //},
             "pageLength": 10
         });
         $("#onTouchCarrier").css("width","600px")
