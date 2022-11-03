@@ -12,8 +12,26 @@ if (empty($_POST['kundennummer']))  {
 
 
     $serverside = array();
-
+    $where = '';
     $searchValue = $_REQUEST['search']['value'];
+    //$columnsValue = $_REQUEST['columns']['search'];
+
+    if ($_REQUEST['columns']) {
+        foreach ($_REQUEST['columns'] as $key =>  $columns)
+        {
+            $search = $columns['search']['value'];
+            $search2 = substr($search,4,-4);
+            $searchreplac = str_replace('(())', '', $search);
+            $data = $columns['data'];
+            if ( $data === 'name') {
+                error_log('>>>>>>>'. $search2);
+                //where4 .= 'name like "' .$search2 . '"';
+
+            }
+        }
+    }
+
+
 
     if ($searchValue)
     {
@@ -24,7 +42,7 @@ if (empty($_POST['kundennummer']))  {
         $result = $stmt->fetchAll();
 
     } else{
-        $sqlfilter = "SELECT * FROM Blog.carrier LIMIT ".$_REQUEST['start']." ,".$_REQUEST['length']." ";
+        $sqlfilter = "SELECT * FROM Blog.carrier $where LIMIT ".$_REQUEST['start']." ,".$_REQUEST['length']." ";
         $stmt = $conn->prepare($sqlfilter);
         $stmt->execute();
         $result = $stmt->fetchAll();
