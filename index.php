@@ -82,12 +82,12 @@
                     <h4  name="modaltitle" class="modal-title"><i class="fa fa-plus"></i>Edit User</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group"
+                    <div class="form-group col-md-6">
                     <label name="kunndenn" for="kundennummer" class="control-label">Kundennummer</label>
                     <input type="text" class="form-control" id="kundennummer" name="kundennummer" placeholder="kundennummer" >
                     <span class="invalid-feedback" id="kundennummer_error"> </span>
                 </div>
-                <div class="form-group">
+                <div class="form-group col-md-6">
                     <label for="name" class="control-label">Name</label>
                     <input type="text" class="form-control" id="name" name="name" placeholder="name" >
                     <span class="invalid-feedback" id="name_error"> </span>
@@ -138,7 +138,8 @@
     </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.js"></script>
+<script type="text/javascript" src="/js/jquery.dataTables.min.js"></script>
+
 <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js" ></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js" ></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js" ></script>
@@ -157,7 +158,7 @@
       /*  $.extend( $.fn.DataTable.ext.classes, {
             sWrapper: "dataTables_wrapper container-fluid dt-bootstrap4",
         } );*/
-
+        $.fn.dataTable.ext.classes.sPageButton = 'page-link';
 
         $('#onTouchCarrier thead tr').clone(true).addClass('filters').appendTo('#onTouchCarrier thead');
 
@@ -179,8 +180,7 @@
             'order': [],
             ajax: {
                 url: "ajax_action.php" , dataSrc: "data",
-                type: "POST",
-                dataType: "json",
+
             },
             //dom: 'Bfrtip',
             buttons: [

@@ -54,9 +54,9 @@ if (empty($_POST['kundennummer']))  {
     $countResult = $statement->fetchColumn();
 
     $json_data = array(
-        "draw"	=>	intval($_POST["draw"]),
-        "recordsTotal"    => intval( $countResult ),
-        "recordsFiltered" => intval($countResult),
+        //"draw"	=>	intval($_POST["draw"]),
+        //"recordsTotal"    => intval( $countResult ),
+        //"recordsFiltered" => intval($countResult),
         //"data"  => $countResult
     );
 
@@ -69,17 +69,19 @@ if (empty($_POST['kundennummer']))  {
         $row ['DT_RowId'] =       $value['id'] ;
         $row ['kundennummer'] =   $value['kundennummer'] ;
         $row ['name'] =           $value['name'] ;
-        $row ['urlSc'] =         $value['urlSc'] ;
-        $row ['rufnummerSc'] =   $value['rufnummerSc'] ;
-        $row ['urlCc'] =         $value['urlCc'] ;
-        $row ['rufnummerCc'] =   $value['rufnummerCc'] ;
-        $row ['auftragsart'] =   $value['auftraggsart'] ;
+        $row ['urlSc'] =          $value['urlSc'] ;
+        $row ['rufnummerSc'] =    $value['rufnummerSc'] ;
+        $row ['urlCc'] =          $value['urlCc'] ;
+        $row ['rufnummerCc'] =    $value['rufnummerCc'] ;
+        $row ['auftragsart'] =    $value['auftraggsart'] ;
         $data [] = $row;
 
     }
 
     $json_data ['data'] = $data;
     echo json_encode($json_data);
+
+    return $json_data;
 
 }
 
